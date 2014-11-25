@@ -1,6 +1,8 @@
 package Admin;
 
 public class Partido {
-	Equipo eLocal = new Equipo();
-	Equipo eVisitante = new Equipo();
+	public Partido(String nombreEquipoL, String nombreEquipoV){
+		Equipo eLocal = new Equipo(nombreEquipoL);
+		Equipo eVisitante = new Equipo(nombreEquipoV);
+	}
 }

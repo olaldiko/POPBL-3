@@ -15,9 +15,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 public class Principal implements ActionListener{
-	/*
-	 * v0.1 - 24/11/2014
-	 */
 	
 	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 4301349494056044897L;
@@ -26,13 +23,8 @@ public class Principal implements ActionListener{
 	JPanel panel;
 	
 	JMenuBar mBar;
-	JMenu archivo;
-	JMenuItem nEquipo;
-	JMenuItem nPartido;
-	JMenu editar;
-	JMenuItem eEquipo;
-	JMenuItem ePartido;
-	JMenuItem eCuotas;
+	JMenu archivo, editar;
+	JMenuItem nEquipo, nPartido, eEquipo, ePartido, eCuotas;
 	
 	public Principal(){
 		ventana = new JFrame("Gestión de la aplicación");
