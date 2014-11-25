@@ -92,8 +92,8 @@ public class Identificacion implements ActionListener{
 		return fPass;
 	}
 	
-	private Component crearPanelTexto(JLabel label, String textoAñadir) {
-		label = new JLabel(textoAñadir);
+	private Component crearPanelTexto(JLabel label, String textoAnadir) {
+		label = new JLabel(textoAnadir);
 		label.setFont(new Font("arial", Font.BOLD, 15));
 		return label;		
 	}
