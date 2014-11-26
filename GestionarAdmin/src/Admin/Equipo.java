@@ -1,7 +1,5 @@
 package Admin;
 
-import javax.swing.ImageIcon;
-
 public class Equipo {
 	int id;
 	String name;
@@ -16,6 +14,6 @@ public class Equipo {
 	}
 	
 	public String toString(){
-		return id+" - EQUIPO: "+name+" - ESTADIO: "+estadio;
+		return id+" - EQUIPO: "+name;
 	}
 }

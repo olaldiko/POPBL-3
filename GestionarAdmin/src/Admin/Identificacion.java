@@ -99,7 +99,7 @@ public class Identificacion implements ActionListener{
 	}
 	
 	public Component crearTextTitulo(){
-		tTitulo = new JLabel("Título del proyecto");
+		tTitulo = new JLabel("MordorBet");
 		tTitulo.setFont(new Font("arial", Font.BOLD, 25));
 		tTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		return tTitulo;		
