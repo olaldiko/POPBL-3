@@ -3,9 +3,14 @@ package Admin;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
+
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 public class SQL {
 	Scanner teclado = new Scanner(System.in);
@@ -13,20 +18,18 @@ public class SQL {
 	
 	public SQL(String nombreBD) {
         try {
-        	// Cargar el "driver" para utilizar la BD.
         	System.out.print("Cargando el driver de la base de datos SQL... ");
             Class.forName("com.mysql.jdbc.Driver");
             System.out.println(" OK!");
-            // Cargar la base de datos desde una URL (Establecer URL, usuario y contraseña)
             System.out.print("Conectando con la base de datos SQL... ");
             String URL = "jdbc:mysql://olaldiko.mooo.com:23306/"+nombreBD;
             con = DriverManager.getConnection(URL, "urko", "123ABCabc");
             System.out.println(" OK!");
             // PRUEBAS
-            cargarT();
+            cargarTablas();
             System.out.print("Nombre de la tabla de la cual queremos cargar los datos: ");
 			String nombreT = teclado.nextLine();
-			insertarD(nombreT);
+			verDatos(nombreT);
             // PRUEBAS
         } catch (SQLException ex) {
             System.out.println("ERROR: Imposible conectar con la base de datos.");
@@ -34,10 +37,16 @@ public class SQL {
         	System.out.println("ERROR: Imposible cargar el driver.");
         } catch (Exception ex) {
             System.out.println("FATAL ERROR.");
+        } finally {
+            try {
+            	if (con != null) con.close();
+            } catch (SQLException ex) {
+            	System.out.println("ERROR: Imposible conectar con la base de datos.");
+            }
         }
     }
 	
-	public void cargarT(){
+	public void cargarTablas(){
 		try {
 			System.out.println("");
 			System.out.print("Cargando tablas de la Base de Datos MySQL... ");
@@ -49,13 +58,14 @@ public class SQL {
 			while (rs.next()) {
 				System.out.println("	"+(i++)+"-. "+rs.getString(3));
 			}
+			rs.close();
 			System.out.println("");
 		} catch (SQLException e) {
 			System.out.println("ERROR: Imposible conectar con la base de datos.");
 		}
 	}
 	
-	public void insertarD(String nombreT){
+	public void insertarDatos(String nombreT){
 		try {
 			ArrayList<Object> datos = new ArrayList<>();
 			System.out.println("");
@@ -70,13 +80,15 @@ public class SQL {
 					System.out.print(" (Integer) -> ");
 					int newDato = teclado.nextInt(); teclado.nextLine();
 					datos.add(newDato);
-				}
-				else if (rs.getString("TYPE_NAME").equals("VARCHAR")){
+				} else if (rs.getString("TYPE_NAME").equals("VARCHAR")){
 					System.out.print(" (String) -> ");
 					String newDato = teclado.nextLine();
 					datos.add(newDato);
-				}
-				else if (rs.getString("TYPE_NAME").equals("BIT")){
+				} else if (rs.getString("TYPE_NAME").equals("DOUBLE")){
+					System.out.print(" (Double) -> ");
+					double newDato = teclado.nextDouble(); teclado.nextLine();
+					datos.add(newDato);
+				} else if (rs.getString("TYPE_NAME").equals("BIT")){
 					System.out.print(" (true/false) -> ");
 					String temp = teclado.nextLine();
 					boolean newDato = false;
@@ -85,58 +97,52 @@ public class SQL {
 					datos.add(newDato);
 				} else System.out.println("ERROR: Tipo de dato no soportado.");
 			}
-			
-			//st.executeUpdate("INSERT INTO Customers " + "VALUES (1001, 'Simpson', 'Mr.', 'Springfield', 2001)"); 
+			rs.close();
 			System.out.println("");
-		} catch (SQLException e) {
-			System.out.println("ERROR: Imposible conectar con la base de datos.");
+			Statement st = con.createStatement();
+			Iterator<Object> it = datos.iterator();
+			String exeUpdate = "INSERT INTO "+nombreT+" VALUES (";
+			int j = 1;
+			while(it.hasNext()){
+				Object valorActual = it.next();
+				if ((valorActual instanceof Integer) || (valorActual instanceof Double) || (valorActual instanceof Boolean)){
+					exeUpdate += valorActual;
+				}
+				if (valorActual instanceof String){
+					exeUpdate += "'"+valorActual+"'";
+				}
+				if (j == (i - 1)) exeUpdate += ")";
+				else exeUpdate += ", ";
+				j++;
+			}
+			System.out.print("Escribiendo nuevo dato en la Base de Datos...");
+			st.executeUpdate(exeUpdate); 
+			System.out.println("");
+		} catch (MySQLIntegrityConstraintViolationException e) {
+			System.out.println("ERROR: Datos repetidos en la Base de Datos. / Dato relacionado no encontrado.");
+		}catch (SQLException e) {
+			System.out.println("ERROR: Imposible conectar con la Base de Datos.");
 		}
 	}
+
+	public void editarDatos(String nombreT){
+		
+	}
 	
-	public void cargarD(String nombreT){
+	public void verDatos(String nombreT){
 		try {
-			System.out.println("");
-			System.out.print("Cargando datos de la tabla... ");
 			java.sql.DatabaseMetaData dbmd = con.getMetaData();
 			ResultSet rs = dbmd.getColumns(null, null, nombreT, null);
-			System.out.println("OK!");
-			int i = 1;
-			while (rs.next()) {
-				System.out.println("	"+(i++)+"-. "+rs.getString("COLUMN_NAME")+" ("+rs.getString("TYPE_NAME")+" -> "+rs.getInt("COLUMN_SIZE")+")");
-			}
-			System.out.println("");
+		    /*
+		    for (int i = 1; i != numCols; i++){
+		    	
+		    }
+		    */
 		} catch (SQLException e) {
 			System.out.println("ERROR: Imposible conectar con la base de datos.");
+			e.printStackTrace();
 		}
 	}
-	
-	/*
-	private void cargarDatos(){
-		try {
-			Statement estado = con.createStatement();
-			ResultSet resultado = estado.executeQuery("SELECT * FROM Equipos");
-			while(resultado.next()){
-				Equipo nuevoEquipo  = new Equipo(resultado.getInt("ID"), resultado.getString("NAME"), resultado.getString("SHORTNAME"), resultado.getString("CRESTURL"));
-				System.out.println(resultado.getInt("ID")+" - Nombre: "+resultado.getString("NAME")+" / Nombre corto: "+resultado.getString("SHORTNAME"));
-			}
-		} catch (SQLException e) {
-			System.out.println("ERROR: Imposible conectar con la base de datos.");
-		}
-	}
-	
-	private void leerDatos(){
-		try {
-			Statement estado = con.createStatement();
-			ResultSet resultado = estado.executeQuery("SELECT * FROM Equipos");
-			while(resultado.next()){
-				Equipo nuevoEquipo  = new Equipo(resultado.getInt("ID"), resultado.getString("NAME"), resultado.getString("SHORTNAME"), resultado.getString("CRESTURL"));
-				System.out.println(resultado.getInt("ID")+" - Nombre: "+resultado.getString("NAME")+" / Nombre corto: "+resultado.getString("SHORTNAME"));
-			}
-		} catch (SQLException e) {
-			System.out.println("ERROR: Imposible conectar con la base de datos.");
-		}
-	}
-	*/
 	
 	public static void main(String args[]){
 		try{
