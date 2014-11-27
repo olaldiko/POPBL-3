@@ -34,6 +34,9 @@ public class SQL {
             cargarTablas();
             System.out.print("Nombre de la tabla de la cual queremos cargar los datos: ");
 			String nombreT = teclado.nextLine();
+			insertarDatos(nombreT);
+			//System.out.print("Nombre de la tabla de la cual queremos editar los datos: ");
+			//String nombreT1 = teclado.nextLine();
 			verDatos(nombreT);
             // PRUEBAS
         } catch (SQLException ex) {
@@ -80,27 +83,54 @@ public class SQL {
 			System.out.println("OK!");
 			int i = 1;
 			while (rsColumns.next()) {
+				boolean datoInsertado = false;
 				System.out.print("	"+(i++)+"-. "+rsColumns.getString("COLUMN_NAME")+" ("+rsColumns.getString("TYPE_NAME")+" -> "+rsColumns.getInt("COLUMN_SIZE")+")");
 				if (rsColumns.getString("TYPE_NAME").equals("INT")){
 					System.out.print(" (Integer) -> ");
 					int newDato = teclado.nextInt(); teclado.nextLine();
 					datos.add(newDato);
+					datoInsertado = true;
 				} else if (rsColumns.getString("TYPE_NAME").equals("VARCHAR")){
 					System.out.print(" (String) -> ");
 					String newDato = teclado.nextLine();
 					datos.add(newDato);
+					datoInsertado = true;
 				} else if (rsColumns.getString("TYPE_NAME").equals("DOUBLE")){
 					System.out.print(" (Double) -> ");
 					double newDato = teclado.nextDouble(); teclado.nextLine();
 					datos.add(newDato);
+					datoInsertado = true;
+				} else if (rsColumns.getString("TYPE_NAME").equals("DATETIME")){
+					System.out.print(" (Tiempo) -> ");
+					System.out.print("Año: ");
+					int año = teclado.nextInt();
+					System.out.print(" Mes: ");
+					int mes = teclado.nextInt();
+					System.out.print(" Día: ");
+					int dia = teclado.nextInt();
+					Tiempo nuevoD = new Tiempo(año, mes, dia);
+					datos.add(nuevoD);
+					datoInsertado = true;
 				} else if (rsColumns.getString("TYPE_NAME").equals("BIT")){
 					System.out.print(" (true/false) -> ");
 					String temp = teclado.nextLine();
-					boolean newDato = false;
-					if (temp.toLowerCase().equals("true")) newDato = true;
-					if (temp.toLowerCase().equals("false")) newDato = false;
-					datos.add(newDato);
+					boolean newDato = true;
+					if (temp.toLowerCase().equals("true")){
+						newDato = true;
+						datoInsertado = true;
+						datos.add(newDato);
+					}
+					else if (temp.toLowerCase().equals("false")){
+						newDato = false;
+						datoInsertado = true;
+						datos.add(newDato);
+					}
+					else System.out.println("ERROR: Dato no valido.");
 				} else System.out.println("ERROR: Tipo de dato no soportado.");
+				if (!datoInsertado){
+					String nulo = "";
+					datos.add(nulo);
+				}
 			}
 			rsColumns.close();
 			System.out.println("");
@@ -116,11 +146,16 @@ public class SQL {
 				if (valorActual instanceof String){
 					exeUpdate += "'"+valorActual+"'";
 				}
+				if (valorActual instanceof Tiempo){
+					Tiempo insertD = (Tiempo) valorActual;
+					exeUpdate += "TO_DATE('"+insertD.año+"-"+insertD.mes+"-"+insertD.dia+"', '%y-%m-%d')";
+				}
 				if (j == (i - 1)) exeUpdate += ")";
 				else exeUpdate += ", ";
 				j++;
 			}
 			System.out.print("Escribiendo nuevo dato en la Base de Datos...");
+			//System.out.println(exeUpdate);
 			st.executeUpdate(exeUpdate); 
 			System.out.println("");
 		} catch (MySQLIntegrityConstraintViolationException e) {
@@ -132,9 +167,10 @@ public class SQL {
 
 	public void editarDatos(String nombreT){
 		try {
-			int idModifi;
 			verDatos(nombreT);
 			ArrayList<Object> datos = new ArrayList<>();
+			ArrayList<String> colNames = new ArrayList<>();
+			String priCol = null;
 			System.out.println("");
 			System.out.print("Cargando datos de la tabla... ");
 			dbmd = con.getMetaData();
@@ -143,7 +179,9 @@ public class SQL {
 			int i = 1;
 			System.out.println("");
 			System.out.print("Inserta el ID de la línea que queires modificar: ");
-			
+			int idModifi = teclado.nextInt(); teclado.nextLine();
+			System.out.println("");
+			boolean primero = true;
 			while (rsColumns.next()) {
 				System.out.print("	"+(i++)+"-. "+rsColumns.getString("COLUMN_NAME")+" ("+rsColumns.getString("TYPE_NAME")+" -> "+rsColumns.getInt("COLUMN_SIZE")+")");
 				if (rsColumns.getString("TYPE_NAME").equals("INT")){
@@ -166,26 +204,30 @@ public class SQL {
 					if (temp.toLowerCase().equals("false")) newDato = false;
 					datos.add(newDato);
 				} else System.out.println("ERROR: Tipo de dato no soportado.");
+				if (primero) priCol = rsColumns.getString("COLUMN_NAME"); primero = false;
+				colNames.add(rsColumns.getString("COLUMN_NAME"));
 			}
 			rsColumns.close();
 			System.out.println("");
 			Statement st = con.createStatement();
 			Iterator<Object> it = datos.iterator();
-			String exeUpdate = "INSERT INTO "+nombreT+" VALUES (";
+			Iterator<String> itC = colNames.iterator();
+			String exeUpdate = "UPDATE "+nombreT+" SET ";
 			int j = 1;
 			while(it.hasNext()){
 				Object valorActual = it.next();
+				String colActual = itC.next();
 				if ((valorActual instanceof Integer) || (valorActual instanceof Double) || (valorActual instanceof Boolean)){
-					exeUpdate += valorActual;
+					exeUpdate += colActual+"="+valorActual;
 				}
 				if (valorActual instanceof String){
-					exeUpdate += "'"+valorActual+"'";
+					exeUpdate += colActual+"='"+valorActual+"'";
 				}
-				if (j == (i - 1)) exeUpdate += ")";
-				else exeUpdate += ", ";
+				if (j != (i - 1)) exeUpdate += ", ";
 				j++;
 			}
 			System.out.print("Escribiendo nuevo dato en la Base de Datos...");
+			exeUpdate += " WHERE "+priCol+"="+idModifi;
 			st.executeUpdate(exeUpdate); 
 			System.out.println("");
 		} catch (MySQLIntegrityConstraintViolationException e) {
