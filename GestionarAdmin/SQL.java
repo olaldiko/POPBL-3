@@ -6,15 +6,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Scanner;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
@@ -22,29 +17,75 @@ import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 public class SQL {
 	Scanner teclado;
 	Connection con;
+	boolean exit = false;
 	
-	public SQL(String URL, int numeroPuerto, String nombreBD, String user, String pass, JFrame ventana) {
+	public SQL(String URL, int numeroPuerto, String nombreBD, String user, String pass) {
 		try {
-        	System.out.print("Cargando el driver de la Base de Datos MySQL... ");
+        	System.out.print("Cargando el driver de la base de datos SQL... ");
             Class.forName("com.mysql.jdbc.Driver");
             System.out.println(" OK!");
-            System.out.print("Conectando con Ba base de Datos MySQL... ");
+            System.out.print("Conectando con la base de datos SQL... ");
             String generalURL = "jdbc:mysql://"+URL+":"+numeroPuerto+"/"+nombreBD;
             con = DriverManager.getConnection(generalURL, user, pass);
             System.out.println(" OK!");
             System.out.println("");
         } catch (SQLException e) {
-        	JOptionPane.showMessageDialog(ventana, "Imposible conectar con la Base de Datos.", "Error", JOptionPane.ERROR_MESSAGE);
+            System.out.println("ERROR: Imposible conectar con la base de datos.");
+            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-        	JOptionPane.showMessageDialog(ventana, "Imposible cargar el driver.", "Error", JOptionPane.ERROR_MESSAGE);
+        	System.out.println("ERROR: Imposible cargar el driver.");
+        	e.printStackTrace();
         } catch (Exception e) {
-        	JOptionPane.showMessageDialog(ventana, "FATAL ERROR.", "Error", JOptionPane.ERROR_MESSAGE);
+            System.out.println("FATAL ERROR.");
+            e.printStackTrace();
         }		
     }
 	
-	public Tablas cargarTablas(JFrame ventana){
-		Tablas nuevasTablas = null;
-		ArrayList<String> listaTablas = new ArrayList<>();
+	public void SQLback() {
+		while (!exit) {
+			try{
+				teclado = new Scanner(System.in);
+				menu();
+			} catch (NullPointerException e) {
+				System.out.println("ERROR: Imposible cargar Base de Datos, ¿Has probado a cargar la Base de Datos antes?");
+			} catch (InputMismatchException e) {
+				System.out.println("ERROR: Dato de entrada no soportado en este campo.");
+			} catch (Exception e) {
+	            System.out.println("ERROR: Imposible ejecutar petición.");
+	            e.printStackTrace();
+			} finally {
+				try {
+					if (con != null) con.close();
+				} catch (SQLException e) {
+					System.out.println("ERROR: Imposible cerrar la Base de Datos.");
+				}
+			}
+		}		
+    }
+	
+	public void cargarBD(String URL, int numeroPuerto, String nombreBD, String user, String pass){
+		try {
+        	System.out.print("Cargando el driver de la base de datos SQL... ");
+            Class.forName("com.mysql.jdbc.Driver");
+            System.out.println(" OK!");
+            System.out.print("Conectando con la base de datos SQL... ");
+            String generalURL = "jdbc:mysql://"+URL+":"+numeroPuerto+"/"+nombreBD;
+            con = DriverManager.getConnection(generalURL, user, pass);
+            System.out.println(" OK!");
+            System.out.println("");
+        } catch (SQLException e) {
+            System.out.println("ERROR: Imposible conectar con la base de datos.");
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+        	System.out.println("ERROR: Imposible cargar el driver.");
+        	e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("FATAL ERROR.");
+            e.printStackTrace();
+        }
+	}
+	
+	public void cargarTablas(){
 		ResultSet rsTables = null;
 		try {
 			System.out.print("Cargando tablas de la Base de Datos MySQL... ");
@@ -55,26 +96,21 @@ public class SQL {
 			System.out.println("Estas son las tablas disponibles en la Base de Datos:");
 			while (rsTables.next()) {
 				System.out.println("	"+(i++)+"-. "+rsTables.getString(3));
-				listaTablas.add(rsTables.getString(3));
 			}
 			System.out.println("");
-			nuevasTablas = new Tablas(listaTablas, null);
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(ventana, "Imposible conectar con la Base de Datos.", "Error", JOptionPane.ERROR_MESSAGE);
+			System.out.println("ERROR: Imposible conectar con la base de datos.");
+			e.printStackTrace();
 		} finally {
 			try {
 				if (rsTables != null) rsTables.close();
 			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(ventana, "Imposible cargar tablas desde la Base de Datos.", "Error", JOptionPane.ERROR_MESSAGE);
+				System.out.println("ERROR: Imposible cargar tablas desde la Base de Datos.");
 			}
 		}
-		return nuevasTablas;
 	}
 	
-	public Datos verDatos(String nombreT, JFrame ventana){
-		Datos nuevosDatos = null;
-		ArrayList<String> datos = new ArrayList<>();
-		ArrayList<String> nombreColumnas = new ArrayList<>();
+	public void verDatos(String nombreT){
 		Statement stmt = null;
 		ResultSet rsPersonalized = null;
 		try {
@@ -89,81 +125,20 @@ public class SQL {
 			int columnCount = rsmd.getColumnCount();
 			for (int i = 1; i <= columnCount; i++) {
 				columnHeading = columnHeading+"\t"+rsmd.getColumnName(i);
-				nombreColumnas.add(rsmd.getColumnName(i));
 			}
 			System.out.println(columnHeading);
 			while (rsPersonalized.next()) {
 				for (int i = 1; i <= columnCount; i++) {
 					System.out.print("\t"+rsPersonalized.getString(i));
-					datos.add(rsPersonalized.getString(i));
 				}
 				System.out.println("\n");
 			}
-			nuevosDatos = new Datos(nombreColumnas, datos);
-		} catch (InputMismatchException e) {
-			JOptionPane.showMessageDialog(ventana, "Dato de entrada no soportado en este campo.", "Error", JOptionPane.ERROR_MESSAGE);
-		} catch (MySQLSyntaxErrorException e) {
-			JOptionPane.showMessageDialog(ventana, "La tabla no existe.", "Error", JOptionPane.ERROR_MESSAGE);
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(ventana, "Imposible conectar con la Base de Datos.", "Error", JOptionPane.ERROR_MESSAGE);
-		} finally {
-			try {
-				if (stmt != null) stmt.close();
-			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(ventana, "Imposible crear un Statement.", "Error", JOptionPane.ERROR_MESSAGE);
-			}
-			try {
-				if (rsPersonalized != null) rsPersonalized.close();
-			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(ventana, "Imposible crear un ResultSet.", "Error", JOptionPane.ERROR_MESSAGE);
-			}
-		}
-		return nuevosDatos;
-	}
-	
-	public void actualizarDatos(String [][] nuevosDatos, ArrayList<String> nombreColumnas, String nombreT, int tamX, int tamY) {
-		ResultSet rsColumns = null;
-		Statement stmt = null;
-		try {
-			System.out.println("");
-			System.out.print("Cargando datos de la tabla... ");
-			java.sql.DatabaseMetaData dbmd = con.getMetaData();
-			rsColumns = dbmd.getColumns(null, null, nombreT, null);
-			System.out.println("OK!");
-			stmt = con.createStatement();
-			for (int i = 0; i != tamX; i++){
-				String exeUpdate = "UPDATE "+nombreT+" SET ";
-				for (int j = 1; j != tamY; j++){
-					if (nuevosDatos[i][j].matches("[0-9]+")) {
-						exeUpdate += nombreColumnas.get(j)+"="+nuevosDatos[i][j]+" ";
-					} else if (nuevosDatos[i][j].equals("true") || nuevosDatos[i][j].equals("false")) {
-						exeUpdate += nombreColumnas.get(j)+"="+nuevosDatos[i][j]+" ";
-					} else if (nuevosDatos[i][j].matches("^\\d{4}-\\d{2}-\\d{2}.*$")) {
-						int año = Integer.parseInt(nuevosDatos[i][j].substring(0,  4));
-						int mes = Integer.parseInt(nuevosDatos[i][j].substring(5,  7));
-						int dia = Integer.parseInt(nuevosDatos[i][j].substring(8,  10));
-						int horas = Integer.parseInt(nuevosDatos[i][j].substring(11,  13));
-						int minutos = Integer.parseInt(nuevosDatos[i][j].substring(14,  16));
-						double segundos = Double.parseDouble(nuevosDatos[i][j].substring(17));
-						String nuevaFecha = año+"-"+mes+"-"+dia+"T"+horas+":"+minutos+":"+segundos+"Z";
-						exeUpdate += nombreColumnas.get(j)+"=STR_TO_DATE('"+nuevaFecha+"','%Y-%m-%dT%H:%i:%sZ')";
-					} else {
-						exeUpdate += nombreColumnas.get(j)+"='"+nuevosDatos[i][j]+"' ";
-					}
-				}
-				exeUpdate += "WHERE "+nombreColumnas.get(0)+"="+nuevosDatos[i][0];
-				System.out.print("Escribiendo nuevo dato en la Base de Datos... ");
-				stmt.executeUpdate(exeUpdate); 
-				System.out.println("OK!");
-				System.out.println("");
-			}
 		} catch (InputMismatchException e) {
 			System.out.println("ERROR: Dato de entrada no soportado en este campo.");
-		} catch (MySQLIntegrityConstraintViolationException e) {
-			System.out.println("ERROR: Datos repetidos en la Base de Datos. / Dato relacionado no encontrado.");
+		} catch (MySQLSyntaxErrorException e) {
+			System.out.println("ERROR: La tabla no existe.");
 		} catch (SQLException e) {
-			System.out.println("ERROR: Imposible conectar con la Base de Datos.");
-			e.printStackTrace();
+			System.out.println("ERROR: Imposible conectar con la base de datos.");
 		} finally {
 			try {
 				if (stmt != null) stmt.close();
@@ -171,7 +146,7 @@ public class SQL {
 				System.out.println("ERROR: Imposible crear un Statement.");
 			}
 			try {
-				if (rsColumns != null) rsColumns.close();
+				if (rsPersonalized != null) rsPersonalized.close();
 			} catch (SQLException e) {
 				System.out.println("ERROR: Imposible crear un ResultSet.");
 			}
@@ -408,11 +383,11 @@ public class SQL {
 		}
 	}
 	
-	public void borrarDatos(String nombreT, JFrame ventana){
+	public void borrarDatos(String nombreT){
 		Statement stmt = null;
 		ResultSet rsColumns = null;
 		try {
-			verDatos(nombreT, ventana);
+			verDatos(nombreT);
 			String priCol = null;
 			System.out.println("");
 			System.out.print("Cargando datos de la tabla... ");
@@ -451,5 +426,76 @@ public class SQL {
 				System.out.println("ERROR: Imposible crear un ResultSet.");
 			}
 		}
+	}
+
+	public void menu(){
+		String nombreT;
+		int opcion;
+		try{
+			do {
+				System.out.println("");
+				System.out.println("SQL");
+				System.out.println("	1-. Cargar Base de Datos MySQL.");
+				System.out.println("	2-. Leer de tabla desde BD.");
+				System.out.println("	3-. Leer datos desde tabla.");
+				System.out.println("	4-. Eliminar datos desde tabla.");
+				System.out.println("	5-. Insertar datos desde tabla.");
+				System.out.println("	6-. Editar datos desde tabla.");
+				System.out.println("	0-. EXIT.");
+				System.out.println("");
+				System.out.print("Selecciona una opción: ");
+				opcion = teclado.nextInt(); teclado.nextLine();
+				System.out.println("");
+				switch(opcion){
+					case 1: cargarBD("olaldiko.mooo.com", 23306, "mordorbet", "urko", "123ABCabc");
+						break;
+					case 2: cargarTablas();
+						break;
+					case 3: System.out.print("	Inserta el nombre de la tabla: ");
+						nombreT = teclado.nextLine();
+						System.out.println("");
+						verDatos(nombreT);
+						break;
+					case 4: System.out.print("	Inserta el nombre de la tabla: ");
+						nombreT = teclado.nextLine();
+						System.out.println("");
+						verDatos(nombreT);
+						System.out.println("");
+						borrarDatos(nombreT);
+						break;
+					case 5: System.out.print("	Inserta el nombre de la tabla: ");
+						nombreT = teclado.nextLine();
+						System.out.println("");
+						verDatos(nombreT);
+						System.out.println("");
+						insertarDatos(nombreT);
+						break;
+					case 6: System.out.print("	Inserta el nombre de la tabla: ");
+						nombreT = teclado.nextLine();
+						System.out.println("");
+						verDatos(nombreT);
+						System.out.println("");
+						editarDatos(nombreT);
+						break;
+					case 0: exit = true;
+						break;
+					default: System.out.println("ERROR: Opción no válida.");
+				}
+			} while (!exit);
+			if (con != null){
+				try {
+					con.close();
+				} catch (SQLException e) {
+					System.out.println("ERROR: Imposible cerrar la Base de Datos.");
+					e.printStackTrace();
+				}
+			}
+		} catch (InputMismatchException e) {
+			System.out.println("ERROR: Dato de entrada no soportado en este campo.");
+		}
+	}
+
+	public static void main(String args[]){
+		//SQL nuevaBD = new SQL();
 	}
 }

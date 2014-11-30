@@ -35,11 +35,12 @@ public class Identificacion implements ActionListener{
 	
 	public Identificacion (JFrame ventana,String titulo, boolean modo) {
 		dialog = new JDialog(ventana, titulo, modo);
-		dialog.setSize(350,150);
+		dialog.setSize(250, 150);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		dialog.setResizable(false);
 		dialog.setLocation(dim.width/2-dialog.getSize().width/2, dim.height/2-dialog.getSize().height/2);
 		dialog.setContentPane(crearPanelDialogo());
-		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		dialog.setVisible(true);
 	}
 
@@ -94,13 +95,13 @@ public class Identificacion implements ActionListener{
 	
 	private Component crearPanelTexto(JLabel label, String textoAnadir) {
 		label = new JLabel(textoAnadir);
-		label.setFont(new Font("arial", Font.BOLD, 15));
+		label.setFont(new Font(null, Font.BOLD, 15));
 		return label;		
 	}
 	
 	public Component crearTextTitulo(){
 		tTitulo = new JLabel("MordorBet");
-		tTitulo.setFont(new Font("arial", Font.BOLD, 25));
+		tTitulo.setFont(new Font(null, Font.BOLD, 25));
 		tTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		return tTitulo;		
 	}
