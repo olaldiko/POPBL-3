@@ -12,9 +12,13 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -27,9 +31,14 @@ public class Principal implements ActionListener, ItemListener{
 	
 	JFrame ventana;
 	JPanel panelPrincipal, panelN, panelC, panelS;
+	JMenuBar menu;
+	JMenu mArch, mEdit, mSalir;
+	JMenuItem guardarI, descartarI, recargarI, añadirI, opcionesI, salirI;
 	JTable tabla;
 	JButton guardar, descartar, recargar;
 	JComboBox<String> cTablas;
+	
+	DefaultTableModel tableModel;
 	
 	String seleccionado;
 	int tamX = 0, tamY = 0;
@@ -43,22 +52,64 @@ public class Principal implements ActionListener, ItemListener{
 			ventana.setSize(tamX, tamY);
 			Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 			ventana.setLocation(dim.width/2-ventana.getSize().width/2, dim.height/2-ventana.getSize().height/2);
+			ventana.setJMenuBar(crearMenuBar());
 			ventana.setContentPane(crearPanelVentana());
 			ventana.setVisible(true);
 			ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		}
 	}
 	
+	private JMenuBar crearMenuBar(){
+		menu = new JMenuBar();
+		menu.add(crearMenuArch());
+		menu.add(crearMenuEdit());
+		menu.add(Box.createHorizontalGlue());
+		menu.add(crearMenuSalir());
+		return menu;
+	}
+	
+	public JMenu crearMenuArch(){
+		mArch = new JMenu("Archivo");
+		guardarI = mArch.add("Guardar cambios");
+		descartarI = mArch.add("Deshacer cambios");
+		recargarI = mArch.add("Recargar tabla");
+		guardarI.addActionListener(this);
+		descartarI.addActionListener(this);
+		recargarI.addActionListener(this);
+		guardarI.setActionCommand("mGuardar");
+		descartarI.setActionCommand("mDescartar");
+		recargarI.setActionCommand("mRecargar");
+		return mArch;
+	}
+	
+	public JMenu crearMenuEdit(){
+		mEdit = new JMenu("Editar");
+		añadirI = mEdit.add("Añadir fila");
+		opcionesI = mEdit.add("Opciones");
+		añadirI.addActionListener(this);
+		opcionesI.addActionListener(this);
+		añadirI.setActionCommand("mAñadir");
+		opcionesI.setActionCommand("mOpciones");
+		return mEdit;
+	}
+	
+	public JMenu crearMenuSalir(){
+		mSalir = new JMenu("Salir");
+		salirI = mSalir.add("Salir");
+		salirI.addActionListener(this);
+		salirI.setActionCommand("mSalir");
+		return mSalir;
+	}
+	
 	private Container crearPanelVentana(){
 		panelPrincipal = new JPanel(new BorderLayout());
 		panelPrincipal.add(crearPanelNorte(), BorderLayout.NORTH);
 		panelPrincipal.add(crearPanelCentro(), BorderLayout.CENTER);
-		panelPrincipal.add(crearPanelSur(), BorderLayout.SOUTH);
 		return panelPrincipal;
 	}
 	
 	private Container crearPanelNorte(){
-		panelN = new JPanel(new FlowLayout());
+		panelN = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		panelN.setBorder(BorderFactory.createCompoundBorder(null, BorderFactory.createTitledBorder("Información de tablas")));
 		panelN.add(crearCBTablas());
 		return panelN;
@@ -71,15 +122,6 @@ public class Principal implements ActionListener, ItemListener{
 		return panelC;
 	}
 	
-	private Container crearPanelSur(){
-		panelS = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		panelS.setBorder(BorderFactory.createCompoundBorder(null, BorderFactory.createTitledBorder("Opciones")));
-		panelS.add(crearBotones(recargar, "Recargar", "recargar"));
-		panelS.add(crearBotones(descartar, "Descartar", "descartar"));
-		panelS.add(crearBotones(guardar, "Guardar", "guardar"));
-		return panelS;
-	}
-	
 	private Component crearCBTablas(){
 		Tablas nuevasTablas = baseDatos.cargarTablas(ventana);
 		cTablas = new JComboBox<String>(nuevasTablas.lista.toArray(new String[nuevasTablas.lista.size()]));
@@ -90,13 +132,7 @@ public class Principal implements ActionListener, ItemListener{
 		return cTablas;
 	}
 	
-	private Component crearBotones(JButton boton, String nombre, String comand){
-		boton = new JButton(nombre);
-		boton.setActionCommand(comand);
-		boton.addActionListener(this);
-		return boton;
-	}
-	
+	@SuppressWarnings("serial")
 	private Component crearJTable(){
 		tabla = new JTable();
 		if (seleccionado != null) {
@@ -110,8 +146,7 @@ public class Principal implements ActionListener, ItemListener{
 					}
 				}
 				tabla = new JTable();
-				@SuppressWarnings("serial")
-				DefaultTableModel tableModel = new DefaultTableModel(datosMatrix, nuevosDatos.nombreColumnas.toArray(new String[nuevosDatos.nombreColumnas.size()])) {
+				tableModel = new DefaultTableModel(datosMatrix, nuevosDatos.nombreColumnas.toArray(new String[nuevosDatos.nombreColumnas.size()])) {
 				    @Override
 				    public boolean isCellEditable(int row, int column) {
 				    	if (column == 0) return false;
@@ -133,7 +168,6 @@ public class Principal implements ActionListener, ItemListener{
 		panelPrincipal.removeAll();
 		panelPrincipal.add(crearPanelNorte(), BorderLayout.NORTH);
 		panelPrincipal.add(crearPanelCentro(), BorderLayout.CENTER);
-		panelPrincipal.add(crearPanelSur(), BorderLayout.SOUTH);
 		panelPrincipal.revalidate(); 
 		panelPrincipal.repaint();
 	}
@@ -159,11 +193,20 @@ public class Principal implements ActionListener, ItemListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if ((e.getActionCommand().equals("descartar")) || (e.getActionCommand().equals("recargar"))) {
+		if ((e.getActionCommand().equals("mDescartar")) || (e.getActionCommand().equals("mRecargar"))) {
 			repintarPanel();
 		}
-		if (e.getActionCommand().equals("guardar")) {
+		if (e.getActionCommand().equals("mGuardar")) {
 			guardarModifi();
+		}
+		if (e.getActionCommand().equals("mAñadir")) {
+			// Ventana con datos a añadir.
+		}
+		if (e.getActionCommand().equals("mOpciones")) {
+			// Ventana con todas las opciones que escribimos en un fichero.
+		}
+		if (e.getActionCommand().equals("mSalir")) {
+			ventana.dispose();
 		}
 	}
 
