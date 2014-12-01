@@ -14,47 +14,56 @@ public class FicheroConfig implements IntFicheroConfig{
 	String delimiter = "-";
 	String[] temp;
 	File archivo = new File ("config.ini");
-	
-	
+    FileReader fr;
+	BufferedReader br;
+	FileWriter fileOutput;
+	PrintWriter pw;
+    
 	@Override
 	public void cargarDatos(int tamx, int tamy, String URL, int nPort, String nBD,
 			String user, String pass){
+		
 		try {
-	      FileReader fr;
 	      fr = new FileReader (archivo);
-	      BufferedReader br = new BufferedReader(fr);
+	      br = new BufferedReader(fr);
 	      
 	      contFich = br.readLine();
 	      temp = contFich.split(delimiter);
-	      
-	      br.close();
+	      	      
 		} catch (FileNotFoundException e) {
 			System.out.println("File Not Found");
 			e.printStackTrace();
 		} catch (IOException e) {
 			System.out.println("FETAL ERROR");
 			e.printStackTrace();
+		} finally{
+			URL = temp[0];
+			user = temp[1];
+			pass = temp[2];
+			nBD	= temp[3];
+			nPort = Integer.valueOf(temp[4]);
+			tamy = Integer.valueOf(temp[5]);
+			tamx = Integer.valueOf(temp[6]);			
+		    try {
+				br.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		URL = temp[0];
-		user = temp[1];
-		pass = temp[2];
-		nBD	= temp[3];
-		nPort = Integer.valueOf(temp[4]);
-		tamy = Integer.valueOf(temp[5]);
-		tamx = Integer.valueOf(temp[6]);
-		
 	}
 	@Override
 	public void guardarDatos(int tamx, int tamy, String URL, int nPort,
 			String nBD, String user, String pass) {
 		try{
-        	FileWriter fileOutput = new FileWriter (archivo);
-	        PrintWriter pw = new PrintWriter(fileOutput);
+        	fileOutput = new FileWriter (archivo);
+	        pw = new PrintWriter(fileOutput);
 	        pw.print(URL + "," + user + "," + pass + "," + nBD + "," + nPort + "," + tamy + "," + tamx);
-	        pw.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}			
+		} finally{
+			 pw.close();
+		}
 	}
 }
