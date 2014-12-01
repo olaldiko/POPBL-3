@@ -33,21 +33,23 @@ public class Principal implements ActionListener, ItemListener{
 	JPanel panelPrincipal, panelN, panelC, panelS;
 	JMenuBar menu;
 	JMenu mArch, mEdit, mSalir;
-	JMenuItem guardarI, descartarI, recargarI, añadirI, opcionesI, salirI;
+	JMenuItem guardarI, descartarI, recargarI, añadirI, borrarI, opcionesI, salirI;
 	JTable tabla;
 	JButton guardar, descartar, recargar;
 	JComboBox<String> cTablas;
 	
-	DefaultTableModel tableModel;
-	
+	Object [] colNames;
 	String seleccionado;
+	String ultimoID;
+	
+	DefaultTableModel tableModel;
+
 	int tamX = 0, tamY = 0;
 	
 	public Principal(int tamX, int tamY, String URL, int numeroPuerto, String nombreBD, String user, String pass){
 		ventana = new JFrame("Gestión de la aplicación");
 		Identificacion nuevoDialogo = new Identificacion(ventana, "Identificación", true);
-		boolean pruebas = true;
-		if (pruebas/*nuevoDialogo.respuesta*/){
+		if (nuevoDialogo.respuesta){
 			baseDatos = new SQL(URL, numeroPuerto, nombreBD, user, pass, ventana);
 			ventana.setSize(tamX, tamY);
 			Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -84,12 +86,15 @@ public class Principal implements ActionListener, ItemListener{
 	
 	public JMenu crearMenuEdit(){
 		mEdit = new JMenu("Editar");
-		añadirI = mEdit.add("Añadir fila");
+		añadirI = mEdit.add("Añadir dato");
+		borrarI = mEdit.add("Borrar dato");
 		opcionesI = mEdit.add("Opciones");
 		añadirI.addActionListener(this);
 		opcionesI.addActionListener(this);
+		borrarI.addActionListener(this);
 		añadirI.setActionCommand("mAñadir");
 		opcionesI.setActionCommand("mOpciones");
+		borrarI.setActionCommand("mBorrar");
 		return mEdit;
 	}
 	
@@ -142,11 +147,15 @@ public class Principal implements ActionListener, ItemListener{
 				int num = 0;
 				for (int i = 0; i != (nuevosDatos.datos.size() / nuevosDatos.nombreColumnas.size()); i++){
 					for (int j = 0; j != nuevosDatos.nombreColumnas.size(); j++){
+						if (((i + 1) == (nuevosDatos.datos.size() / nuevosDatos.nombreColumnas.size()) && (j == 0))){
+							ultimoID = nuevosDatos.datos.get(num);
+						}
 						datosMatrix[i][j] = nuevosDatos.datos.get(num++);
 					}
 				}
+				colNames = nuevosDatos.nombreColumnas.toArray(new String[nuevosDatos.nombreColumnas.size()]);
 				tabla = new JTable();
-				tableModel = new DefaultTableModel(datosMatrix, nuevosDatos.nombreColumnas.toArray(new String[nuevosDatos.nombreColumnas.size()])) {
+				tableModel = new DefaultTableModel(datosMatrix, colNames) {
 				    @Override
 				    public boolean isCellEditable(int row, int column) {
 				    	if (column == 0) return false;
@@ -180,7 +189,7 @@ public class Principal implements ActionListener, ItemListener{
 					datosMatrix[i][j] = (String) tabla.getModel().getValueAt(i, j);
 				}
 			}
-			baseDatos.actualizarDatos(datosMatrix, nuevosDatos.nombreColumnas, seleccionado, tamX, tamY);
+			baseDatos.actualizarDatos(datosMatrix, nuevosDatos.nombreColumnas, seleccionado, tamX, tamY, ventana);
 		} else {
 			JOptionPane.showMessageDialog(ventana, "No has cargado ninguna tabla", "Advirtencia", JOptionPane.WARNING_MESSAGE);
 		}
@@ -200,7 +209,18 @@ public class Principal implements ActionListener, ItemListener{
 			guardarModifi();
 		}
 		if (e.getActionCommand().equals("mAñadir")) {
-			// Ventana con datos a añadir.
+			NuevoDato añadirNuevoDato = new NuevoDato(ventana, "Añadir nuevo dato", true, tamX, tamY, colNames, seleccionado, ultimoID);
+			if (añadirNuevoDato.respuesta) {
+				baseDatos.insertarDato(añadirNuevoDato.nuevosDatos, colNames, seleccionado, tamY, ventana);
+				repintarPanel();
+			}
+		}
+		if (e.getActionCommand().equals("mBorrar")) {
+			BorrarDato borrarDato = new BorrarDato(ventana, "Borrar dato", true, seleccionado);
+			if (borrarDato.respuesta) {
+				baseDatos.borrarDato(seleccionado, borrarDato.field.getText(), ventana);
+				repintarPanel();
+			}
 		}
 		if (e.getActionCommand().equals("mOpciones")) {
 			// Ventana con todas las opciones que escribimos en un fichero.

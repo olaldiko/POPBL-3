@@ -33,7 +33,7 @@ public class Identificacion implements ActionListener{
 	final String user = "admin";
 	boolean respuesta = false;
 	
-	public Identificacion (JFrame ventana,String titulo, boolean modo) {
+	public Identificacion (JFrame ventana, String titulo, boolean modo) {
 		dialog = new JDialog(ventana, titulo, modo);
 		dialog.setSize(250, 150);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
