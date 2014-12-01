@@ -158,22 +158,21 @@ public class SQL {
 				System.out.println("");
 			}
 		} catch (InputMismatchException e) {
-			System.out.println("ERROR: Dato de entrada no soportado en este campo.");
+			JOptionPane.showMessageDialog(ventana, "Dato de entrada no soportado en este campo.", "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (MySQLIntegrityConstraintViolationException e) {
-			System.out.println("ERROR: Datos repetidos en la Base de Datos. / Dato relacionado no encontrado.");
+			JOptionPane.showMessageDialog(ventana, "Datos repetidos en la Base de Datos o Dato relacionado no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (SQLException e) {
-			System.out.println("ERROR: Imposible conectar con la Base de Datos.");
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(ventana, "Imposible conectar con la Base de Datos.", "Error", JOptionPane.ERROR_MESSAGE);
 		} finally {
 			try {
 				if (stmt != null) stmt.close();
 			} catch (SQLException e) {
-				System.out.println("ERROR: Imposible crear un Statement.");
+				JOptionPane.showMessageDialog(ventana, "Imposible crear un Statement.", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			try {
 				if (rsColumns != null) rsColumns.close();
 			} catch (SQLException e) {
-				System.out.println("ERROR: Imposible crear un ResultSet.");
+				JOptionPane.showMessageDialog(ventana, "Imposible crear un ResultSet.", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -216,23 +215,21 @@ public class SQL {
 			System.out.println("OK!");
 			System.out.println(exeUpdate);
 		} catch (InputMismatchException e) {
-			System.out.println("ERROR: Dato de entrada no soportado en este campo.");
+			JOptionPane.showMessageDialog(ventana, "Dato de entrada no soportado en este campo.", "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (MySQLIntegrityConstraintViolationException e) {
-			System.out.println("ERROR: Datos repetidos en la Base de Datos. / Dato relacionado no encontrado.");
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(ventana, "Datos repetidos en la Base de Datos o Dato relacionado no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (SQLException e) {
-			System.out.println("ERROR: Imposible conectar con la Base de Datos.");
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(ventana, "Imposible conectar con la Base de Datos.", "Error", JOptionPane.ERROR_MESSAGE);
 		} finally {
 			try {
 				if (stmt != null) stmt.close();
 			} catch (SQLException e) {
-				System.out.println("ERROR: Imposible crear un Statement.");
+				JOptionPane.showMessageDialog(ventana, "Imposible crear un Statement.", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			try {
 				if (rsColumns != null) rsColumns.close();
 			} catch (SQLException e) {
-				System.out.println("ERROR: Imposible crear un ResultSet.");
+				JOptionPane.showMessageDialog(ventana, "Imposible crear un ResultSet.", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -259,23 +256,22 @@ public class SQL {
 			stmt.executeUpdate("DELETE FROM "+nombreT+" WHERE "+priCol+"="+id); 
 			System.out.println("");
 		} catch (InputMismatchException e) {
-			System.out.println("ERROR: Dato de entrada no soportado en este campo.");
+			JOptionPane.showMessageDialog(ventana, "Dato de entrada no soportado en este campo.", "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (MySQLIntegrityConstraintViolationException e) {
-			System.out.println("ERROR: Datos repetidos en la Base de Datos. / Dato relacionado no encontrado.");
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(ventana, "Datos repetidos en la Base de Datos o Dato relacionado no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (SQLException e) {
-			System.out.println("ERROR: Imposible conectar con la Base de Datos.");
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(ventana, "Imposible conectar con la Base de Datos.", "Error", JOptionPane.ERROR_MESSAGE);
 		} finally {
 			try {
 				if (stmt != null) stmt.close();
 			} catch (SQLException e) {
-				System.out.println("ERROR: Imposible crear un Statement.");
+				JOptionPane.showMessageDialog(ventana, "Imposible crear un Statement.", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			try {
 				if (rsColumns != null) rsColumns.close();
 			} catch (SQLException e) {
-				System.out.println("ERROR: Imposible crear un ResultSet.");
+				JOptionPane.showMessageDialog(ventana, "Imposible crear un ResultSet.", "Error", JOptionPane.ERROR_MESSAGE);
+
 			}
 		}
 	}
