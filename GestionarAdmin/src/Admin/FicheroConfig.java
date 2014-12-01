@@ -34,7 +34,7 @@ public class FicheroConfig implements IntFicheroConfig{
 			System.out.println("File Not Found");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("FETAL ERROR");
+			System.out.println("FATAL ERROR");
 			e.printStackTrace();
 		} finally{
 			URL = temp[0];
@@ -58,7 +58,9 @@ public class FicheroConfig implements IntFicheroConfig{
 		try{
         	fileOutput = new FileWriter (archivo);
 	        pw = new PrintWriter(fileOutput);
+	        
 	        pw.print(URL + "," + user + "," + pass + "," + nBD + "," + nPort + "," + tamy + "," + tamx);
+	        
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
