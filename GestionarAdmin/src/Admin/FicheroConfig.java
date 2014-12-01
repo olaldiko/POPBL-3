@@ -29,10 +29,10 @@ public class FicheroConfig implements IntFicheroConfig{
 	      
 	      br.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.out.println("File Not Found");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("FETAL ERROR");
 			e.printStackTrace();
 		}
 		URL = temp[0];
