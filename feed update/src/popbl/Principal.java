@@ -79,7 +79,7 @@ public class Principal {
 				} finally {
 					int ref = Integer.parseInt(obj.get("id").toString());
 					
-					//cargarEquipos(ref);
+					cargarEquipos(ref);
 					cargarJornadas(ref);
 					i++;
 				}
