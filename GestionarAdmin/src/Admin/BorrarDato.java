@@ -64,7 +64,7 @@ public class BorrarDato implements ActionListener{
 	public Container crearPanelDatos(){
 		panelDatos = new JPanel(new GridLayout(1, 2, 0, 0));
 		JPanel tempPanel = new JPanel();
-		tempPanel.add(crearLabel(generalL, "Introduce el ID del dato que quieres borrar: "));
+		tempPanel.add(crearLabel(generalL, "Introduce el ID del dato que quieres borrar"));
 		field = new JTextField("", 10);
 		tempPanel.add(field);
 		panelDatos.add(tempPanel);

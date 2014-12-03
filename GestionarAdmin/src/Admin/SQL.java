@@ -118,7 +118,7 @@ public class SQL {
 		return nuevosDatos;
 	}
 	
-	public void actualizarDatos(String [][] nuevosDatos, ArrayList<String> nombreColumnas, String nombreT, int tamX, int tamY, JFrame ventana) {
+	public void actualizarDatos(String [][] nuevosDatos, ArrayList<String> nombreColumnas, String nombreT, int tamX, int tamY, JFrame ventana, int i) {
 		ResultSet rsColumns = null;
 		Statement stmt = null;
 		try {
@@ -128,41 +128,40 @@ public class SQL {
 			rsColumns = dbmd.getColumns(null, null, nombreT, null);
 			System.out.println("OK!");
 			stmt = con.createStatement();
-			for (int i = 0; i != tamX; i++){
-				String exeUpdate = "UPDATE "+nombreT+" SET ";
-				for (int j = 1; j != tamY; j++){
-					if (nuevosDatos[i][j].matches("[0-9]+")) {
-						exeUpdate += nombreColumnas.get(j)+"="+nuevosDatos[i][j];
-					} else if (nuevosDatos[i][j].equals("true") || nuevosDatos[i][j].equals("false")) {
-						exeUpdate += nombreColumnas.get(j)+"="+nuevosDatos[i][j];
-					} else if (nuevosDatos[i][j].matches("^\\d{4}-\\d{2}-\\d{2}.*$")) {
-						int ano = Integer.parseInt(nuevosDatos[i][j].substring(0,  4));
-						int mes = Integer.parseInt(nuevosDatos[i][j].substring(5,  7));
-						int dia = Integer.parseInt(nuevosDatos[i][j].substring(8,  10));
-						int horas = Integer.parseInt(nuevosDatos[i][j].substring(11,  13));
-						int minutos = Integer.parseInt(nuevosDatos[i][j].substring(14,  16));
-						int segundos = Integer.parseInt(nuevosDatos[i][j].substring(17, 19));
-						String nuevaFecha = ano+"-"+mes+"-"+dia+"T"+horas+":"+minutos+":"+segundos+"Z";
-						exeUpdate += nombreColumnas.get(j)+"=STR_TO_DATE('"+nuevaFecha+"','%Y-%m-%dT%H:%i:%sZ')";
-					} else {
-						nuevosDatos[i][j].replaceAll("'", "''");
-						exeUpdate += nombreColumnas.get(j)+"='"+nuevosDatos[i][j]+"'";
-					}
-					if ((j + 1) == tamY) exeUpdate += " ";
-					else exeUpdate += ", ";
+			String exeUpdate = "UPDATE "+nombreT+" SET ";
+			for (int j = 1; j != tamY; j++){
+				if (nuevosDatos[i][j].matches("[0-9]+")) {
+					exeUpdate += nombreColumnas.get(j)+"="+nuevosDatos[i][j];
+				} else if (nuevosDatos[i][j].equals("true") || nuevosDatos[i][j].equals("false")) {
+					exeUpdate += nombreColumnas.get(j)+"="+nuevosDatos[i][j];
+				} else if (nuevosDatos[i][j].matches("^\\d{4}-\\d{2}-\\d{2}.*$")) {
+					int ano = Integer.parseInt(nuevosDatos[i][j].substring(0,  4));
+					int mes = Integer.parseInt(nuevosDatos[i][j].substring(5,  7));
+					int dia = Integer.parseInt(nuevosDatos[i][j].substring(8,  10));
+					int horas = Integer.parseInt(nuevosDatos[i][j].substring(11,  13));
+					int minutos = Integer.parseInt(nuevosDatos[i][j].substring(14,  16));
+					int segundos = Integer.parseInt(nuevosDatos[i][j].substring(17, 19));
+					String nuevaFecha = ano+"-"+mes+"-"+dia+"T"+horas+":"+minutos+":"+segundos+"Z";
+					exeUpdate += nombreColumnas.get(j)+"=STR_TO_DATE('"+nuevaFecha+"','%Y-%m-%dT%H:%i:%sZ')";
+				} else {
+					String datoReplace = nuevosDatos[i][j].replaceAll("'", "''");
+					exeUpdate += nombreColumnas.get(j)+"='"+datoReplace+"'";
 				}
-				exeUpdate += "WHERE "+nombreColumnas.get(0)+"="+nuevosDatos[i][0];
-				System.out.print("Escribiendo nuevo dato en la Base de Datos... ");
-				stmt.executeUpdate(exeUpdate); 
-				System.out.println("OK!");
-				System.out.println("");
+				if ((j + 1) == tamY) exeUpdate += " ";
+				else exeUpdate += ", ";
 			}
+			exeUpdate += "WHERE "+nombreColumnas.get(0)+"="+nuevosDatos[i][0];
+			System.out.print("Escribiendo nuevo dato en la Base de Datos... ");
+			stmt.executeUpdate(exeUpdate); 
+			System.out.println("OK!");
+			System.out.println("");
 		} catch (InputMismatchException e) {
 			JOptionPane.showMessageDialog(ventana, "Dato de entrada no soportado en este campo.", "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (MySQLIntegrityConstraintViolationException e) {
 			JOptionPane.showMessageDialog(ventana, "Datos repetidos en la Base de Datos o Dato relacionado no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(ventana, "Imposible conectar con la Base de Datos.", "Error", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
 		} finally {
 			try {
 				if (stmt != null) stmt.close();
@@ -203,8 +202,8 @@ public class SQL {
 					String nuevaFecha = ano+"-"+mes+"-"+dia+"T"+horas+":"+minutos+":"+segundos+"Z";
 					exeUpdate += "STR_TO_DATE('"+nuevaFecha+"','%Y-%m-%dT%H:%i:%sZ')";
 				} else {
-					listaDatos.get(j).replaceAll("'", "''");
-					exeUpdate += "'"+listaDatos.get(j)+"'";
+					String datoReplace = listaDatos.get(j).replaceAll("'", "''");
+					exeUpdate += "'"+datoReplace+"'";
 				}
 				if ((j + 1) == tamY) exeUpdate += ")";
 				else exeUpdate += ", ";

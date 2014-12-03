@@ -3,13 +3,16 @@ package Admin;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -21,26 +24,36 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.SortOrder;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class Principal implements ActionListener, ItemListener{
 	SQL baseDatos;
 	Datos nuevosDatos;
 	
 	JFrame ventana;
-	JPanel panelPrincipal, panelN, panelC, panelS;
+	JPanel panelPrincipal, panelN, panelC, panelS, panelPB, panelCB;
 	JMenuBar menu;
 	JMenu mArch, mEdit, mSalir;
 	JMenuItem guardarI, descartarI, recargarI, añadirI, borrarI, opcionesI, salirI;
 	JTable tabla;
 	JButton guardar, descartar, recargar;
 	JComboBox<String> cTablas;
+	JProgressBar progressBar;
+	JTextArea tArea;
 	
 	Object [] colNames;
 	String seleccionado;
 	String ultimoID;
+	
+	Task guardarDatos;
 	
 	DefaultTableModel tableModel;
 
@@ -70,7 +83,7 @@ public class Principal implements ActionListener, ItemListener{
 		return menu;
 	}
 	
-	public JMenu crearMenuArch(){
+	private JMenu crearMenuArch(){
 		mArch = new JMenu("Archivo");
 		guardarI = mArch.add("Guardar cambios");
 		descartarI = mArch.add("Deshacer cambios");
@@ -84,7 +97,7 @@ public class Principal implements ActionListener, ItemListener{
 		return mArch;
 	}
 	
-	public JMenu crearMenuEdit(){
+	private JMenu crearMenuEdit(){
 		mEdit = new JMenu("Editar");
 		añadirI = mEdit.add("Añadir dato");
 		borrarI = mEdit.add("Borrar dato");
@@ -98,7 +111,7 @@ public class Principal implements ActionListener, ItemListener{
 		return mEdit;
 	}
 	
-	public JMenu crearMenuSalir(){
+	private JMenu crearMenuSalir(){
 		mSalir = new JMenu("Salir");
 		salirI = mSalir.add("Salir");
 		salirI.addActionListener(this);
@@ -110,13 +123,14 @@ public class Principal implements ActionListener, ItemListener{
 		panelPrincipal = new JPanel(new BorderLayout());
 		panelPrincipal.add(crearPanelNorte(), BorderLayout.NORTH);
 		panelPrincipal.add(crearPanelCentro(), BorderLayout.CENTER);
+		panelPrincipal.add(crearPanelSur(), BorderLayout.SOUTH);
 		return panelPrincipal;
 	}
 	
 	private Container crearPanelNorte(){
-		panelN = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		panelN.setBorder(BorderFactory.createCompoundBorder(null, BorderFactory.createTitledBorder("Información de tablas")));
-		panelN.add(crearCBTablas());
+		panelN = new JPanel(new BorderLayout());
+		panelN.add(crearCBTablas(),BorderLayout.WEST);
+		panelN.add(crearPanelProgressBar(), BorderLayout.CENTER);
 		return panelN;
 	}
 	
@@ -127,14 +141,42 @@ public class Principal implements ActionListener, ItemListener{
 		return panelC;
 	}
 	
-	private Component crearCBTablas(){
+	private Container crearPanelSur(){
+		panelS = new JPanel(new BorderLayout());
+		panelS.setBorder(BorderFactory.createCompoundBorder(null, BorderFactory.createTitledBorder("Información")));
+		panelS.add(crearTextArea(), BorderLayout.CENTER);
+		return panelS;
+	}
+	
+	private Container crearPanelProgressBar(){
+		panelPB = new JPanel(new BorderLayout());
+		panelPB.setBorder(BorderFactory.createCompoundBorder(null, BorderFactory.createTitledBorder("Progreso")));
+		progressBar = new JProgressBar(SwingConstants.HORIZONTAL,0, 100);
+	    progressBar.setValue(0);
+	    progressBar.setStringPainted(true);
+	    panelPB.add(progressBar, BorderLayout.CENTER);
+	    return panelPB;
+	}
+	
+	private Container crearCBTablas(){
+		panelCB = new JPanel(new BorderLayout());
+		panelCB.setBorder(BorderFactory.createCompoundBorder(null, BorderFactory.createTitledBorder("Tablas")));
 		Tablas nuevasTablas = baseDatos.cargarTablas(ventana);
 		cTablas = new JComboBox<String>(nuevasTablas.lista.toArray(new String[nuevasTablas.lista.size()]));
 		if (seleccionado != null) {
 			cTablas.setSelectedItem(seleccionado);
 		}
 		cTablas.addItemListener(this);
-		return cTablas;
+		panelCB.add(cTablas, BorderLayout.CENTER);
+		return panelCB;
+	}
+	
+	private Container crearTextArea(){
+		tArea = new JTextArea(5, 20);
+		tArea.setMargin(new Insets(5, 5, 5, 5));
+		tArea.setEditable(false);
+	    JScrollPane panelScroll = new JScrollPane(tArea);
+		return panelScroll;
 	}
 	
 	@SuppressWarnings("serial")
@@ -162,11 +204,28 @@ public class Principal implements ActionListener, ItemListener{
 				    	else return true;
 				    }
 				};
+				tabla.setModel(tableModel);
+				TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tabla.getModel()) {
+		            @Override
+		            public void toggleSortOrder(int column) {
+		                if (column >= 0 && column < getModelWrapper().getColumnCount() && isSortable(column)) {
+		                    List<SortKey> keys = new ArrayList<SortKey>(getSortKeys());
+		                    if (!keys.isEmpty()) {
+		                        SortKey sortKey = keys.get(0);
+		                        if (sortKey.getColumn() == column && sortKey.getSortOrder() == SortOrder.DESCENDING) {
+		                            setSortKeys(null);
+		                            return;
+		                        }
+		                    }
+		                }
+		                super.toggleSortOrder(column);
+		            }
+		        };
+		        tabla.setRowSorter(sorter);
 				tamX = (nuevosDatos.datos.size() / nuevosDatos.nombreColumnas.size());
 				tamY = nuevosDatos.nombreColumnas.size();
-				tabla.setModel(tableModel);
 			} else {
-				JOptionPane.showMessageDialog(ventana, "La tabla está vacía", "Advirtencia", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(ventana, "La tabla está vacía", "Advertencia", JOptionPane.WARNING_MESSAGE);
 			}
 		}
 		return tabla; 
@@ -177,8 +236,8 @@ public class Principal implements ActionListener, ItemListener{
 		panelPrincipal.removeAll();
 		panelPrincipal.add(crearPanelNorte(), BorderLayout.NORTH);
 		panelPrincipal.add(crearPanelCentro(), BorderLayout.CENTER);
-		panelPrincipal.revalidate(); 
-		panelPrincipal.repaint();
+		panelPrincipal.add(crearPanelSur(), BorderLayout.SOUTH);
+		panelPrincipal.revalidate();
 	}
 	
 	private void guardarModifi(){
@@ -189,9 +248,11 @@ public class Principal implements ActionListener, ItemListener{
 					datosMatrix[i][j] = (String) tabla.getModel().getValueAt(i, j);
 				}
 			}
-			baseDatos.actualizarDatos(datosMatrix, nuevosDatos.nombreColumnas, seleccionado, tamX, tamY, ventana);
+			ventana.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			guardarDatos = new Task(datosMatrix, nuevosDatos.nombreColumnas, seleccionado, tamX, tamY, ventana, baseDatos, progressBar, tArea, guardarDatos);
+			guardarDatos.execute();
 		} else {
-			JOptionPane.showMessageDialog(ventana, "No has cargado ninguna tabla", "Advirtencia", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(ventana, "No has cargado ninguna tabla", "Advertencia", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 	

@@ -12,6 +12,7 @@ public class FicheroConfig implements IntFicheroConfig{
 
 	String contFich;
 	String delimiter = "-";
+	int i = 0;
 	String[] temp;
 	File archivo = new File ("config.ini");
     FileReader fr;

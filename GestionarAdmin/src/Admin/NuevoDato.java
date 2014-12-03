@@ -74,7 +74,7 @@ public class NuevoDato implements ActionListener {
 	}
 	
 	public Container crearPanelDatos(){
-		panelDatos = new JPanel(new GridLayout(tamY, 2, 0, 0));
+		panelDatos = new JPanel(new GridLayout(tamY, 4, 0, 0));
 		int id = Integer.parseInt(ultimoID);
 		System.out.println(String.valueOf(id + 1));
 		datos.put(((String) colNames[0]), new JTextField(String.valueOf(id + 1), 10));
