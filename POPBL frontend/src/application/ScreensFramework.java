@@ -55,9 +55,10 @@ public class ScreensFramework extends Application {
 	public static final String MPrincipal_FXML = "Principal.fxml";
 	public static final String Mapostuak = "apostuak";
 	public static final String Mapostuak_FXML = "NireApostuak.fxml";
-	public static final String Erregistroa = "erregistroa";
-	public static final String Erregistroa_FXML = "Erregistroa.fxml";
-    
+	public static final String MErregistroa = "erregistroa";
+	public static final String MErregistroa_FXML = "Erregistroa.fxml";
+    public static final String MEmaitzak = "emaitzak";
+    public static final String MEmaitzak_FXML = "Emaitzak.fxml";
     
     @Override
     public void start(Stage primaryStage) {
@@ -65,13 +66,16 @@ public class ScreensFramework extends Application {
         ScreensController mainContainer = new ScreensController();
         mainContainer.loadScreen(ScreensFramework.MPrincipal, ScreensFramework.MPrincipal_FXML);
         mainContainer.loadScreen(ScreensFramework.Mapostuak, ScreensFramework.Mapostuak_FXML);
-        mainContainer.loadScreen(ScreensFramework.Erregistroa, ScreensFramework.Erregistroa_FXML);
-        
+        mainContainer.loadScreen(ScreensFramework.MErregistroa, ScreensFramework.MErregistroa_FXML);
+        mainContainer.loadScreen(ScreensFramework.MEmaitzak, ScreensFramework.MEmaitzak_FXML);
         mainContainer.setScreen(ScreensFramework.MPrincipal);
         
         Group root = new Group();
         root.getChildren().addAll(mainContainer);
         Scene scene = new Scene(root);
+        primaryStage.setWidth(768f);
+        primaryStage.setHeight(1024f);
+        //primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -11,8 +11,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="400.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControladorMPrincipal">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="768.0" stylesheets="@Principal.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControladorMPrincipal">
 <children>
   <Label alignment="CENTER" layoutX="155.0" layoutY="177.0" style="&#10;" text="Drag components from Library here…" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
     <font>
@@ -21,7 +20,7 @@
   </Label>
       <ImageView fitHeight="265.0" fitWidth="642.0" layoutX="53.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" smooth="false">
          <image>
-            <Image url="@../../../../../Desktop/logo.png" />
+            <Image url="@logo.png" />
          </image>
       </ImageView>
       <ToolBar layoutX="53.0" layoutY="264.0" prefHeight="52.0" prefWidth="642.0">
@@ -46,12 +45,12 @@
             <Reflection />
          </effect>
       </ToolBar>
-      <ComboBox fx:id="ligaselect" layoutX="210.0" layoutY="406.0" prefHeight="53.0" prefWidth="328.0">
+      <ComboBox fx:id="ligaselect" layoutX="210.0" layoutY="406.0" prefHeight="53.0" prefWidth="328.0" promptText="Liga aukeratu">
          <effect>
             <Reflection />
          </effect>
       </ComboBox>
-      <TableView layoutX="53.0" layoutY="507.0" prefHeight="503.0" prefWidth="642.0">
+      <TableView layoutX="53.0" layoutY="507.0" prefHeight="445.0" prefWidth="642.0">
         <columns>
           <TableColumn prefWidth="113.0" text="Noiz" />
           <TableColumn prefWidth="160.0" text="Lokala" />
