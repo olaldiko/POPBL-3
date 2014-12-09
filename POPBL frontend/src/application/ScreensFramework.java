@@ -73,6 +73,7 @@ public class ScreensFramework extends Application {
         Group root = new Group();
         root.getChildren().addAll(mainContainer);
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("Principal.css");
         primaryStage.setWidth(768f);
         primaryStage.setHeight(1024f);
         //primaryStage.setFullScreen(true);
