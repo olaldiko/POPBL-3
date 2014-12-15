@@ -1,4 +1,4 @@
-package application;
+package datos;
 
 public class ModeloApuestas {
 

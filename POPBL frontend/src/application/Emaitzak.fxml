@@ -23,7 +23,10 @@
             <Font name="Arial Bold" size="26.0" />
          </font>
       </Button>
-      <ComboBox fx:id="comboligak" layoutX="234.0" layoutY="214.0" prefHeight="56.0" prefWidth="321.0" promptText="Liga aukeratu" />
+      <ComboBox fx:id="comboligak" layoutX="234.0" layoutY="214.0" prefHeight="56.0" prefWidth="321.0" promptText="Liga aukeratu">
+         <effect>
+            <Reflection />
+         </effect></ComboBox>
       <TableView fx:id="emaitzataula" layoutX="69.0" layoutY="298.0" prefHeight="685.0" prefWidth="631.0">
         <columns>
             <TableColumn prefWidth="101.0" text="Noiz?" />
@@ -31,6 +34,9 @@
           <TableColumn prefWidth="127.0" text="Emaitza" />
             <TableColumn prefWidth="221.0" text="Bisitantea" />
         </columns>
+         <effect>
+            <DropShadow />
+         </effect>
       </TableView>
    </children>
 </AnchorPane>

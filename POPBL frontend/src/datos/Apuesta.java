@@ -1,16 +1,32 @@
-package application;
+package datos;
+
 
 public class Apuesta {
 int idApuesta, idUsuario, idPartido;
 Double premio, apostado, coeficiente;
+Partido partido;
 boolean cobrado;
 
-	public Apuesta(int idApuesta, int idUsuario, int idPartido){
+	public Partido getPartido() {
+		return partido;
+	}
+	
+	public void setPartido(Partido partido) {
+		this.partido = partido;
+	}
+	
+	public void setIdApuesta(int idApuesta) {
 		this.idApuesta = idApuesta;
+	}
+	
+	public void setIdUsuario(int idUsuario) {
 		this.idUsuario = idUsuario;
+	}
+	
+	public void setIdPartido(int idPartido) {
 		this.idPartido = idPartido;
 	}
-
+	
 	public Double getPremio() {
 		return premio;
 	}

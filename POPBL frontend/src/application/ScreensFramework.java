@@ -77,7 +77,8 @@ public class ScreensFramework extends Application {
         //scene.getStylesheets().add("Principal.css");
         primaryStage.setWidth(768f);
         primaryStage.setHeight(1024f);
-        //primaryStage.setFullScreen(true);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+       // primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

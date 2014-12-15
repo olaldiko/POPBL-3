@@ -28,11 +28,14 @@ public class LoginDialogoa extends Application{
 		FXMLLoader fxload = new FXMLLoader(this.getClass().getResource("login.fxml"));
 		AnchorPane pane =(AnchorPane)fxload.load();
 		Scene sce = new Scene(pane);
+		btnatzera.setOnAction(event -> arg0.hide());
 		arg0.setScene(sce);
 		arg0.initStyle(StageStyle.UNDECORATED);
 		arg0.setAlwaysOnTop(true);
+		arg0.setFocused(true);
 		arg0.centerOnScreen();
 		System.out.println("Start");
+		
 		arg0.show();
 		
 	}
