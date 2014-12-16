@@ -17,7 +17,7 @@ import javax.swing.JFrame;
 public class SQLFrontEnd {
 	Connection base;
 	
-	public SQLFrontEnd(String URL, int numeroPuerto, String nombreBD, String user, String pass, JFrame ventana) throws ClassNotFoundException, SQLException {
+	public SQLFrontEnd(String URL, int numeroPuerto, String nombreBD, String user, String pass) throws ClassNotFoundException, SQLException {
         	System.out.print("Cargando el driver de la Base de Datos MySQL... ");
             Class.forName("com.mysql.jdbc.Driver");
             System.out.println(" OK!");
@@ -27,18 +27,25 @@ public class SQLFrontEnd {
             System.out.println(" OK!");
             System.out.println("");	
     }
-	public ObservableList<Partido> getPartidos(int dias, int idLiga) throws SQLException{
+	public ObservableList<Partido> getPartidos(int dias, int idLiga, boolean jugados) throws SQLException{
 		ArrayList<Partido> partidos = new ArrayList<>();
 		ObservableList<Partido> lista = FXCollections.observableArrayList(partidos);
 		Statement stat;
 		ResultSet resultados;
 		Partido p;
+		String queryjugados;
+		if(jugados){
+			queryjugados = "PARTIDOS.VIGENTE = 0";
+		}else{
+			queryjugados = "PARTIDOS.VIGENTE = 1";
+		}
 		stat = base.createStatement();
 		resultados = stat.executeQuery("SELECT PARTIDOS.idPartidos, PARTIDOS.idJornada, PARTIDOS.Fecha, PARTIDOS.GolesLocal, PARTIDOS.GolesVisitante, "
-				+ "PARTIDOS.idLocal, eq_local.Nombre as local, PARTIDOS.idVisitante, eq_visit.Nombre as visitante FROM PARTIDOS"
-				+"INNER JOIN mordorbet.EQUIPOS eq_local ON PARTIDOS.idLocal = eq_local.idEquipos" 
-				+"INNER JOIN mordorbet.EQUIPOS eq_visit ON PARTIDOS.idVisitante = eq_visit.idEquipos"
-				+"WHERE  (DATEDIFF(PARTIDOS.Fecha , DATE_ADD(CURDATE(), INTERVAL "+dias+" DAY) )< "+dias+") AND ((eq_local.idLiga = "+idLiga+") OR (eq_visit.idLiga = "+idLiga+"));");
+				+ "PARTIDOS.idLocal, eq_local.Nombre as local, PARTIDOS.idVisitante, eq_visit.Nombre as visitante , eq_local.Escudo as esclocal, eq_visitante.Escudo as escvisit "
+				+ "FROM PARTIDOS"
+				+ "INNER JOIN mordorbet.EQUIPOS eq_local ON PARTIDOS.idLocal = eq_local.idEquipos" 
+				+ "INNER JOIN mordorbet.EQUIPOS eq_visit ON PARTIDOS.idVisitante = eq_visit.idEquipos"
+				+ "WHERE  (DATEDIFF(PARTIDOS.Fecha , DATE_ADD(CURDATE(), INTERVAL "+dias+" DAY) )< "+dias+") AND ((eq_local.idLiga = "+idLiga+") OR (eq_visit.idLiga = "+idLiga+")) AND "+queryjugados+" ;");
 		while(resultados.next()){
 			p = new Partido();
 			p.setIdPartido(resultados.getInt(0));
@@ -46,13 +53,16 @@ public class SQLFrontEnd {
 			p.setFecha(resultados.getTimestamp(2));
 			p.setGolesLocal(resultados.getInt(3));
 			p.setGolesVisitante(resultados.getInt(4));
-			p.setIdLocal(resultados.getInt(5));
-			p.setIdVisitante(resultados.getInt(6));
-			p.setLocal(resultados.getString(7));
-			p.setVisitante(resultados.getString(8));
+			p.getLocal().setIdEquipo(resultados.getInt(5));
+			p.getVisitante().setIdEquipo(resultados.getInt(6));
+			p.getLocal().setNombre(resultados.getString(7));
+			p.getVisitante().setNombre(resultados.getString(8));
+			p.getLocal().setEscudo(resultados.getURL(9));
+			p.getVisitante().setEscudo(resultados.getURL(10));
 			lista.add(p);
 		}
 		resultados.close();
+		stat.close();
 		return lista;
 	}
 	public Partido getPartido(int idPartido) throws SQLException{
@@ -62,22 +72,26 @@ public class SQLFrontEnd {
 		stat = base.createStatement();
 		
 		resultado = stat.executeQuery("SELECT PARTIDOS.idPartidos, PARTIDOS.idJornada, PARTIDOS.Fecha, PARTIDOS.GolesLocal, PARTIDOS.GolesVisitante, "
-				+ "PARTIDOS.idLocal, eq_local.Nombre as local, PARTIDOS.idVisitante, eq_visit.Nombre as visitante FROM PARTIDOS"
-				+"INNER JOIN mordorbet.EQUIPOS eq_local ON PARTIDOS.idLocal = eq_local.idEquipos" 
-				+"INNER JOIN mordorbet.EQUIPOS eq_visit ON PARTIDOS.idVisitante = eq_visit.idEquipos"
-				+"WHERE PARTIDOS.idPartido = "+idPartido+";");
+				+ "PARTIDOS.idLocal, eq_local.Nombre as local, PARTIDOS.idVisitante, eq_visit.Nombre as visitante , eq_local.Escudo as esclocal, eq_visitante.Escudo as escvisit "
+				+ "FROM PARTIDOS"
+				+ "INNER JOIN mordorbet.EQUIPOS eq_local ON PARTIDOS.idLocal = eq_local.idEquipos" 
+				+ "INNER JOIN mordorbet.EQUIPOS eq_visit ON PARTIDOS.idVisitante = eq_visit.idEquipos"
+				+ "WHERE PARTIDOS.idPartido = "+idPartido+";");
 		while(resultado.next()){
 			p.setIdPartido(resultado.getInt(0));
 			p.setIdJornada(resultado.getInt(1));
 			p.setFecha(resultado.getTimestamp(2));
 			p.setGolesLocal(resultado.getInt(3));
 			p.setGolesVisitante(resultado.getInt(4));
-			p.setIdLocal(resultado.getInt(5));
-			p.setIdVisitante(resultado.getInt(6));
-			p.setLocal(resultado.getString(7));
-			p.setVisitante(resultado.getString(8));
+			p.getLocal().setIdEquipo(resultado.getInt(5));
+			p.getVisitante().setIdEquipo(resultado.getInt(6));
+			p.getLocal().setNombre(resultado.getString(7));
+			p.getVisitante().setNombre(resultado.getString(8));
+			p.getLocal().setEscudo(resultado.getURL(9));
+			p.getVisitante().setEscudo(resultado.getURL(10));
 		}
 		resultado.close();
+		stat.close();
 		return p;
 		
 	}
@@ -101,6 +115,7 @@ public class SQLFrontEnd {
 			a.setCobrado(resultados.getBoolean(7));
 		}
 		resultados.close();
+		stat.close();
 		return lista;
 	}
 	
@@ -118,19 +133,22 @@ public class SQLFrontEnd {
 			l.setNombre(resultados.getString(1));
 		}
 		resultados.close();
+		stat.close();
 		return lista;
 	}
-	public boolean crearUser(Usuario u) throws SQLException{
+	public void crearApuesta(int idUsuario, int idPartido, int tipo, Double apostado, Double coef) throws SQLException{
 		Statement stat;
-		int resultado;
 		stat = base.createStatement();
-		resultado = stat.executeUpdate("INSERT INTO USUARIOS (username, Password, Dinero, Correo, Idal)"
-				+ " values ('"+u.getNombre()+"' , '"+u.getPassword()+"' , 0, '"+u.getCorreo()+"' , '"+u.getIdal()+"' );");
-		if(resultado == 0){
-			return false;
-		}else{
-			return true;
-		}
+		stat.executeQuery("INSERT INTO APUESTAS (idUsuarios, idPartidos, Apuesta, Premio, Apostado, Coeficiente, Cobrado) "
+				+ "values ("+idUsuario+" , "+idPartido+" , "+tipo+" , "+(apostado*coef)+" , "+apostado+" , "+coef+" , 0);"); 
+		stat.close();
+	}
+	public void crearUser(Usuario u) throws SQLException{
+		Statement stat;
+		stat = base.createStatement();
+		stat.executeUpdate("INSERT INTO USUARIOS (username, Password, Dinero, Correo, Idal)"
+						+ " values ('"+u.getNombre()+"' , '"+u.getPassword()+"' , 0, '"+u.getCorreo()+"' , '"+u.getIdal()+"' );");
+		stat.close();
 	}
 	public boolean loginUser(String user, String pass) throws SQLException{
 		Statement stat;
@@ -139,9 +157,14 @@ public class SQLFrontEnd {
 		resultado = stat.executeQuery("SELECT * FROM USUARIOS WHERE username = \""+user+"\" AND Password = \""+pass+"\";");
 		resultado.first();
 		if(resultado.wasNull()){
+			resultado.close();
+			stat.close();
 			return false;
 		}else{
+			resultado.close();
+			stat.close();
 			return true;
 		}
+
 	}
 }

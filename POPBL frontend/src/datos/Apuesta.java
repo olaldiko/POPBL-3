@@ -84,5 +84,15 @@ BooleanProperty cobrado;
 	public int getIdPartido() {
 		return idPartido.get();
 	}
-	
+	public String getTipoString(){
+		switch(tipoApuesta.get()){
+		case 1:
+			return "1";
+		case 2:
+			return "X";
+		case 3:
+			return "2";
+		}
+		return "N/D";
+	}
 }

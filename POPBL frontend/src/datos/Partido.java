@@ -12,8 +12,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Partido {
-IntegerProperty idPartido, idJornada, golesLocal, golesVisitante, idLocal, idVisitante;
-StringProperty local, visitante;
+IntegerProperty idPartido, idJornada, golesLocal, golesVisitante;
+Equipo local, visitante;
 Date fecha;
 BooleanProperty jugado;
 DoubleProperty coefLocal, coefVisitante, coefEmpate;
@@ -50,29 +50,17 @@ public int getGolesVisitante() {
 public void setGolesVisitante(int golesVisitante) {
 	this.golesVisitante = new SimpleIntegerProperty(golesVisitante);
 }
-public int getIdLocal() {
-	return idLocal.get();
+public Equipo getLocal(){
+	return local;
 }
-public void setIdLocal(int idLocal) {
-	this.idLocal = new SimpleIntegerProperty(idLocal);
+public void setLocal(Equipo local){
+	this.local = local;
 }
-public int getIdVisitante() {
-	return idVisitante.get();
+public Equipo getVisitante(){
+	return visitante;
 }
-public void setIdVisitante(int idVisitante) {
-	this.idVisitante = new SimpleIntegerProperty(idVisitante);
-}
-public String getLocal() {
-	return local.get();
-}
-public void setLocal(String local) {
-	this.local = new SimpleStringProperty(local);
-}
-public String getVisitante() {
-	return visitante.get();
-}
-public void setVisitante(String visitante) {
-	this.visitante = new SimpleStringProperty(visitante);
+public void setVisitante(Equipo visitante){
+	this.visitante = visitante;
 }
 public boolean isJugado() {
 	return jugado.get();
