@@ -9,11 +9,18 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 
 public class Apuesta {
-IntegerProperty idApuesta, idUsuario, idPartido;
+IntegerProperty idApuesta, idUsuario, idPartido, tipoApuesta;
 DoubleProperty premio, apostado, coeficiente;
 Partido partido;
 BooleanProperty cobrado;
-
+	
+	public int getTipoApuesta() {
+		return tipoApuesta.get();
+	}
+	
+	public void setTipoApuesta(int tipoApuesta) {
+		this.tipoApuesta.set(tipoApuesta);
+	}
 	public Partido getPartido() {
 		return partido;
 	}

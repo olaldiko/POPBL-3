@@ -53,13 +53,13 @@ import javafx.stage.StageStyle;
 public class ScreensFramework extends Application {
     
 	public static final String MPrincipal = "principal";
-	public static final String MPrincipal_FXML = "Principal.fxml";
+	public static final String MPrincipal_FXML = "../vistas/Principal.fxml";
 	public static final String Mapostuak = "apostuak";
-	public static final String Mapostuak_FXML = "NireApostuak.fxml";
+	public static final String Mapostuak_FXML = "../vistas/NireApostuak.fxml";
 	public static final String MErregistroa = "erregistroa";
-	public static final String MErregistroa_FXML = "Erregistroa.fxml";
+	public static final String MErregistroa_FXML = "../vistas/Erregistroa.fxml";
     public static final String MEmaitzak = "emaitzak";
-    public static final String MEmaitzak_FXML = "Emaitzak.fxml";
+    public static final String MEmaitzak_FXML = "../vistas/Emaitzak.fxml";
     
     @Override
     public void start(Stage primaryStage) {

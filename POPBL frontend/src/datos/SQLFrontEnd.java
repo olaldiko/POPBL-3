@@ -27,7 +27,7 @@ public class SQLFrontEnd {
             System.out.println(" OK!");
             System.out.println("");	
     }
-	public ObservableList<Partido> getPartidos(int dias) throws SQLException{
+	public ObservableList<Partido> getPartidos(int dias, int idLiga) throws SQLException{
 		ArrayList<Partido> partidos = new ArrayList<>();
 		ObservableList<Partido> lista = FXCollections.observableArrayList(partidos);
 		Statement stat;
@@ -38,7 +38,7 @@ public class SQLFrontEnd {
 				+ "PARTIDOS.idLocal, eq_local.Nombre as local, PARTIDOS.idVisitante, eq_visit.Nombre as visitante FROM PARTIDOS"
 				+"INNER JOIN mordorbet.EQUIPOS eq_local ON PARTIDOS.idLocal = eq_local.idEquipos" 
 				+"INNER JOIN mordorbet.EQUIPOS eq_visit ON PARTIDOS.idVisitante = eq_visit.idEquipos"
-				+"WHERE  DATEDIFF(PARTIDOS.Fecha , DATE_ADD(CURDATE(), INTERVAL "+dias+" DAY) )< "+dias+";");
+				+"WHERE  (DATEDIFF(PARTIDOS.Fecha , DATE_ADD(CURDATE(), INTERVAL "+dias+" DAY) )< "+dias+") AND ((eq_local.idLiga = "+idLiga+") OR (eq_visit.idLiga = "+idLiga+"));");
 		while(resultados.next()){
 			p = new Partido();
 			p.setIdPartido(resultados.getInt(0));
@@ -61,7 +61,6 @@ public class SQLFrontEnd {
 		ResultSet resultado;
 		stat = base.createStatement();
 		
-		//A este txurro hay que anadirle el tema de que las tablas van ordenadas por liga, asi que habria que anadirlo aqui para que solo muestre las de una liga
 		resultado = stat.executeQuery("SELECT PARTIDOS.idPartidos, PARTIDOS.idJornada, PARTIDOS.Fecha, PARTIDOS.GolesLocal, PARTIDOS.GolesVisitante, "
 				+ "PARTIDOS.idLocal, eq_local.Nombre as local, PARTIDOS.idVisitante, eq_visit.Nombre as visitante FROM PARTIDOS"
 				+"INNER JOIN mordorbet.EQUIPOS eq_local ON PARTIDOS.idLocal = eq_local.idEquipos" 
@@ -95,7 +94,7 @@ public class SQLFrontEnd {
 			a.setIdApuesta(resultados.getInt(0));
 			a.setIdUsuario(resultados.getInt(1));
 			a.setPartido(getPartido(resultados.getInt(2)));
-			//Hay columna apuesta en tabla, hay que ver para que era
+			a.setTipoApuesta(resultados.getInt(3));
 			a.setPremio(resultados.getDouble(4));
 			a.setApostado(resultados.getDouble(5));
 			a.setCoeficiente(resultados.getDouble(6));
@@ -103,6 +102,35 @@ public class SQLFrontEnd {
 		}
 		resultados.close();
 		return lista;
+	}
+	
+	public ObservableList<Liga> getLigas() throws SQLException{
+		Liga l;
+		ArrayList<Liga> ligas = new ArrayList<>();
+		ObservableList<Liga> lista = FXCollections.observableArrayList(ligas);
+		Statement stat;
+		ResultSet resultados;
+		stat = base.createStatement();
+		resultados = stat.executeQuery("SELECT idLiga, Nombre FROM LIGAS;");
+		while(resultados.next()){
+			l = new Liga();
+			l.setIdLiga(resultados.getInt(0));
+			l.setNombre(resultados.getString(1));
+		}
+		resultados.close();
+		return lista;
+	}
+	public boolean crearUser(Usuario u) throws SQLException{
+		Statement stat;
+		int resultado;
+		stat = base.createStatement();
+		resultado = stat.executeUpdate("INSERT INTO USUARIOS (username, Password, Dinero, Correo, Idal)"
+				+ " values ('"+u.getNombre()+"' , '"+u.getPassword()+"' , 0, '"+u.getCorreo()+"' , '"+u.getIdal()+"' );");
+		if(resultado == 0){
+			return false;
+		}else{
+			return true;
+		}
 	}
 	public boolean loginUser(String user, String pass) throws SQLException{
 		Statement stat;
