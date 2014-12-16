@@ -1,11 +1,18 @@
 package datos;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 
 public class Apuesta {
-int idApuesta, idUsuario, idPartido;
-Double premio, apostado, coeficiente;
+IntegerProperty idApuesta, idUsuario, idPartido;
+DoubleProperty premio, apostado, coeficiente;
 Partido partido;
-boolean cobrado;
+BooleanProperty cobrado;
 
 	public Partido getPartido() {
 		return partido;
@@ -16,59 +23,59 @@ boolean cobrado;
 	}
 	
 	public void setIdApuesta(int idApuesta) {
-		this.idApuesta = idApuesta;
+		this.idApuesta = new SimpleIntegerProperty(idApuesta);
 	}
 	
 	public void setIdUsuario(int idUsuario) {
-		this.idUsuario = idUsuario;
+		this.idUsuario = new SimpleIntegerProperty(idUsuario);
 	}
 	
 	public void setIdPartido(int idPartido) {
-		this.idPartido = idPartido;
+		this.idPartido = new SimpleIntegerProperty(idPartido);
 	}
 	
 	public Double getPremio() {
-		return premio;
+		return premio.get();
 	}
 
 	public void setPremio(Double premio) {
-		this.premio = premio;
+		this.premio = new SimpleDoubleProperty(premio);
 	}
 
 	public Double getApostado() {
-		return apostado;
+		return apostado.get();
 	}
 
 	public void setApostado(Double apostado) {
-		this.apostado = apostado;
+		this.apostado = new SimpleDoubleProperty(apostado);
 	}
 
 	public Double getCoeficiente() {
-		return coeficiente;
+		return coeficiente.get();
 	}
 
 	public void setCoeficiente(Double coeficiente) {
-		this.coeficiente = coeficiente;
+		this.coeficiente = new SimpleDoubleProperty(coeficiente);
 	}
 
 	public boolean isCobrado() {
-		return cobrado;
+		return cobrado.get();
 	}
 
 	public void setCobrado(boolean cobrado) {
-		this.cobrado = cobrado;
+		this.cobrado = new SimpleBooleanProperty(cobrado);
 	}
 
 	public int getIdApuesta() {
-		return idApuesta;
+		return idApuesta.get();
 	}
 
 	public int getIdUsuario() {
-		return idUsuario;
+		return idUsuario.get();
 	}
 
 	public int getIdPartido() {
-		return idPartido;
+		return idPartido.get();
 	}
 	
 }
