@@ -3,14 +3,13 @@ package datos;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import javax.swing.JFrame;
 
 
 
@@ -32,6 +31,7 @@ public class SQLFrontEnd {
 		ObservableList<Partido> lista = FXCollections.observableArrayList(partidos);
 		Statement stat;
 		ResultSet resultados;
+		ResultSetMetaData meta;
 		Partido p;
 		String queryjugados;
 		if(jugados){
@@ -41,24 +41,25 @@ public class SQLFrontEnd {
 		}
 		stat = base.createStatement();
 		resultados = stat.executeQuery("SELECT PARTIDOS.idPartidos, PARTIDOS.idJornada, PARTIDOS.Fecha, PARTIDOS.GolesLocal, PARTIDOS.GolesVisitante, "
-				+ "PARTIDOS.idLocal, eq_local.Nombre as local, PARTIDOS.idVisitante, eq_visit.Nombre as visitante , eq_local.Escudo as esclocal, eq_visitante.Escudo as escvisit "
-				+ "FROM PARTIDOS"
-				+ "INNER JOIN mordorbet.EQUIPOS eq_local ON PARTIDOS.idLocal = eq_local.idEquipos" 
-				+ "INNER JOIN mordorbet.EQUIPOS eq_visit ON PARTIDOS.idVisitante = eq_visit.idEquipos"
+				+ "PARTIDOS.idLocal, eq_local.Nombre as local, PARTIDOS.idVisitante, eq_visit.Nombre as visitante , eq_local.Escudo as esclocal, eq_visit.Escudo as escvisit "
+				+ "FROM PARTIDOS "
+				+ "INNER JOIN mordorbet.EQUIPOS eq_local ON PARTIDOS.idLocal = eq_local.idEquipos " 
+				+ "INNER JOIN mordorbet.EQUIPOS eq_visit ON PARTIDOS.idVisitante = eq_visit.idEquipos "
 				+ "WHERE  (DATEDIFF(PARTIDOS.Fecha , DATE_ADD(CURDATE(), INTERVAL "+dias+" DAY) )< "+dias+") AND ((eq_local.idLiga = "+idLiga+") OR (eq_visit.idLiga = "+idLiga+")) AND "+queryjugados+" ;");
+		meta = resultados.getMetaData();
 		while(resultados.next()){
 			p = new Partido();
-			p.setIdPartido(resultados.getInt(0));
-			p.setIdJornada(resultados.getInt(1));
-			p.setFecha(resultados.getTimestamp(2));
-			p.setGolesLocal(resultados.getInt(3));
-			p.setGolesVisitante(resultados.getInt(4));
-			p.getLocal().setIdEquipo(resultados.getInt(5));
-			p.getVisitante().setIdEquipo(resultados.getInt(6));
-			p.getLocal().setNombre(resultados.getString(7));
-			p.getVisitante().setNombre(resultados.getString(8));
-			p.getLocal().setEscudo(resultados.getURL(9));
-			p.getVisitante().setEscudo(resultados.getURL(10));
+			p.setIdPartido(resultados.getInt("PARTIDOS.idPartidos"));
+			p.setIdJornada(resultados.getInt("PARTIDOS.idJornada"));
+			p.setFecha(resultados.getTimestamp("PARTIDOS.Fecha"));
+			p.setGolesLocal(resultados.getInt("PARTIDOS.GolesLocal"));
+			p.setGolesVisitante(resultados.getInt("PARTIDOS.GolesVisitante"));
+			p.getLocal().setIdEquipo(resultados.getInt("PARTIDOS.idLocal"));
+			p.getVisitante().setIdEquipo(resultados.getInt("local"));
+			p.getLocal().setNombre(resultados.getString("PARTIDOS.idVisitante"));
+			p.getVisitante().setNombre(resultados.getString("visitante"));
+			p.getLocal().setEscudo(resultados.getURL("esclocal"));
+			p.getVisitante().setEscudo(resultados.getURL("escvisit"));
 			lista.add(p);
 		}
 		resultados.close();
@@ -72,23 +73,23 @@ public class SQLFrontEnd {
 		stat = base.createStatement();
 		
 		resultado = stat.executeQuery("SELECT PARTIDOS.idPartidos, PARTIDOS.idJornada, PARTIDOS.Fecha, PARTIDOS.GolesLocal, PARTIDOS.GolesVisitante, "
-				+ "PARTIDOS.idLocal, eq_local.Nombre as local, PARTIDOS.idVisitante, eq_visit.Nombre as visitante , eq_local.Escudo as esclocal, eq_visitante.Escudo as escvisit "
-				+ "FROM PARTIDOS"
-				+ "INNER JOIN mordorbet.EQUIPOS eq_local ON PARTIDOS.idLocal = eq_local.idEquipos" 
-				+ "INNER JOIN mordorbet.EQUIPOS eq_visit ON PARTIDOS.idVisitante = eq_visit.idEquipos"
+				+ "PARTIDOS.idLocal, eq_local.Nombre as local, PARTIDOS.idVisitante, eq_visit.Nombre as visitante , eq_local.Escudo as esclocal, eq_visit.Escudo as escvisit "
+				+ "FROM PARTIDOS "
+				+ "INNER JOIN mordorbet.EQUIPOS eq_local ON PARTIDOS.idLocal = eq_local.idEquipos " 
+				+ "INNER JOIN mordorbet.EQUIPOS eq_visit ON PARTIDOS.idVisitante = eq_visit.idEquipos "
 				+ "WHERE PARTIDOS.idPartido = "+idPartido+";");
 		while(resultado.next()){
-			p.setIdPartido(resultado.getInt(0));
-			p.setIdJornada(resultado.getInt(1));
-			p.setFecha(resultado.getTimestamp(2));
-			p.setGolesLocal(resultado.getInt(3));
-			p.setGolesVisitante(resultado.getInt(4));
-			p.getLocal().setIdEquipo(resultado.getInt(5));
-			p.getVisitante().setIdEquipo(resultado.getInt(6));
-			p.getLocal().setNombre(resultado.getString(7));
-			p.getVisitante().setNombre(resultado.getString(8));
-			p.getLocal().setEscudo(resultado.getURL(9));
-			p.getVisitante().setEscudo(resultado.getURL(10));
+			p.setIdPartido(resultado.getInt("PARTIDOS.idPartidos"));
+			p.setIdJornada(resultado.getInt("PARTIDOS.idJornada"));
+			p.setFecha(resultado.getTimestamp("PARTIDOS.Fecha"));
+			p.setGolesLocal(resultado.getInt("PARTIDOS.GolesLocal"));
+			p.setGolesVisitante(resultado.getInt("PARTIDOS.GolesVisitante"));
+			p.getLocal().setIdEquipo(resultado.getInt("PARTIDOS.idLocal"));
+			p.getVisitante().setIdEquipo(resultado.getInt("eq_local.Nombre"));
+			p.getLocal().setNombre(resultado.getString("PARTIDOS.idVisitante"));
+			p.getVisitante().setNombre(resultado.getString("eq_visit.Nombre"));
+			p.getLocal().setEscudo(resultado.getURL("eq_local.Escudo"));
+			p.getVisitante().setEscudo(resultado.getURL("eq_visit.Escudo"));
 		}
 		resultado.close();
 		stat.close();
@@ -105,14 +106,15 @@ public class SQLFrontEnd {
 		resultados = stat.executeQuery("SELECT * FROM APUESTAS WHERE idUsuarios = "+idUser+";");
 		while(resultados.next()){
 			a = new Apuesta();
-			a.setIdApuesta(resultados.getInt(0));
-			a.setIdUsuario(resultados.getInt(1));
-			a.setPartido(getPartido(resultados.getInt(2)));
-			a.setTipoApuesta(resultados.getInt(3));
-			a.setPremio(resultados.getDouble(4));
-			a.setApostado(resultados.getDouble(5));
-			a.setCoeficiente(resultados.getDouble(6));
-			a.setCobrado(resultados.getBoolean(7));
+			a.setIdApuesta(resultados.getInt(1));
+			a.setIdUsuario(resultados.getInt(2));
+			a.setPartido(getPartido(resultados.getInt(3)));
+			a.setTipoApuesta(resultados.getInt(4));
+			a.setPremio(resultados.getDouble(5));
+			a.setApostado(resultados.getDouble(6));
+			a.setCoeficiente(resultados.getDouble(7));
+			a.setCobrado(resultados.getBoolean(8));
+			lista.add(a);
 		}
 		resultados.close();
 		stat.close();
@@ -125,12 +127,15 @@ public class SQLFrontEnd {
 		ObservableList<Liga> lista = FXCollections.observableArrayList(ligas);
 		Statement stat;
 		ResultSet resultados;
+		ResultSetMetaData meta;
 		stat = base.createStatement();
-		resultados = stat.executeQuery("SELECT idLiga, Nombre FROM LIGAS;");
+		resultados = stat.executeQuery("SELECT * FROM LIGAS;");
+		meta = resultados.getMetaData();
 		while(resultados.next()){
 			l = new Liga();
-			l.setIdLiga(resultados.getInt(0));
-			l.setNombre(resultados.getString(1));
+			l.setIdLiga(resultados.getInt(1));
+			l.setNombre(resultados.getString(2));
+			lista.add(l);
 		}
 		resultados.close();
 		stat.close();

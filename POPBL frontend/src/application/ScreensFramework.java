@@ -45,6 +45,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import datos.ModeloApuestas;
 
 /**
  *
@@ -63,8 +64,14 @@ public class ScreensFramework extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        
+    	
         ScreensController mainContainer = new ScreensController();
+        ModeloApuestas modelo;
+        try{
+        	modelo = new ModeloApuestas();
+        }catch(ManteniException e){
+        	
+        }
         mainContainer.loadScreen(ScreensFramework.MPrincipal, ScreensFramework.MPrincipal_FXML);
         mainContainer.loadScreen(ScreensFramework.Mapostuak, ScreensFramework.Mapostuak_FXML);
         mainContainer.loadScreen(ScreensFramework.MErregistroa, ScreensFramework.MErregistroa_FXML);

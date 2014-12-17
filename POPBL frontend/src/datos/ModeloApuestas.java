@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import application.ManteniException;
 
 public class ModeloApuestas{
+
 	/**
 	 * 
 	 */
@@ -25,7 +26,9 @@ public class ModeloApuestas{
 	
 	public ModeloApuestas() throws ManteniException{
 		try{
-			bd = new SQLFrontEnd("olaldeko.mooo.com", 3306, "mordorbet", "frontend", "frontend");
+			bd = new SQLFrontEnd("192.168.1.210", 3306, "mordorbet", "frontend", "frontend");
+			this.initLigas();
+			this.initPartidosPr();
 		}catch(SQLException e){
 				e.printStackTrace();
 				throw new ManteniException(0);
@@ -34,6 +37,32 @@ public class ModeloApuestas{
 		}
 
 	}
+	
+	public ObservableList<Apuesta> getApuestasuser() {
+		return apuestasuser;
+	}
+	public void setApuestasuser(ObservableList<Apuesta> apuestasuser) {
+		this.apuestasuser = apuestasuser;
+	}
+	public ObservableList<Partido> getPartidosprincipal() {
+		return partidosprincipal;
+	}
+	public void setPartidosprincipal(ObservableList<Partido> partidosprincipal) {
+		this.partidosprincipal = partidosprincipal;
+	}
+	public ObservableList<Liga> getLigas() {
+		return ligas;
+	}
+	public void setLigas(ObservableList<Liga> ligas) {
+		this.ligas = ligas;
+	}
+	public ObservableList<Partido> getPartidosemaitzak() {
+		return partidosemaitzak;
+	}
+	public void setPartidosemaitzak(ObservableList<Partido> partidosemaitzak) {
+		this.partidosemaitzak = partidosemaitzak;
+	}
+	
 	public void initLigas() throws ManteniException{
 		try {
 			this.ligas = bd.getLigas();

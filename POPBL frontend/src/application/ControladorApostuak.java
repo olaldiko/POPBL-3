@@ -12,7 +12,6 @@ public class ControladorApostuak implements Initializable, ControlledScreen {
 	@Override
 	public void setScreenParent(ScreensController screenPage) {
 		myController = screenPage;
-
 	}
 	@FXML
 	Button btnatzera = new Button();
