@@ -98,6 +98,7 @@ public class ControladorMPrincipal implements Initializable, ControlledScreen {
 	}
 	public void nuevaApuesta(Partido p){
 		modelo.setPartidoApuesta(p);
+		
 		myController.setScreen("newApuesta");
 	}
 }

@@ -1,18 +1,22 @@
 package application;
 
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class LoginDialogoa extends Application{
+public class LoginDialogoa{
 	@FXML
 	Button btnatzera = new Button();
 	@FXML
@@ -23,20 +27,26 @@ public class LoginDialogoa extends Application{
 	PasswordField passfield = new PasswordField();
 	
 	
-	@Override
-	public void start(Stage arg0) throws Exception {
-		FXMLLoader fxload = new FXMLLoader(this.getClass().getResource("login.fxml"));
-		AnchorPane pane =(AnchorPane)fxload.load();
-		Scene sce = new Scene(pane);
-		btnatzera.setOnAction(event -> arg0.hide());
-		arg0.setScene(sce);
-		arg0.initStyle(StageStyle.UNDECORATED);
-		arg0.setAlwaysOnTop(true);
-		arg0.setFocused(true);
-		arg0.centerOnScreen();
-		System.out.println("Start");
+	public void showLogin(){
+		Parent root = null;
+		FXMLLoader fxload = new FXMLLoader(this.getClass().getResource("../vistas/login.fxml"));
+		try {
+			root = fxload.load();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Stage stage = new Stage();
+		Scene sce = new Scene(root);
 		
-		arg0.show();
+		stage.setScene(sce);
+		stage.initStyle(StageStyle.UNDECORATED);
+		stage.setAlwaysOnTop(true);
+		stage.setFocused(true);
+		stage.centerOnScreen();
+		System.out.println("Start");
+		btnatzera.setOnAction(event ->stage.close());
+		stage.show();
 		
 	}
 	

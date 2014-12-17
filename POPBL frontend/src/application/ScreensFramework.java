@@ -61,6 +61,8 @@ public class ScreensFramework extends Application {
 	public static final String MErregistroa_FXML = "../vistas/Erregistroa.fxml";
     public static final String MEmaitzak = "emaitzak";
     public static final String MEmaitzak_FXML = "../vistas/Emaitzak.fxml";
+    public static final String NewApuesta = "newApuesta";
+    public static final String NewApuesta_FXML = "../vistas/NewApuesta.fxml";
     
     @Override
     public void start(Stage primaryStage) {
@@ -75,6 +77,7 @@ public class ScreensFramework extends Application {
         mainContainer.loadScreen(ScreensFramework.Mapostuak, ScreensFramework.Mapostuak_FXML);
         mainContainer.loadScreen(ScreensFramework.MErregistroa, ScreensFramework.MErregistroa_FXML);
         mainContainer.loadScreen(ScreensFramework.MEmaitzak, ScreensFramework.MEmaitzak_FXML);
+        mainContainer.loadScreen(ScreensFramework.NewApuesta, ScreensFramework.NewApuesta_FXML);
         mainContainer.setScreen(ScreensFramework.MPrincipal);
         
         Group root = new Group();

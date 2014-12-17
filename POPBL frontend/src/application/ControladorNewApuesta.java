@@ -16,6 +16,7 @@ import datos.ModeloApuestas;
 public class ControladorNewApuesta implements Initializable, ControlledScreen {
 	ScreensController myController;
 	ModeloApuestas modelo;
+	Double apostado = 0.0;
 	
 	@FXML
 	Button btnAtzera = new Button();
@@ -39,6 +40,7 @@ public class ControladorNewApuesta implements Initializable, ControlledScreen {
 	ImageView logoVisitante = new ImageView();
 	@FXML
 	TextField diruField = new TextField();
+	
 	@Override
 	public void setScreenParent(ScreensController screenPage) {
 		myController = screenPage;
@@ -48,10 +50,26 @@ public class ControladorNewApuesta implements Initializable, ControlledScreen {
 	public void initialize(URL location, ResourceBundle resources) {
 		try{
 			modelo = ModeloApuestas.getInstance();
-			
+			btnAtzera.setOnAction(event -> goToPrincipal());
+			btnMas.setOnAction(event -> sumaApostado());
+			btnMenos.setOnAction(event -> restaApostado());
+			//logoLocal.setImage(new Image(modelo.getPartidoApuesta().getLocal().getEscudo().toString()));
+			//logoVisitante.setImage(new Image(modelo.getPartidoApuesta().getVisitante().getEscudo().toString()));
 		}catch(ManteniException e){
 			
 		}
+	}
+	private void restaApostado() {
+		if(apostado >= 1.0) apostado -= 1.0;
+			
+	
+	}
+	private void sumaApostado() {
+		apostado += 1.0;
+	}
+	private void goToPrincipal() {
+		myController.setScreen("principal");
+	
 	}
 	
 	

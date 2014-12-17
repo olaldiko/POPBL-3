@@ -30,10 +30,9 @@ public class ControladorErregistroa implements Initializable, ControlledScreen {
 		myController.setScreen("principal");
 	}
 	public void showlogin(){
-		Stage stage = new Stage();
 		LoginDialogoa login = new LoginDialogoa();
 		try {
-			login.start(stage);
+			login.showLogin();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
