@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControladorNewApuesta">
+   <children>
+      <Button fx:id="btnatzera" layoutX="51.0" layoutY="44.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="178.0" text="Atzera">
+         <effect>
+            <Reflection />
+         </effect>
+         <font>
+            <Font name="Arial Bold" size="26.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="107.0" fitWidth="278.0" layoutX="467.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@logo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="logoLocal" fitHeight="200.0" fitWidth="245.0" layoutX="58.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
+         <effect>
+            <Bloom />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="logoVisitante" fitHeight="200.0" fitWidth="245.0" layoutX="439.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
+         <effect>
+            <Bloom />
+         </effect>
+      </ImageView>
+      <Label layoutX="339.0" layoutY="295.0" text="vs">
+         <font>
+            <Font name="Arial Bold" size="55.0" />
+         </font>
+         <effect>
+            <DropShadow offsetX="3.0" offsetY="3.0" />
+         </effect>
+      </Label>
+      <Label layoutX="61.0" layoutY="225.0" prefHeight="23.0" prefWidth="190.0" text="Label" textOverrun="CENTER_ELLIPSIS">
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="475.0" layoutY="229.0" prefHeight="16.0" prefWidth="200.0" text="Label" textOverrun="CENTER_ELLIPSIS">
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+      </Label>
+      <Group layoutX="447.0" layoutY="445.0" />
+      <ToggleButton fx:id="botonAp1" layoutX="97.0" layoutY="502.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="130.0" text="ToggleButton" />
+      <ToggleButton fx:id="botonAp2" layoutX="514.0" layoutY="502.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="130.0" text="ToggleButton" />
+      <ToggleButton fx:id="botonApX" layoutX="309.0" layoutY="502.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="130.0" text="ToggleButton" />
+      <Label layoutX="158.0" layoutY="466.0" text="1">
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="369.0" layoutY="466.0" text="X">
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="578.0" layoutY="466.0" text="2">
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="diruField" layoutX="294.0" layoutY="638.0" prefHeight="56.0" prefWidth="163.0" promptText="0.0">
+         <font>
+            <Font name="Arial Bold" size="29.0" />
+         </font>
+      </TextField>
+      <Label layoutX="156.0" layoutY="638.0" prefHeight="56.0" prefWidth="108.0" text="Apostua: " textAlignment="RIGHT">
+         <font>
+            <Font name="Arial Bold" size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnMas" layoutX="574.0" layoutY="638.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="62.0" text="+">
+         <font>
+            <Font name="Arial Bold" size="29.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnMenos" layoutX="483.0" layoutY="638.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="62.0" text="-">
+         <font>
+            <Font name="Arial Bold" size="29.0" />
+         </font>
+      </Button>
+      <Label layoutX="156.0" layoutY="723.0" prefHeight="56.0" prefWidth="108.0" text="Premioa:" textAlignment="RIGHT">
+         <font>
+            <Font name="Arial Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="premioLabel" layoutX="294.0" layoutY="723.0" prefHeight="56.0" prefWidth="163.0" text="Label">
+         <font>
+            <Font name="Arial" size="29.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnJarraitu" layoutX="488.0" layoutY="856.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="190.0" text="Jaraitu">
+         <font>
+            <Font name="Arial Bold" size="29.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
