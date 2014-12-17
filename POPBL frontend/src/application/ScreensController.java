@@ -63,10 +63,6 @@ public class ScreensController  extends StackPane {
     //Holds the screens to be displayed
 
     private HashMap<String, Node> screens = new HashMap<>();
-    ModeloApuestas modelo;
-    public ModeloApuestas getModelo(){
-    	return modelo;
-    }
     
     public ScreensController() {
         super();

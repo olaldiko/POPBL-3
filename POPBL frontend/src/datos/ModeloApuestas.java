@@ -2,20 +2,40 @@ package datos;
 
 import java.sql.SQLException;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import application.ManteniException;
 
 public class ModeloApuestas{
 
+	static ModeloApuestas modelo;
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 409072967557047817L;
+	public static ModeloApuestas getInstance()throws ManteniException{
+		if(modelo != null){
+			return modelo;
+		}else{
+			modelo = new ModeloApuestas();
+			return modelo;
+		}
+	}
+	//Parametros de conexion
+	private final String urlBase = "192.168.1.210";
+	private final int puertoBase = 3306;
+	private final String baseBase = "mordorbet";
+	private final String userBase = "frontend";
+	private final String passBase = "frontend";
+	
+	
 	SQLFrontEnd bd;
 	ObservableList<Apuesta> apuestasuser;
 	ObservableList<Partido> partidosprincipal;
 	ObservableList<Liga>	ligas;
 	ObservableList<Partido> partidosemaitzak;
+	
+	ObjectProperty<Partido> partidoApuesta = new SimpleObjectProperty<Partido>();
 	int diasPartidos = 10;
 	int defaultLiga = 358;
 	/*Para hacer checker de modificacion en tablas
@@ -24,9 +44,9 @@ public class ModeloApuestas{
 	 */
 	int tablaPartidosCont = 0;
 	
-	public ModeloApuestas() throws ManteniException{
+	private ModeloApuestas() throws ManteniException{
 		try{
-			bd = new SQLFrontEnd("192.168.1.210", 3306, "mordorbet", "frontend", "frontend");
+			bd = new SQLFrontEnd(urlBase, puertoBase , baseBase, userBase, passBase);
 			this.initLigas();
 			this.initPartidosPr();
 		}catch(SQLException e){
@@ -102,5 +122,11 @@ public class ModeloApuestas{
 			e.printStackTrace();
 			throw new ManteniException(4);
 		}
+	}
+	public void setPartidoApuesta(Partido p){
+		partidoApuesta.set(p);
+	}
+	public Partido getPartidoApuesta(){
+		return partidoApuesta.get();
 	}
 }

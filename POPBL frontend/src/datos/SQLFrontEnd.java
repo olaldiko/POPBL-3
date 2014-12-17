@@ -55,8 +55,8 @@ public class SQLFrontEnd {
 			p.setGolesLocal(resultados.getInt("PARTIDOS.GolesLocal"));
 			p.setGolesVisitante(resultados.getInt("PARTIDOS.GolesVisitante"));
 			p.getLocal().setIdEquipo(resultados.getInt("PARTIDOS.idLocal"));
-			p.getVisitante().setIdEquipo(resultados.getInt("local"));
-			p.getLocal().setNombre(resultados.getString("PARTIDOS.idVisitante"));
+			p.getLocal().setNombre(resultados.getString("local"));
+			p.getVisitante().setIdEquipo(resultados.getInt("PARTIDOS.idVisitante"));
 			p.getVisitante().setNombre(resultados.getString("visitante"));
 			p.getLocal().setEscudo(resultados.getURL("esclocal"));
 			p.getVisitante().setEscudo(resultados.getURL("escvisit"));

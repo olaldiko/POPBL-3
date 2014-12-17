@@ -53,11 +53,11 @@
       <TableView fx:id="tablapartidos" layoutX="53.0" layoutY="507.0" prefHeight="445.0" prefWidth="642.0">
         <columns>
           <TableColumn fx:id="colFecha" editable="false" prefWidth="113.0" text="Noiz" />
-          <TableColumn fx:id="colLocal" editable="false" prefWidth="160.0" text="Lokala" />
-            <TableColumn fx:id="colVisit" editable="false" prefWidth="178.0" text="Bisitantea" />
-            <TableColumn fx:id="col1" editable="false" prefWidth="60.0" text="1" />
-            <TableColumn fx:id="colx" editable="false" prefWidth="68.0" text="X" />
-            <TableColumn fx:id="col2" editable="false" prefWidth="62.0" text="2" />
+          <TableColumn fx:id="colLocal" editable="false" prefWidth="160.0" text="Etxekoak" />
+            <TableColumn fx:id="colVisit" editable="false" prefWidth="123.0" text="Kanpokoa" />
+            <TableColumn fx:id="col1" editable="false" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" text="1" />
+            <TableColumn fx:id="colx" editable="false" maxWidth="80.0" minWidth="60.0" prefWidth="60.0" text="X" />
+            <TableColumn fx:id="col2" editable="false" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" text="2" />
         </columns>
          <effect>
             <DropShadow />

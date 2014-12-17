@@ -36,5 +36,7 @@ public class Liga {
 	public void setNombre(String nombre) {
 		this.nombre.set(nombre);
 	}
-
+	public String toString(){
+		return nombre.get();
+	}
 }
