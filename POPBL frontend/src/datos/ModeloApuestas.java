@@ -22,8 +22,8 @@ public class ModeloApuestas{
 		}
 	}
 	//Parametros de conexion
-	private final String urlBase = "192.168.1.210";
-	private final int puertoBase = 3306;
+	private final String urlBase = "olaldiko.mooo.com";
+	private final int puertoBase = 23306;
 	private final String baseBase = "mordorbet";
 	private final String userBase = "frontend";
 	private final String passBase = "frontend";
@@ -49,6 +49,7 @@ public class ModeloApuestas{
 			bd = new SQLFrontEnd(urlBase, puertoBase , baseBase, userBase, passBase);
 			this.initLigas();
 			this.initPartidosPr();
+			this.initPartidosEmaitzak();
 		}catch(SQLException e){
 				e.printStackTrace();
 				throw new ManteniException(0);
@@ -86,6 +87,7 @@ public class ModeloApuestas{
 	public void initLigas() throws ManteniException{
 		try {
 			this.ligas = bd.getLigas();
+			assert this.ligas != null;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ManteniException(3);
@@ -95,6 +97,15 @@ public class ModeloApuestas{
 		try {
 			this.partidosprincipal = bd.getPartidos(diasPartidos, defaultLiga, false);
 		}catch(SQLException e){
+			e.printStackTrace();
+			throw new ManteniException(3);
+		}
+	}
+	public void initPartidosEmaitzak() throws ManteniException{
+		try {
+			this.partidosemaitzak = bd.getPartidos(diasPartidos, defaultLiga, true);
+			if(partidosemaitzak == null)System.out.println("Partidosemaitzak es null");
+		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ManteniException(3);
 		}
@@ -109,7 +120,7 @@ public class ModeloApuestas{
 	}
 	public void updatePartidosEmaitzak(int ligaselect) throws ManteniException{
 		try {
-			this.partidosprincipal.setAll(bd.getPartidos(diasPartidos, ligaselect, true));
+			this.partidosemaitzak.setAll(bd.getPartidos(diasPartidos, ligaselect, true));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ManteniException(3);

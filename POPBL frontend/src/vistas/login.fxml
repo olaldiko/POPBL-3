@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="500.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginDialogoa">
+<fx:root prefHeight="500.0" prefWidth="768.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginDialogoa">
    <children>
       <Label layoutX="34.0" layoutY="14.0" prefHeight="83.0" prefWidth="690.0" text="Mesedez, sartu zure erabiltzaile eta pasahitza" textAlignment="CENTER">
          <font>
@@ -30,15 +30,15 @@
             <Font name="Arial" size="25.0" />
          </font>
       </Label>
-      <Button fx:id="btnsartu" layoutX="511.0" layoutY="343.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="167.0" text="Sartu">
+      <Button fx:id="btnsartulog" layoutX="511.0" layoutY="343.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="167.0" text="Sartu">
          <font>
             <Font name="Arial Bold" size="25.0" />
          </font>
       </Button>
-      <Button fx:id="btnatzera" layoutX="68.0" layoutY="343.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="167.0" text="Atzera">
+      <Button fx:id="btnatzeralog" layoutX="68.0" layoutY="343.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="167.0" text="Atzera">
          <font>
             <Font name="Arial Bold" size="25.0" />
          </font>
       </Button>
    </children>
-</AnchorPane>
+</fx:root>
