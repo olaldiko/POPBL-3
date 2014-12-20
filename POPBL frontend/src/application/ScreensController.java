@@ -130,9 +130,46 @@ public class ScreensController  extends StackPane {
         } else {
             System.out.println("screen hasn't been loaded!!! \n");
             return false;
+        }   
+    }
+        public boolean setScreenOverlay(final String name) {       
+            if (screens.get(name) != null) {   //screen loaded
+                final DoubleProperty opacity = opacityProperty();
+                            getChildren().add(1, screens.get(name));     //add the screen
+                            Timeline fadeIn = new Timeline(
+                                    new KeyFrame(Duration.ZERO, new KeyValue(opacity, 0.0)),
+                                    new KeyFrame(new Duration(300), new KeyValue(opacity, 1.0)));
+                            fadeIn.play();
+                return true;
+            } else {
+                System.out.println("screen hasn't been loaded!!! \n");
+                return false;
+            }
         }
-
-
+        public boolean removeScreenOverlay(final String name) {       
+            if (screens.get(name) != null) {   //screen loaded
+                final DoubleProperty opacity = opacityProperty();
+              
+                    Timeline fade = new Timeline(
+                            new KeyFrame(Duration.ZERO, new KeyValue(opacity, 0.0)),
+                            new KeyFrame(new Duration(300), new KeyValue(opacity, 0.0)));
+                    		fade.play();
+                            getChildren().remove(1);                   //Borramos la anterior
+                            // getChildren().add(1, screens.get(name));     //No metemos otra
+                return true;
+            } else {
+                System.out.println("screen hasn't been loaded!!! \n");
+                return false;
+            }
+        }
+        public boolean setScreenNoTrans(final String name){
+        	if(screens.get(name) != null){
+        		getChildren().remove(0);
+        		getChildren().add(0, screens.get(name));
+        		return true;
+        	}else{
+        		return false;
+        }
         /*Node screenToRemove;
          if(screens.get(name) != null){   //screen loaded
          if(!getChildren().isEmpty()){    //if there is more than one screen

@@ -94,7 +94,7 @@ public class ControladorMPrincipal implements Initializable, ControlledScreen {
 		myController.setScreen("erregistroa");
 	}
 	public void goToApostuak(){
-		myController.setScreen("apostuak");
+		myController.setScreenOverlay("login");
 	}
 	public void nuevaApuesta(Partido p){
 		modelo.setPartidoApuesta(p);

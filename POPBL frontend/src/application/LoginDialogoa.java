@@ -1,71 +1,62 @@
 package application;
 
-
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import datos.ModeloApuestas;
 
-public class LoginDialogoa extends AnchorPane implements Initializable{
+
+public class LoginDialogoa implements Initializable, ControlledScreen {
+	ScreensController myController;
+	ModeloApuestas modelo;
+	String user, pass;
+	@FXML
+	PasswordField passfield = new PasswordField();
+	@FXML
+	TextField erabiltzailefield = new TextField();
 	@FXML
 	Button btnatzeralog = new Button();
 	@FXML
 	Button btnsartulog = new Button();
-	@FXML
-	TextField erabilfield = new TextField();
-	@FXML
-	PasswordField passfield = new PasswordField();
-	StringProperty iduser;
-	StringProperty pass;
-	Stage stage = new Stage();
-	public void showLogin(){
-		Parent root = null;
-		FXMLLoader fxload = new FXMLLoader(this.getClass().getResource("../vistas/login.fxml"));
-		try {
-			fxload.setRoot(this);
-			root = fxload.load();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		fxload.setController(this);
-		fxload.setRoot(this);
-		btnatzeralog.setOnAction(event ->stage.close());
-		btnsartulog.setOnAction(event -> getDatos());
-		Scene sce = new Scene(root);
-		
-		stage.setScene(sce);
-		stage.initStyle(StageStyle.UNDECORATED);
-		stage.setAlwaysOnTop(true);
-		stage.setFocused(true);
-		stage.centerOnScreen();
-		System.out.println("Start");
-		
-		
-		stage.show();
-		
-	}
-	public void getDatos(){
-		iduser.set(erabilfield.getText());
-		pass.set(passfield.getText());
-		stage.close();
-	}
+	
+	@Override
+	public void setScreenParent(ScreensController screenPage) {
+		myController = screenPage;
 
+	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		try {
+			modelo = ModeloApuestas.getInstance();
+		} catch (ManteniException e) {
+			// TODO: handle exception
+		}
+		btnatzeralog.setOnAction(event -> goToBack());
+		btnsartulog.setOnAction(event -> commitLogin());
 	}
+	private void commitLogin() {
+		//Hay que ver como mirar si va a entrar a sus apuestas o a hacer una nueva, por ahora probamos con que va a sus apuestas;
+		
+		user = erabiltzailefield.getText();
+		pass = passfield.getText();
+		try{
+			if(modelo.loginuser(user, pass)){
+				myController.setScreenNoTrans("apostuak");
+				myController.removeScreenOverlay("login");
+			}
+		}catch(ManteniException e){
+			
+		}
+		
+	}
+	private void goToBack() {
+		myController.removeScreenOverlay("login");
+	}
+
 	
 }

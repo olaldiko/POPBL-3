@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root maxHeight="1024.0" maxWidth="768.0" minHeight="1024.0" minWidth="768.0" prefHeight="1024.0" prefWidth="768.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginDialogoa">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="1024.0" opacity="0.5" stroke="#ffffff00" strokeType="INSIDE" width="768.0">
+         <effect>
+            <BoxBlur />
+         </effect>
+      </Rectangle>
+      <AnchorPane layoutY="283.0" prefHeight="500.0" prefWidth="768.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="500.0" layoutY="-3.0" stroke="BLACK" strokeType="INSIDE" width="768.0">
+               <effect>
+                  <DropShadow height="69.57" radius="37.317499999999995" width="81.7" />
+               </effect>
+            </Rectangle>
+            <Label layoutX="34.0" layoutY="14.0" prefHeight="83.0" prefWidth="690.0" text="Mesedez, sartu zure erabiltzaile eta pasahitza" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial Bold" size="32.0" />
+               </font>
+               <effect>
+                  <Bloom />
+               </effect>
+            </Label>
+            <Label layoutX="114.0" layoutY="155.0" text="Erabiltzailea">
+               <font>
+                  <Font name="Arial" size="25.0" />
+               </font>
+            </Label>
+            <PasswordField fx:id="passfield" layoutX="316.0" layoutY="228.0" prefHeight="44.0" prefWidth="248.0" />
+            <TextField fx:id="erabiltzailefield" layoutX="316.0" layoutY="148.0" prefHeight="44.0" prefWidth="248.0" />
+            <Label layoutX="114.0" layoutY="235.0" prefHeight="30.0" prefWidth="137.0" text="Pasahitza">
+               <font>
+                  <Font name="Arial" size="25.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnsartulog" layoutX="511.0" layoutY="343.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="167.0" text="Sartu">
+               <font>
+                  <Font name="Arial Bold" size="25.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnatzeralog" layoutX="68.0" layoutY="343.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="167.0" text="Atzera">
+               <font>
+                  <Font name="Arial Bold" size="25.0" />
+               </font>
+            </Button>
+            <AnchorPane fx:id="errorediag" layoutY="128.0" opacity="0.0" prefHeight="200.0" prefWidth="768.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" stroke="BLACK" strokeType="INSIDE" width="768.0" />
+                  <Label layoutX="58.0" layoutY="24.0" prefHeight="22.0" prefWidth="648.0" text="Pasahitza edo erabiltzailea gaizki sartu duzu, saiatu berriro mesedez.">
+                     <font>
+                        <Font name="Arial Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="btnados" layoutX="298.0" layoutY="100.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="167.0" text="Ados" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</fx:root>

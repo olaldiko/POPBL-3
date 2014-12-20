@@ -140,4 +140,13 @@ public class ModeloApuestas{
 	public Partido getPartidoApuesta(){
 		return partidoApuesta.get();
 	}
+	public boolean loginuser(String user, String pass) throws ManteniException{
+		boolean resultado = false;
+			try{
+			resultado = bd.loginUser(user, pass);
+			}catch(SQLException e){
+				throw new ManteniException(2);
+			}
+		return resultado;
+	}
 }
