@@ -55,6 +55,7 @@ public class ControladorEmaitzak implements Initializable, ControlledScreen {
 		localacol.setCellValueFactory(cellData -> cellData.getValue().getLocal().getNombreProperty());
 		emaitzacol.setCellValueFactory(cellData -> mostrarEmaitza(cellData.getValue()));
 		bisitanteacol.setCellValueFactory(cellData -> cellData.getValue().getVisitante().getNombreProperty());
+		
 		if(modelo == null)System.out.println("El modelo es null en C/E");
 		ligasel.setItems(modelo.getLigas());
 		emaitzataula.setItems(modelo.getPartidosemaitzak());

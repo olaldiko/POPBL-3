@@ -40,11 +40,12 @@
 
 package application;
 
+import java.io.File;
+
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import datos.ModeloApuestas;
 
 /**
@@ -52,7 +53,7 @@ import datos.ModeloApuestas;
  * @author Angie
  */
 public class ScreensFramework extends Application {
-    
+    File css;
 	public static final String MPrincipal = "principal";
 	public static final String MPrincipal_FXML = "../vistas/Principal.fxml";
 	public static final String Mapostuak = "apostuak";
@@ -78,14 +79,16 @@ public class ScreensFramework extends Application {
         mainContainer.loadScreen(ScreensFramework.Mapostuak, ScreensFramework.Mapostuak_FXML);
         mainContainer.loadScreen(ScreensFramework.MErregistroa, ScreensFramework.MErregistroa_FXML);
         mainContainer.loadScreen(ScreensFramework.MEmaitzak, ScreensFramework.MEmaitzak_FXML);
-        mainContainer.loadScreen(ScreensFramework.NewApuesta, ScreensFramework.NewApuesta_FXML);
+        //mainContainer.loadScreen(ScreensFramework.NewApuesta, ScreensFramework.NewApuesta_FXML);
         mainContainer.loadScreen(ScreensFramework.Login, ScreensFramework.Login_FXML);
         mainContainer.setScreen(ScreensFramework.MPrincipal);
         
         Group root = new Group();
         root.getChildren().addAll(mainContainer);
         Scene scene = new Scene(root);
-        //scene.getStylesheets().add("Principal.css");
+        //File css = new File("bin/vistas/dark.css");
+        //scene.getStylesheets().clear();
+        //scene.getStylesheets().add("file:///JMetroDarkTheme.css");
         primaryStage.setWidth(768f);
         primaryStage.setHeight(1024f);
         //primaryStage.initStyle(StageStyle.UNDECORATED);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.web.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
@@ -9,9 +10,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="1024.0" maxWidth="768.0" minHeight="1024.0" minWidth="768.0" prefHeight="1024.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControladorNewApuesta">
+<AnchorPane maxHeight="1024.0" maxWidth="768.0" minHeight="1024.0" minWidth="768.0" prefHeight="1024.0" prefWidth="768.0" styleClass="#panel-bg" stylesheets="@../../../../../../../dark.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControladorNewApuesta">
    <children>
-      <Button fx:id="btnatzera" layoutX="51.0" layoutY="44.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="178.0" text="Atzera">
+      <Button fx:id="btnAtzera" layoutX="51.0" layoutY="44.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="178.0" text="Atzera">
          <effect>
             <Reflection />
          </effect>
@@ -24,16 +25,6 @@
             <Image url="@logo.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="logoLocal" fitHeight="200.0" fitWidth="245.0" layoutX="58.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
-         <effect>
-            <Bloom />
-         </effect>
-      </ImageView>
-      <ImageView fx:id="logoVisitante" fitHeight="200.0" fitWidth="245.0" layoutX="439.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
-         <effect>
-            <Bloom />
-         </effect>
-      </ImageView>
       <Label layoutX="339.0" layoutY="295.0" text="vs">
          <font>
             <Font name="Arial Bold" size="55.0" />
@@ -42,20 +33,24 @@
             <DropShadow offsetX="3.0" offsetY="3.0" />
          </effect>
       </Label>
-      <Label layoutX="61.0" layoutY="225.0" prefHeight="23.0" prefWidth="190.0" text="Label" textOverrun="CENTER_ELLIPSIS">
+      <Label fx:id="labelLocal" alignment="CENTER" layoutX="46.0" layoutY="228.0" prefHeight="23.0" prefWidth="233.0" text="Label" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
          <font>
             <Font name="Arial Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="475.0" layoutY="229.0" prefHeight="16.0" prefWidth="200.0" text="Label" textOverrun="CENTER_ELLIPSIS">
+      <Label fx:id="labelVisitante" alignment="CENTER" layoutX="467.0" layoutY="229.0" prefHeight="21.0" prefWidth="233.0" text="Label" textOverrun="CENTER_ELLIPSIS">
          <font>
             <Font name="Arial Bold" size="18.0" />
          </font>
       </Label>
       <Group layoutX="447.0" layoutY="445.0" />
-      <ToggleButton fx:id="botonAp1" layoutX="97.0" layoutY="502.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="130.0" text="ToggleButton" />
-      <ToggleButton fx:id="botonAp2" layoutX="514.0" layoutY="502.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="130.0" text="ToggleButton" />
-      <ToggleButton fx:id="botonApX" layoutX="309.0" layoutY="502.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="130.0" text="ToggleButton" />
+      <ToggleButton fx:id="botonAp1" layoutX="97.0" layoutY="502.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="130.0" text="ToggleButton">
+         <toggleGroup>
+            <ToggleGroup fx:id="btapuestas" />
+         </toggleGroup>
+      </ToggleButton>
+      <ToggleButton fx:id="botonAp2" layoutX="514.0" layoutY="502.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="130.0" text="ToggleButton" toggleGroup="$btapuestas" />
+      <ToggleButton fx:id="botonApX" layoutX="309.0" layoutY="502.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="130.0" text="ToggleButton" toggleGroup="$btapuestas" />
       <Label layoutX="158.0" layoutY="466.0" text="1">
          <font>
             <Font name="Arial Bold" size="18.0" />
@@ -96,7 +91,7 @@
             <Font name="Arial Bold" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="premioLabel" layoutX="294.0" layoutY="723.0" prefHeight="56.0" prefWidth="163.0" text="Label">
+      <Label fx:id="premioLabel" layoutX="294.0" layoutY="723.0" prefHeight="56.0" prefWidth="163.0" text="0.0">
          <font>
             <Font name="Arial" size="29.0" />
          </font>
@@ -106,5 +101,23 @@
             <Font name="Arial Bold" size="29.0" />
          </font>
       </Button>
+      <VBox alignment="CENTER" layoutX="57.0" layoutY="266.0" prefHeight="200.0" prefWidth="210.0">
+         <children>
+            <ImageView fx:id="logoLocal" fitHeight="196.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true">
+               <effect>
+                  <DropShadow radius="10.7575" width="24.03" />
+               </effect>
+            </ImageView>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" layoutX="479.0" layoutY="250.0" prefHeight="200.0" prefWidth="210.0">
+         <children>
+            <ImageView fx:id="logoVisitante" fitHeight="196.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true">
+               <effect>
+                  <DropShadow height="27.07" radius="12.2775" width="24.04" />
+               </effect>
+            </ImageView>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

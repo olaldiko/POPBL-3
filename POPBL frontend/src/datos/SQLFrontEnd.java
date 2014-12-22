@@ -23,6 +23,7 @@ public class SQLFrontEnd {
             System.out.print("Conectando con Base de Datos MySQL... ");
             String generalURL = "jdbc:mysql://"+URL+":"+numeroPuerto+"/"+nombreBD;
             base = DriverManager.getConnection(generalURL, user, pass);
+            
             System.out.println(" OK!");
             System.out.println("");	
     }
@@ -159,17 +160,12 @@ public class SQLFrontEnd {
 		Statement stat;
 		ResultSet resultado;
 		stat = base.createStatement();
-		resultado = stat.executeQuery("SELECT * FROM USUARIOS WHERE username = \""+user+"\" AND Password = \""+pass+"\";");
+		resultado = stat.executeQuery("SELECT count(username) as users from USUARIOS where username = '"+user+"'and Password = '"+pass+"';");
 		resultado.first();
-		if(resultado.wasNull()){
-			resultado.close();
-			stat.close();
-			return false;
-		}else{
-			resultado.close();
-			stat.close();
+		if(resultado.getInt(1) == 1){
 			return true;
+		}else{
+			return false;
 		}
-
 	}
 }

@@ -22,8 +22,8 @@ public class ModeloApuestas{
 		}
 	}
 	//Parametros de conexion
-	private final String urlBase = "olaldiko.mooo.com";
-	private final int puertoBase = 23306;
+	private final String urlBase = "192.168.1.210";
+	private final int puertoBase = 3306;
 	private final String baseBase = "mordorbet";
 	private final String userBase = "frontend";
 	private final String passBase = "frontend";

@@ -98,7 +98,8 @@ public class ControladorMPrincipal implements Initializable, ControlledScreen {
 	}
 	public void nuevaApuesta(Partido p){
 		modelo.setPartidoApuesta(p);
-		
+		myController.unloadScreen("newApuesta");
+		myController.loadScreen("newApuesta", "../vistas/NewApuesta.fxml");
 		myController.setScreen("newApuesta");
 	}
 }
