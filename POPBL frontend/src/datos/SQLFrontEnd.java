@@ -42,7 +42,8 @@ public class SQLFrontEnd {
 		}
 		stat = base.createStatement();
 		resultados = stat.executeQuery("SELECT PARTIDOS.idPartidos, PARTIDOS.idJornada, PARTIDOS.Fecha, PARTIDOS.GolesLocal, PARTIDOS.GolesVisitante, "
-				+ "PARTIDOS.idLocal, eq_local.Nombre as local, PARTIDOS.idVisitante, eq_visit.Nombre as visitante , eq_local.Escudo as esclocal, eq_visit.Escudo as escvisit "
+				+ "PARTIDOS.idLocal, eq_local.Nombre as local, PARTIDOS.idVisitante, eq_visit.Nombre as visitante , eq_local.Escudo as esclocal, eq_visit.Escudo as escvisit , "
+				+ "PARTIDOS.CoefLocal, PARTIDOS.CoefEmpate, PARTIDOS.CoefVisitante "
 				+ "FROM PARTIDOS "
 				+ "INNER JOIN mordorbet.EQUIPOS eq_local ON PARTIDOS.idLocal = eq_local.idEquipos " 
 				+ "INNER JOIN mordorbet.EQUIPOS eq_visit ON PARTIDOS.idVisitante = eq_visit.idEquipos "
@@ -61,6 +62,9 @@ public class SQLFrontEnd {
 			p.getVisitante().setNombre(resultados.getString("visitante"));
 			p.getLocal().setEscudo(resultados.getURL("esclocal"));
 			p.getVisitante().setEscudo(resultados.getURL("escvisit"));
+			p.setCoefLocal(resultados.getDouble("PARTIDOS.CoefLocal"));
+			p.setCoefEmpate(resultados.getDouble("PARTIDOS.CoefEmpate"));
+			p.setCoefVisitante(resultados.getDouble("PARTIDOS.CoefVisitante"));
 			lista.add(p);
 		}
 		resultados.close();
@@ -74,7 +78,8 @@ public class SQLFrontEnd {
 		stat = base.createStatement();
 		
 		resultado = stat.executeQuery("SELECT PARTIDOS.idPartidos, PARTIDOS.idJornada, PARTIDOS.Fecha, PARTIDOS.GolesLocal, PARTIDOS.GolesVisitante, "
-				+ "PARTIDOS.idLocal, eq_local.Nombre as local, PARTIDOS.idVisitante, eq_visit.Nombre as visitante , eq_local.Escudo as esclocal, eq_visit.Escudo as escvisit "
+				+ "PARTIDOS.idLocal, eq_local.Nombre as local, PARTIDOS.idVisitante, eq_visit.Nombre as visitante , eq_local.Escudo as esclocal, eq_visit.Escudo as escvisit, "
+				+ "PARTIDOS.CoefLocal, PARTIDOS.CoefEmpate, PARTIDOS.CoefVisitante "
 				+ "FROM PARTIDOS "
 				+ "INNER JOIN mordorbet.EQUIPOS eq_local ON PARTIDOS.idLocal = eq_local.idEquipos " 
 				+ "INNER JOIN mordorbet.EQUIPOS eq_visit ON PARTIDOS.idVisitante = eq_visit.idEquipos "
@@ -89,8 +94,11 @@ public class SQLFrontEnd {
 			p.getVisitante().setIdEquipo(resultado.getInt("eq_local.Nombre"));
 			p.getLocal().setNombre(resultado.getString("PARTIDOS.idVisitante"));
 			p.getVisitante().setNombre(resultado.getString("eq_visit.Nombre"));
-			p.getLocal().setEscudo(resultado.getURL("eq_local.Escudo"));
-			p.getVisitante().setEscudo(resultado.getURL("eq_visit.Escudo"));
+			p.getLocal().setEscudo(resultado.getURL("esclocal"));
+			p.getVisitante().setEscudo(resultado.getURL("escvisit"));
+			p.setCoefLocal(resultado.getDouble("PARTIDOS.CoefLocal"));
+			p.setCoefEmpate(resultado.getDouble("PARTIDOS.CoefEmpate"));
+			p.setCoefVisitante(resultado.getDouble("PARTIDOS.CoefVisitante"));
 		}
 		resultado.close();
 		stat.close();
@@ -145,7 +153,7 @@ public class SQLFrontEnd {
 	public void crearApuesta(int idUsuario, int idPartido, int tipo, Double apostado, Double coef) throws SQLException{
 		Statement stat;
 		stat = base.createStatement();
-		stat.executeQuery("INSERT INTO APUESTAS (idUsuarios, idPartidos, Apuesta, Premio, Apostado, Coeficiente, Cobrado) "
+		stat.executeUpdate("INSERT INTO APUESTAS (idUsuarios, idPartidos, Apuesta, Premio, Apostado, Coeficiente, Cobrado) "
 				+ "values ("+idUsuario+" , "+idPartido+" , "+tipo+" , "+(apostado*coef)+" , "+apostado+" , "+coef+" , 0);"); 
 		stat.close();
 	}

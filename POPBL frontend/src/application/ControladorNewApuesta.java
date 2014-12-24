@@ -23,6 +23,8 @@ public class ControladorNewApuesta implements Initializable, ControlledScreen {
 	ModeloApuestas modelo;
 	DoubleProperty apostado = new SimpleDoubleProperty(0.0f);
 	DoubleProperty premio = new SimpleDoubleProperty(0.0f);
+	int tipo = -1;
+	Double coef = 0.0;
 	@FXML
 	Button btnAtzera = new Button();
 	@FXML
@@ -60,6 +62,7 @@ public class ControladorNewApuesta implements Initializable, ControlledScreen {
 		try{
 			modelo = ModeloApuestas.getInstance();
 			btnAtzera.setOnAction(event -> goToPrincipal());
+			btnJarraitu.setOnAction(event -> commitApuesta());
 			btnMas.setOnAction(event -> sumaApostado());
 			btnMenos.setOnAction(event -> restaApostado());
 			logoLocal.setImage(new Image(modelo.getPartidoApuesta().getLocal().getEscudo().toString()));
@@ -75,6 +78,18 @@ public class ControladorNewApuesta implements Initializable, ControlledScreen {
 		}catch(ManteniException e){
 			
 		}
+	}
+	private void commitApuesta() {
+		if(tipo != -1){
+			try {
+				modelo.newApuesta(1, modelo.getPartidoApuesta().getIdPartido(), tipo, apostado.get(), coef);
+			} catch (ManteniException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
 	}
 	private void restaApostado() {
 		if(apostado.get() >= 1.0) apostado.set(apostado.get() -1.0);
@@ -92,17 +107,25 @@ public class ControladorNewApuesta implements Initializable, ControlledScreen {
 	}
 	private void actualizaPremio(){
 		if(botonAp1.isSelected()){
-			premio.set(apostado.get()*modelo.getPartidoApuesta().getCoefLocal());
+			tipo = 0;
+			coef = modelo.getPartidoApuesta().getCoefLocal();
+			premio.set(apostado.get()*coef);
 			premioLabel.setText(Double.toString(premio.get()));
 		}else{
 			if(botonApX.isSelected()){
-				premio.set(apostado.get()*modelo.getPartidoApuesta().getCoefEmpate());
+				tipo = 1;
+				coef = modelo.getPartidoApuesta().getCoefEmpate();
+				premio.set(apostado.get()*coef);
 				premioLabel.setText(Double.toString(premio.get()));
 			}else{
 				if(botonAp2.isSelected()){
-					premio.set(apostado.get()*modelo.getPartidoApuesta().getCoefVisitante());
+					tipo = 2;
+					coef = modelo.getPartidoApuesta().getCoefVisitante();
+					premio.set(apostado.get()*coef);
 					premioLabel.setText(Double.toString(premio.get()));
 				}else{
+					tipo = -1;
+					coef = 0.0;
 					premio.set(0.0);
 					premioLabel.setText(Double.toString(premio.get()));
 				}
