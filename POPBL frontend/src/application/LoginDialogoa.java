@@ -47,20 +47,35 @@ public class LoginDialogoa implements Initializable, ControlledScreen {
 	}
 	private void commitLogin() {
 		//Hay que ver como mirar si va a entrar a sus apuestas o a hacer una nueva, por ahora probamos con que va a sus apuestas;
-		
+		int idUser = -1;
 		user = erabiltzailefield.getText();
 		pass = passfield.getText();
+		System.out.println("Entra");
 		try{
-			if(modelo.loginuser(user, pass)){
-				System.out.println("Entra");
+			if(((user.compareTo("")!= 0) && (pass.compareTo("") != 0))){
+			idUser = modelo.loginuser(user, pass);
+			}
+			if(idUser != -1){
+				System.out.println("Entra loginok");
 				erabiltzailefield.setText("");
 				passfield.setText("");
 				loginlabel.setText("Mesedez, sartu zure erabiltzaile eta pasahitza");
-				myController.setScreenNoTrans("apostuak");
-				myController.removeScreenOverlay("login");
+				if(modelo.getDestLogin() == modelo.DEST_NIREAPOSTUAK){
+					modelo.initApuestasUser();
+					myController.loadScreen(ScreensFramework.Mapostuak, ScreensFramework.Mapostuak_FXML);
+					myController.removeScreenOverlay("login");
+					myController.setScreen("apostuak");
+				}else{
+					
+					myController.removeScreenOverlay("login");
+				}
+				
+				//myController.unloadScreen("login");
 			}else{
 				loginlabel.setText("Pasahitza gaizki sartu duzu, saiatu berriz");
 				loginlabel.setTextFill(Color.RED);
+				erabiltzailefield.setText("");
+				passfield.setText("");
 			}
 		}catch(ManteniException e){
 			
@@ -71,6 +86,7 @@ public class LoginDialogoa implements Initializable, ControlledScreen {
 		loginlabel.setText("Mesedez, sartu zure erabiltzaile eta pasahitza");
 		loginlabel.setTextFill(Color.BLACK);
 		myController.removeScreenOverlay("login");
+		myController.unloadScreen("login");
 	}
 
 	

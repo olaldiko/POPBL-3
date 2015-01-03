@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart;
 import application.ManteniException;
 
 public class ModeloApuestas{
@@ -22,7 +23,7 @@ public class ModeloApuestas{
 		}
 	}
 	//Parametros de conexion
-	private final String urlBase = "192.168.1.210";
+	private final String urlBase = "192.168.1.200";
 	private final int puertoBase = 3306;
 	private final String baseBase = "mordorbet";
 	private final String userBase = "frontend";
@@ -34,7 +35,14 @@ public class ModeloApuestas{
 	ObservableList<Partido> partidosprincipal;
 	ObservableList<Liga>	ligas;
 	ObservableList<Partido> partidosemaitzak;
+	ObservableList<PieChart.Data> estadisChart;
 	
+	
+	int destLogin = 0;
+	public final int DEST_NIREAPOSTUAK = 0;
+	public final int DEST_APOSTUBERRI = 1;
+	
+	int idUserLogin = -1;
 	ObjectProperty<Partido> partidoApuesta = new SimpleObjectProperty<Partido>();
 	int diasPartidos = 10;
 	int defaultLiga = 358;
@@ -51,10 +59,9 @@ public class ModeloApuestas{
 			this.initPartidosPr();
 			this.initPartidosEmaitzak();
 		}catch(SQLException e){
-				e.printStackTrace();
-				throw new ManteniException(0);
+				throw new ManteniException(0, e);
 		} catch (ClassNotFoundException e) {
-			    throw new ManteniException(1);
+			    throw new ManteniException(1, e);
 		}
 
 	}
@@ -89,16 +96,14 @@ public class ModeloApuestas{
 			this.ligas = bd.getLigas();
 			assert this.ligas != null;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new ManteniException(3);
+			throw new ManteniException(3, e);
 		}
 	}
 	public void initPartidosPr() throws ManteniException{
 		try {
 			this.partidosprincipal = bd.getPartidos(diasPartidos, defaultLiga, false);
 		}catch(SQLException e){
-			e.printStackTrace();
-			throw new ManteniException(3);
+			throw new ManteniException(3, e);
 		}
 	}
 	public void initPartidosEmaitzak() throws ManteniException{
@@ -106,33 +111,51 @@ public class ModeloApuestas{
 			this.partidosemaitzak = bd.getPartidos(diasPartidos, defaultLiga, true);
 			if(partidosemaitzak == null)System.out.println("Partidosemaitzak es null");
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new ManteniException(3);
+			throw new ManteniException(3,e);
 		}
 	}
 	public void updatePartidosPr(int ligaselect) throws ManteniException{
 		try {
 			this.partidosprincipal.setAll(bd.getPartidos(diasPartidos, ligaselect, false));
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new ManteniException(3);
+			throw new ManteniException(3, e);
 		}
+	}
+	public void initApuestasUser() throws ManteniException{
+		try {
+			this.apuestasuser = bd.getApuestas(idUserLogin);
+		} catch (SQLException e) {
+			throw new ManteniException(3, e);
+		}
+		
 	}
 	public void updatePartidosEmaitzak(int ligaselect) throws ManteniException{
 		try {
 			this.partidosemaitzak.setAll(bd.getPartidos(diasPartidos, ligaselect, true));
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new ManteniException(3);
+			throw new ManteniException(3, e);
 		}
 	}
 	public void newApuesta(int idUsuario, int idPartido, int tipo, Double apostado, Double coef) throws ManteniException{
 		try {
 			bd.crearApuesta(idUsuario, idPartido, tipo, apostado, coef);
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new ManteniException(4);
+			throw new ManteniException(4, e);
 		}
+	}
+	public void loadEstadisticas() throws ManteniException{
+		Estadisticas estadis = new Estadisticas();
+		try{
+			estadis.setGanadas(bd.getApuestasGanadas(idUserLogin));
+			estadis.setPendientes(bd.getApuestasPendientes(idUserLogin));
+			estadis.setPerdidas(bd.getApuestasPerdidas(idUserLogin)); 
+			estadisChart = estadis.estadisToPie();
+		}catch(SQLException e){
+			throw new ManteniException(3, e);
+		}
+	}
+	public ObservableList<PieChart.Data> getEstadisticasUser(){
+		return estadisChart;
 	}
 	public void setPartidoApuesta(Partido p){
 		partidoApuesta.set(p);
@@ -140,13 +163,22 @@ public class ModeloApuestas{
 	public Partido getPartidoApuesta(){
 		return partidoApuesta.get();
 	}
-	public boolean loginuser(String user, String pass) throws ManteniException{
-		boolean resultado = false;
+	public int loginuser(String user, String pass) throws ManteniException{
 			try{
-			resultado = bd.loginUser(user, pass);
+			idUserLogin = bd.loginUser(user, pass);
 			}catch(SQLException e){
-				throw new ManteniException(2);
+				throw new ManteniException(2, e);
 			}
-		return resultado;
+		return idUserLogin;
 	}
+	public void setDestLogin(final int i){
+		destLogin = i;
+	}
+	public int getDestLogin(){
+		return destLogin;
+	}
+	public int getIdUserLogin(){
+		return idUserLogin;
+	}
+
 }

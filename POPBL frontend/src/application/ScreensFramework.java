@@ -76,11 +76,11 @@ public class ScreensFramework extends Application {
         	
         }
         mainContainer.loadScreen(ScreensFramework.MPrincipal, ScreensFramework.MPrincipal_FXML);
-        mainContainer.loadScreen(ScreensFramework.Mapostuak, ScreensFramework.Mapostuak_FXML);
+        //mainContainer.loadScreen(ScreensFramework.Mapostuak, ScreensFramework.Mapostuak_FXML);
         mainContainer.loadScreen(ScreensFramework.MErregistroa, ScreensFramework.MErregistroa_FXML);
         mainContainer.loadScreen(ScreensFramework.MEmaitzak, ScreensFramework.MEmaitzak_FXML);
         //mainContainer.loadScreen(ScreensFramework.NewApuesta, ScreensFramework.NewApuesta_FXML);
-        mainContainer.loadScreen(ScreensFramework.Login, ScreensFramework.Login_FXML);
+       // mainContainer.loadScreen(ScreensFramework.Login, ScreensFramework.Login_FXML);
         mainContainer.setScreen(ScreensFramework.MPrincipal);
         
         Group root = new Group();
@@ -88,7 +88,7 @@ public class ScreensFramework extends Application {
         Scene scene = new Scene(root);
         //File css = new File("bin/vistas/dark.css");
         //scene.getStylesheets().clear();
-        //scene.getStylesheets().add("file:///JMetroDarkTheme.css");
+        scene.getStylesheets().add("file:///dark.css");
         primaryStage.setWidth(768f);
         primaryStage.setHeight(1024f);
         //primaryStage.initStyle(StageStyle.UNDECORATED);

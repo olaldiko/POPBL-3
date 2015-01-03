@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="1024.0" maxWidth="768.0" minHeight="1024.0" minWidth="768.0" prefHeight="1024.0" prefWidth="768.0" styleClass="#panel-bg" stylesheets="@../../../../../../../dark.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControladorNewApuesta">
+<AnchorPane maxHeight="1024.0" maxWidth="768.0" minHeight="1024.0" minWidth="768.0" prefHeight="1024.0" prefWidth="768.0" style="-fx-background-color: #404040;" styleClass="#panel-bg" stylesheets="@../../../../../../../dark.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControladorNewApuesta">
    <children>
       <Button fx:id="btnAtzera" layoutX="51.0" layoutY="44.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="178.0" text="Atzera">
          <effect>
@@ -50,7 +50,7 @@
          </toggleGroup>
       </ToggleButton>
       <ToggleButton fx:id="botonAp2" layoutX="514.0" layoutY="502.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="130.0" text="ToggleButton" toggleGroup="$btapuestas" />
-      <ToggleButton fx:id="botonApX" layoutX="309.0" layoutY="502.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="130.0" text="ToggleButton" toggleGroup="$btapuestas" />
+      <ToggleButton fx:id="botonApX" layoutX="309.0" layoutY="502.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="130.0" selected="true" text="ToggleButton" toggleGroup="$btapuestas" />
       <Label layoutX="158.0" layoutY="466.0" text="1">
          <font>
             <Font name="Arial Bold" size="18.0" />

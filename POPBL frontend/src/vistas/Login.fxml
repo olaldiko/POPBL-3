@@ -11,19 +11,19 @@
 
 <AnchorPane maxHeight="1024.0" maxWidth="768.0" minHeight="1024.0" minWidth="768.0" prefHeight="1024.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginDialogoa">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="1024.0" opacity="0.5" stroke="#ffffff00" strokeType="INSIDE" width="768.0">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="1024.0" opacity="0.5" stroke="#ffffff00" strokeType="INSIDE" style="-fx-fill: #404040;" width="768.0">
          <effect>
             <BoxBlur />
          </effect>
       </Rectangle>
       <AnchorPane layoutY="283.0" prefHeight="500.0" prefWidth="768.0">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="500.0" layoutY="-3.0" stroke="BLACK" strokeType="INSIDE" width="768.0">
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="500.0" layoutY="-3.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: #404040;" width="768.0">
                <effect>
                   <DropShadow height="69.57" radius="37.317499999999995" width="81.7" />
                </effect>
             </Rectangle>
-            <Label fx:id="loginLabel" layoutX="34.0" layoutY="14.0" prefHeight="83.0" prefWidth="690.0" text="Mesedez, sartu zure erabiltzaile eta pasahitza" textAlignment="CENTER">
+            <Label fx:id="loginlabel" layoutX="34.0" layoutY="14.0" prefHeight="83.0" prefWidth="690.0" text="Mesedez, sartu zure erabiltzaile eta pasahitza" wrapText="true">
                <font>
                   <Font name="Arial Bold" size="32.0" />
                </font>

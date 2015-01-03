@@ -82,7 +82,7 @@ public class ControladorNewApuesta implements Initializable, ControlledScreen {
 	private void commitApuesta() {
 		if(tipo != -1){
 			try {
-				modelo.newApuesta(1, modelo.getPartidoApuesta().getIdPartido(), tipo, apostado.get(), coef);
+				modelo.newApuesta(2, modelo.getPartidoApuesta().getIdPartido(), tipo, apostado.get(), coef);
 			} catch (ManteniException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

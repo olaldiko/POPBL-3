@@ -12,5 +12,11 @@ public class ManteniException extends Exception{
 	public ManteniException(int tipo){
 		super();
 		this.tipo = tipo;
+		
+	}
+	public ManteniException(int tipo, Exception e){
+		super();
+		this.tipo = tipo;
+		e.printStackTrace();
 	}
 }

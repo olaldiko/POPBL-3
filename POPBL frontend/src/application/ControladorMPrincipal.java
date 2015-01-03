@@ -62,7 +62,7 @@ public class ControladorMPrincipal implements Initializable, ControlledScreen {
 		ligaselect.setOnAction(event -> cambioLigas());
 		
 		tablapartidos.getSelectionModel().selectedItemProperty().addListener(
-	            (observable, oldValue, newValue) -> nuevaApuesta(newValue));
+	            (observable, oldValue, newValue) -> {if(newValue != null)nuevaApuesta(newValue);});
 		colFecha.setCellValueFactory(cellData -> cellData.getValue().getFechaProperty());
 		colLocal.setCellValueFactory(cellData -> cellData.getValue().getLocal().getNombreProperty());
 		colVisit.setCellValueFactory(cellData -> cellData.getValue().getVisitante().getNombreProperty());
@@ -94,10 +94,13 @@ public class ControladorMPrincipal implements Initializable, ControlledScreen {
 		myController.setScreen("erregistroa");
 	}
 	public void goToApostuak(){
+		myController.loadScreen(ScreensFramework.Login, ScreensFramework.Login_FXML);
+		modelo.setDestLogin(modelo.DEST_NIREAPOSTUAK);
 		myController.setScreenOverlay("login");
 	}
 	public void nuevaApuesta(Partido p){
 		modelo.setPartidoApuesta(p);
+		modelo.setDestLogin(modelo.DEST_APOSTUBERRI);
 		myController.unloadScreen("newApuesta");
 		myController.loadScreen("newApuesta", "../vistas/NewApuesta.fxml");
 		myController.setScreen("newApuesta");

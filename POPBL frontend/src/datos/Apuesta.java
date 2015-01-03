@@ -3,17 +3,32 @@ package datos;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 
 public class Apuesta {
 IntegerProperty idApuesta, idUsuario, idPartido, tipoApuesta;
 DoubleProperty premio, apostado, coeficiente;
-Partido partido;
-BooleanProperty cobrado;
+ObjectProperty<Partido> partido;
+BooleanProperty cobrado, ganado, vigente;
 	
+	public Apuesta(){
+		idApuesta = new SimpleIntegerProperty();
+		idUsuario = new SimpleIntegerProperty();
+		idPartido = new SimpleIntegerProperty();
+		tipoApuesta = new SimpleIntegerProperty();
+		premio = new SimpleDoubleProperty();
+		apostado = new SimpleDoubleProperty();
+		coeficiente = new SimpleDoubleProperty();
+		partido = new SimpleObjectProperty<>();
+		cobrado = new SimpleBooleanProperty();
+		ganado = new SimpleBooleanProperty();
+		vigente = new SimpleBooleanProperty();
+	}
 	public int getTipoApuesta() {
 		return tipoApuesta.get();
 	}
@@ -22,57 +37,84 @@ BooleanProperty cobrado;
 		this.tipoApuesta.set(tipoApuesta);
 	}
 	public Partido getPartido() {
-		return partido;
+		return partido.get();
 	}
-	
+	public ObjectProperty<Partido> getPartidoProperty(){
+		return this.partido;
+	}
 	public void setPartido(Partido partido) {
-		this.partido = partido;
+		this.partido.set(partido);
 	}
 	
 	public void setIdApuesta(int idApuesta) {
-		this.idApuesta = new SimpleIntegerProperty(idApuesta);
+		this.idApuesta.set(idApuesta);
 	}
 	
 	public void setIdUsuario(int idUsuario) {
-		this.idUsuario = new SimpleIntegerProperty(idUsuario);
+		this.idUsuario.set(idUsuario);
 	}
 	
 	public void setIdPartido(int idPartido) {
-		this.idPartido = new SimpleIntegerProperty(idPartido);
+		this.idPartido.set(idPartido);
 	}
 	
 	public Double getPremio() {
 		return premio.get();
 	}
-
+	public DoubleProperty getPremioProperty(){
+		return premio;
+	}
 	public void setPremio(Double premio) {
-		this.premio = new SimpleDoubleProperty(premio);
+		this.premio.set(premio);
 	}
 
 	public Double getApostado() {
 		return apostado.get();
 	}
-
+	public DoubleProperty getApostadoProperty(){
+		return apostado;
+	}
 	public void setApostado(Double apostado) {
-		this.apostado = new SimpleDoubleProperty(apostado);
+		this.apostado.set(apostado);
 	}
 
 	public Double getCoeficiente() {
 		return coeficiente.get();
 	}
-
-	public void setCoeficiente(Double coeficiente) {
-		this.coeficiente = new SimpleDoubleProperty(coeficiente);
+	public DoubleProperty getCoeficienteProperty(){
+		return coeficiente;
 	}
-
+	public void setCoeficiente(Double coeficiente) {
+		this.coeficiente.set(coeficiente);
+	}
+	
 	public boolean isCobrado() {
 		return cobrado.get();
 	}
-
-	public void setCobrado(boolean cobrado) {
-		this.cobrado = new SimpleBooleanProperty(cobrado);
+	public BooleanProperty getCobradoProperty(){
+		return cobrado;
 	}
-
+	public void setCobrado(boolean cobrado) {
+		this.cobrado.set(cobrado);
+	}
+	public boolean isVigente(){
+		return vigente.get();
+	}
+	public BooleanProperty isVigenteProperty(){
+		return vigente;
+	}
+	public void setVigente(boolean vigente){
+		this.vigente.set(vigente);
+	}
+	public boolean isGanado(){
+		return ganado.get();
+	}
+	public BooleanProperty isGanadoProperty(){
+		return ganado;
+	}
+	public void setGanado(boolean ganado){
+		this.ganado.set(ganado);
+	}
 	public int getIdApuesta() {
 		return idApuesta.get();
 	}

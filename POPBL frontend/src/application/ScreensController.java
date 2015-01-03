@@ -136,8 +136,7 @@ public class ScreensController  extends StackPane {
         public boolean setScreenOverlay(final String name) {       
             if (screens.get(name) != null) {   //screen loaded
                 final DoubleProperty opacity = opacityProperty();
-                            getChildren().add(pantallas, screens.get(name));     //add the screen
-                            pantallas++;
+                            getChildren().add(screens.get(name));    //add the screen
                             Timeline fadeIn = new Timeline(
                                     new KeyFrame(Duration.ZERO, new KeyValue(opacity, 0.0)),
                                     new KeyFrame(new Duration(300), new KeyValue(opacity, 1.0)));
@@ -156,8 +155,7 @@ public class ScreensController  extends StackPane {
                             new KeyFrame(Duration.ZERO, new KeyValue(opacity, 0.0)),
                             new KeyFrame(new Duration(300), new KeyValue(opacity, 0.0)));
                     		//fade.play();
-                            getChildren().remove(pantallas);	//Borramos la anterior
-                            pantallas--;
+                            getChildren().remove(screens.get(name));	//Borramos la anterior
                             // getChildren().add(1, screens.get(name));     //No metemos otra
                 return true;
             } else {
@@ -168,9 +166,7 @@ public class ScreensController  extends StackPane {
         public boolean setScreenNoTrans(final String name){
         	if(screens.get(name) != null){
         		if(!getChildren().isEmpty()){
-        		getChildren().remove(0);
-        		}else{
-        			pantallas++;
+        			getChildren().remove(0);
         		}
         		getChildren().add(0, screens.get(name));
         		return true;
