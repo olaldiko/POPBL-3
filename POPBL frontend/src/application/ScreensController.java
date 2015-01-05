@@ -66,6 +66,7 @@ public class ScreensController  extends StackPane {
     
     public ScreensController() {
         super();
+        ManteniException.setScreenParent(this);
     }
     
     //Add the screen to the collection

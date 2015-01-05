@@ -66,6 +66,8 @@ public class ScreensFramework extends Application {
     public static final String NewApuesta_FXML = "../vistas/NewApuesta.fxml";
     public static final String Login = "login";
     public static final String Login_FXML = "../vistas/Login.fxml";
+    public static final String Manteni = "manteni";
+    public static final String Manteni_FXML = "../vistas/ManteniScreen.fxml";
     @Override
     public void start(Stage primaryStage) {
     	

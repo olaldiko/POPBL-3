@@ -76,7 +76,7 @@ public class ControladorNewApuesta implements Initializable, ControlledScreen {
 			botonApX.setOnAction(event -> actualizaPremio());
 			botonAp2.setOnAction(event -> actualizaPremio());
 		}catch(ManteniException e){
-			
+			e.printStackTrace();
 		}
 	}
 	private void commitApuesta() {

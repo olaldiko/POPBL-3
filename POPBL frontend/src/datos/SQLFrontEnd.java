@@ -32,7 +32,6 @@ public class SQLFrontEnd {
 		ObservableList<Partido> lista = FXCollections.observableArrayList(partidos);
 		Statement stat;
 		ResultSet resultados;
-		ResultSetMetaData meta;
 		Partido p;
 		String queryjugados;
 		if(jugados){
@@ -48,7 +47,6 @@ public class SQLFrontEnd {
 				+ "INNER JOIN mordorbet.EQUIPOS eq_local ON PARTIDOS.idLocal = eq_local.idEquipos " 
 				+ "INNER JOIN mordorbet.EQUIPOS eq_visit ON PARTIDOS.idVisitante = eq_visit.idEquipos "
 				+ "WHERE  (DATEDIFF(PARTIDOS.Fecha , DATE_ADD(CURDATE(), INTERVAL "+dias+" DAY) )< "+dias+") AND ((eq_local.idLiga = "+idLiga+") OR (eq_visit.idLiga = "+idLiga+")) AND "+queryjugados+" ;");
-		meta = resultados.getMetaData();
 		while(resultados.next()){
 			p = new Partido();
 			p.setIdPartido(resultados.getInt("PARTIDOS.idPartidos"));
@@ -173,10 +171,8 @@ public class SQLFrontEnd {
 		ObservableList<Liga> lista = FXCollections.observableArrayList(ligas);
 		Statement stat;
 		ResultSet resultados;
-		ResultSetMetaData meta;
 		stat = base.createStatement();
 		resultados = stat.executeQuery("SELECT * FROM LIGAS;");
-		meta = resultados.getMetaData();
 		while(resultados.next()){
 			l = new Liga();
 			l.setIdLiga(resultados.getInt(1));
@@ -218,5 +214,13 @@ public class SQLFrontEnd {
 			stat.close();
 			return idUser;
 		}
+	}
+	public void addUser(String nick, String nombre, String apellido, String email, String pass, int idal) throws SQLException{
+		Statement stat;
+		stat = base.createStatement();
+		//TODO: Por ahora en la base no metemos nombre y apellidos, dejo para luego, asi como verificar que no hay user con mismo nombre(hacer primary key a username?);
+		stat.executeUpdate("INSERT INTO USUARIOS (username, Password, Dinero, Correo, idal)"
+				+ "values('"+nick+"', '"+pass+"', 0, '"+email+"' , "+idal+");");
+		stat.close();
 	}
 }

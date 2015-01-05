@@ -180,5 +180,11 @@ public class ModeloApuestas{
 	public int getIdUserLogin(){
 		return idUserLogin;
 	}
-
+	public void addUser(String user, String pass, String nombre, String apellido, String email, int idal) throws ManteniException{
+		try {
+			bd.addUser(user, nombre, apellido, email, pass, idal);
+		} catch (SQLException e) {
+			throw new ManteniException(3, e);
+		}
+	}
 }

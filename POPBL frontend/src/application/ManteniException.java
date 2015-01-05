@@ -9,6 +9,11 @@ public class ManteniException extends Exception{
 	 */
 	private static final long serialVersionUID = 2282394114341023674L;
 	int tipo;
+	static ScreensController myController;
+	public static void setScreenParent(ScreensController screenPage) {
+		myController = screenPage;
+
+	}
 	public ManteniException(int tipo){
 		super();
 		this.tipo = tipo;
@@ -18,5 +23,8 @@ public class ManteniException extends Exception{
 		super();
 		this.tipo = tipo;
 		e.printStackTrace();
+		ControladorManteni.setException(this);
+		myController.loadScreen(ScreensFramework.Manteni, ScreensFramework.Manteni_FXML);
+		myController.setScreen("manteni");
 	}
 }
