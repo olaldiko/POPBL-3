@@ -14,6 +14,12 @@ import javafx.collections.ObservableList;
 
 
 public class SQLFrontEnd {
+	/*TODO: Seria mejor tratar las SQLException aqui para hacer finalys y cerrar las conexiones? 
+	 * Asi se simplificaria ModeloApuestas
+	 * 
+	 */
+	
+	
 	Connection base;
 	
 	public SQLFrontEnd(String URL, int numeroPuerto, String nombreBD, String user, String pass) throws ClassNotFoundException, SQLException {

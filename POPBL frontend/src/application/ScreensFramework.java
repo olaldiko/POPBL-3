@@ -46,6 +46,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import datos.ModeloApuestas;
 
 /**
@@ -93,8 +94,8 @@ public class ScreensFramework extends Application {
         scene.getStylesheets().add("file:///dark.css");
         primaryStage.setWidth(768f);
         primaryStage.setHeight(1024f);
-        //primaryStage.initStyle(StageStyle.UNDECORATED);
-       // primaryStage.setFullScreen(true);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+        //primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
