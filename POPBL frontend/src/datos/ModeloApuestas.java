@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
+import javafx.util.Duration;
 import jssc.SerialPortException;
 import application.ManteniException;
 public class ModeloApuestas{
@@ -25,13 +26,13 @@ public class ModeloApuestas{
 		}
 	}
 	//Parametros de conexion y base de datos
-	private final String urlBase = "olaldiko.mooo.com";
-	private final int puertoBase = 23306;
+	private final String urlBase = "192.168.1.210";
+	private final int puertoBase = 3306;
 	private final String baseBase = "mordorbet";
 	private final String userBase = "frontend";
 	private final String passBase = "frontend";
 	private SQLFrontEnd bd;
-	
+	private ServicioUpdate servicio = new ServicioUpdate();
 	//Apuestas usuario
 	ObservableList<Apuesta> apuestasuser;
 	ObservableList<PieChart.Data> estadisChart;
@@ -55,7 +56,7 @@ public class ModeloApuestas{
 	
 	
 	//Interface Serial
-	private final String puertoserie = "COM1";
+	private final String puertoserie = "/dev/tty.usbmodem1411";
 	private SerialIO serial;
 	
 	//Login
@@ -73,15 +74,23 @@ public class ModeloApuestas{
 			this.initLigas();
 			this.initPartidosPr();
 			this.initPartidosEmaitzak();
-			this.serial = SerialIO.getInstance();
+			this.initSerial();
 			this.serial.bindDirua(dirua);
-			
+			this.servicio.setDelay(Duration.seconds(60));
+			this.servicio.setPeriod(Duration.seconds(60));
+			this.servicio.start();
 		}catch(SQLException e){
 				throw new ManteniException(0, e);
 		} catch (ClassNotFoundException e) {
 			    throw new ManteniException(1, e);
+		}
+		
+	}
+	public void initSerial() throws ManteniException{
+		try {
+			serial = new SerialIO(puertoserie);
 		} catch (SerialPortException e) {
-				throw new ManteniException(5, e);
+			throw new ManteniException(5, e);
 		}
 		
 	}
@@ -134,13 +143,7 @@ public class ModeloApuestas{
 			throw new ManteniException(3,e);
 		}
 	}
-	public void updatePartidosPr(int ligaselect) throws ManteniException{
-		try {
-			this.partidosprincipal.setAll(bd.getPartidos(diasPartidos, ligaselect, false));
-		} catch (SQLException e) {
-			throw new ManteniException(3, e);
-		}
-	}
+
 	public void initApuestasUser() throws ManteniException{
 		try {
 			this.apuestasuser = bd.getApuestas(idUserLogin);
@@ -148,6 +151,13 @@ public class ModeloApuestas{
 			throw new ManteniException(3, e);
 		}
 		
+	}
+	public void updatePartidosPr(int ligaselect) throws ManteniException{
+		try {
+			this.partidosprincipal.setAll(bd.getPartidos(diasPartidos, ligaselect, false));
+		} catch (SQLException e) {
+			throw new ManteniException(3, e);
+		}
 	}
 	public void updatePartidosEmaitzak(int ligaselect) throws ManteniException{
 		try {
@@ -222,12 +232,12 @@ public class ModeloApuestas{
 		return dirua;
 	}
 	public void setDirua(Double d){
-	
+		dirua.set(d);
 	}
 	public void setApuestaInProgress(Double apostado, int tipo){
 		apuestaInProgress = new Apuesta();
 		apuestaInProgress.setApostado(apostado);
 		apuestaInProgress.setCobrado(false);
-		//apuestaInProgress.setPartido();
+		apuestaInProgress.setPartido(partidoApuesta.get());
 	}
 }

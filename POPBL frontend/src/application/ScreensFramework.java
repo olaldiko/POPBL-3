@@ -69,6 +69,10 @@ public class ScreensFramework extends Application {
     public static final String Login_FXML = "../vistas/Login.fxml";
     public static final String Manteni = "manteni";
     public static final String Manteni_FXML = "../vistas/ManteniScreen.fxml";
+    public static final String InsertDiru = "insertDiru";
+    public static final String InsertDiru_FXML = "../vistas/InsertDiru.fxml";
+    public static final String ConfirmApuesta = "confirmApuesta";
+    public static final String ConfirmApuesta_FXML = "../vistas/ConfirmApuesta.fxml";
     @Override
     public void start(Stage primaryStage) {
     	
@@ -79,11 +83,8 @@ public class ScreensFramework extends Application {
         	
         }
         mainContainer.loadScreen(ScreensFramework.MPrincipal, ScreensFramework.MPrincipal_FXML);
-        //mainContainer.loadScreen(ScreensFramework.Mapostuak, ScreensFramework.Mapostuak_FXML);
         mainContainer.loadScreen(ScreensFramework.MErregistroa, ScreensFramework.MErregistroa_FXML);
         mainContainer.loadScreen(ScreensFramework.MEmaitzak, ScreensFramework.MEmaitzak_FXML);
-        //mainContainer.loadScreen(ScreensFramework.NewApuesta, ScreensFramework.NewApuesta_FXML);
-       // mainContainer.loadScreen(ScreensFramework.Login, ScreensFramework.Login_FXML);
         mainContainer.setScreen(ScreensFramework.MPrincipal);
         
         Group root = new Group();
@@ -94,7 +95,7 @@ public class ScreensFramework extends Application {
         scene.getStylesheets().add("file:///dark.css");
         primaryStage.setWidth(768f);
         primaryStage.setHeight(1024f);
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+        //primaryStage.initStyle(StageStyle.UNDECORATED);
         //primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
         primaryStage.show();

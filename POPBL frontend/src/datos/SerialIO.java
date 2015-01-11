@@ -12,25 +12,17 @@ import jssc.SerialPortException;
 
 public class SerialIO implements MakinaIO, SerialPortEventListener {
 	
-	static SerialIO serial;
 	DoubleProperty dirua = new SimpleDoubleProperty(0.0);
 	Double dirueeskatua;
 	SerialPort puertoSerie;
-	private SerialIO() throws SerialPortException{
-		puertoSerie = new SerialPort("/dev/tty.usbmodem1411");
+	public SerialIO(String puerto) throws SerialPortException{
+		puertoSerie = new SerialPort(puerto);
 		puertoSerie.openPort();
 		puertoSerie.setParams(SerialPort.BAUDRATE_9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 		puertoSerie.setEventsMask(SerialPort.MASK_RXCHAR);
 		puertoSerie.addEventListener(this);
 	}
-	public static SerialIO getInstance() throws SerialPortException{
-		if(serial == null){
-			serial = new SerialIO();
-			return serial;
-		}else{
-			return serial;
-		}
-	}
+
 
 	@Override
 	public void serialEvent(SerialPortEvent event){
@@ -42,12 +34,15 @@ public class SerialIO implements MakinaIO, SerialPortEventListener {
 					switch(buffer[i]){
 					case 1:
 						dirua.set(dirua.get()+0.5);
+						System.out.println("Recibe 50 cent "+dirua.get());
 						break;
 					case 2:
 						dirua.set(dirua.get()+1);
+						System.out.println("Recibe 1 euro"+dirua.get());
 						break;
 					case 4:
 						dirua.set(dirua.get()+2);
+						System.out.println("Recibe 2 euros"+dirua.get());
 						break;
 					}
 				}

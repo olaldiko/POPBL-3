@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="1024.0" maxWidth="768.0" minHeight="1024.0" minWidth="768.0" prefHeight="1024.0" prefWidth="768.0" style="-fx-background-color: #404040;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="ControladorInsertDiru">
+<AnchorPane maxHeight="1024.0" maxWidth="768.0" minHeight="1024.0" minWidth="768.0" prefHeight="1024.0" prefWidth="768.0" style="-fx-background-color: #404040;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControladorInsertDiru">
    <children>
       <ImageView fitHeight="107.0" fitWidth="278.0" layoutX="477.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -24,43 +23,35 @@
             <Font name="Arial Bold" size="26.0" />
          </font>
       </Button>
-      <ProgressIndicator fx:id="diruProgress" layoutX="294.0" layoutY="401.0" prefHeight="171.0" prefWidth="211.0" progress="0.0">
+      <ProgressIndicator fx:id="diruProgress" layoutX="279.0" layoutY="512.0" prefHeight="171.0" prefWidth="211.0" progress="0.0">
          <effect>
             <DropShadow />
          </effect>
       </ProgressIndicator>
-      <Label layoutX="163.0" layoutY="231.0" prefHeight="36.0" prefWidth="472.0" text="Mesedez, sartu dirua makinan:" textAlignment="CENTER">
+      <Label layoutX="148.0" layoutY="342.0" prefHeight="36.0" prefWidth="472.0" text="Mesedez, sartu dirua makinan:" textAlignment="CENTER">
          <font>
             <Font name="Arial Bold" size="31.0" />
          </font>
       </Label>
-      <Label layoutX="120.0" layoutY="378.0" text="Sartutakoa">
+      <Label layoutX="105.0" layoutY="489.0" text="Sartutakoa">
          <font>
             <Font name="Arial" size="26.0" />
          </font>
       </Label>
-      <Label layoutX="537.0" layoutY="378.0" prefHeight="31.0" prefWidth="156.0" text="Eskatutakoa">
+      <Label layoutX="522.0" layoutY="489.0" prefHeight="31.0" prefWidth="156.0" text="Eskatutakoa">
          <font>
             <Font name="Arial" size="26.0" />
          </font>
       </Label>
-      <Label fx:id="sartuaLabel" alignment="CENTER" layoutX="105.0" layoutY="423.0" prefHeight="131.0" prefWidth="156.0" text="0.0" textAlignment="CENTER">
+      <Label fx:id="sartuaLabel" alignment="CENTER" layoutX="90.0" layoutY="534.0" prefHeight="131.0" prefWidth="156.0" text="0.0" textAlignment="CENTER">
          <font>
             <Font name="Arial" size="44.0" />
          </font>
       </Label>
-      <Label fx:id="eskatuaLabel" alignment="CENTER" layoutX="540.0" layoutY="421.0" prefHeight="131.0" prefWidth="141.0" text="0.0">
+      <Label fx:id="eskatuaLabel" alignment="CENTER" layoutX="525.0" layoutY="532.0" prefHeight="131.0" prefWidth="141.0" text="0.0">
          <font>
             <Font name="Arial" size="44.0" />
          </font>
       </Label>
-      <Button fx:id="btnJarraitu" layoutX="76.0" layoutY="635.0" mnemonicParsing="false" prefHeight="113.0" prefWidth="639.0" text="Jarraitu">
-         <font>
-            <Font name="Arial" size="63.0" />
-         </font>
-         <effect>
-            <Reflection />
-         </effect>
-      </Button>
    </children>
 </AnchorPane>

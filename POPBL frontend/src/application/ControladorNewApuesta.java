@@ -82,7 +82,11 @@ public class ControladorNewApuesta implements Initializable, ControlledScreen {
 	private void commitApuesta() {
 		if(tipo != -1){
 			modelo.setDestLogin(ModeloApuestas.DEST_APOSTUBERRI);
-			
+			modelo.setApuestaInProgress(apostado.get(), tipo);
+			if(myController.getScreen("login") == null){
+				myController.loadScreen(ScreensFramework.Login, ScreensFramework.Login_FXML);
+			}
+			myController.setScreenOverlay("login");
 		}
 		
 		

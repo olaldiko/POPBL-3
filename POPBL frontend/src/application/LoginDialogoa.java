@@ -46,7 +46,6 @@ public class LoginDialogoa implements Initializable, ControlledScreen {
 		erabiltzailefield.setEditable(true);
 	}
 	private void commitLogin() {
-		//Hay que ver como mirar si va a entrar a sus apuestas o a hacer una nueva, por ahora probamos con que va a sus apuestas;
 		int idUser = -1;
 		user = erabiltzailefield.getText();
 		pass = passfield.getText();
@@ -60,13 +59,17 @@ public class LoginDialogoa implements Initializable, ControlledScreen {
 				erabiltzailefield.setText("");
 				passfield.setText("");
 				loginlabel.setText("Mesedez, sartu zure erabiltzaile eta pasahitza");
-				if(modelo.getDestLogin() == modelo.DEST_NIREAPOSTUAK){
+				if(modelo.getDestLogin() == ModeloApuestas.DEST_NIREAPOSTUAK){
 					modelo.initApuestasUser();
 					myController.loadScreen(ScreensFramework.Mapostuak, ScreensFramework.Mapostuak_FXML);
 					myController.removeScreenOverlay("login");
 					myController.setScreen("apostuak");
 				}else{
-					
+					if(modelo.getDestLogin() == ModeloApuestas.DEST_APOSTUBERRI){
+						myController.loadScreen(ScreensFramework.InsertDiru, ScreensFramework.InsertDiru_FXML);
+						myController.removeScreenOverlay("login");
+						myController.setScreen("insertDiru");
+					}
 					myController.removeScreenOverlay("login");
 				}
 				
