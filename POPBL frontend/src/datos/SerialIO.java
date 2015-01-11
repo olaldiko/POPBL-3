@@ -17,19 +17,15 @@ public class SerialIO implements MakinaIO, SerialPortEventListener {
 	Double dirueeskatua;
 	SerialPort puertoSerie;
 	private SerialIO() throws SerialPortException{
-		puertoSerie = new SerialPort("COM1");
-		puertoSerie.setParams(SerialPort.BAUDRATE_9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+		puertoSerie = new SerialPort("/dev/tty.usbmodem1411");
 		puertoSerie.openPort();
+		puertoSerie.setParams(SerialPort.BAUDRATE_9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 		puertoSerie.setEventsMask(SerialPort.MASK_RXCHAR);
 		puertoSerie.addEventListener(this);
 	}
-	public static SerialIO getInstance() throws ManteniException{
+	public static SerialIO getInstance() throws SerialPortException{
 		if(serial == null){
-			try {
-				serial = new SerialIO();
-			} catch (SerialPortException e) {
-				throw new ManteniException(5, e);
-			}
+			serial = new SerialIO();
 			return serial;
 		}else{
 			return serial;
@@ -67,20 +63,14 @@ public class SerialIO implements MakinaIO, SerialPortEventListener {
 		return dirua.get();
 	}
 	public void bindDirua(DoubleProperty d){
-		dirua.bind(d);
+		d.bindBidirectional(dirua);
 	}
 	public void resetDirua(){
 		dirua.set(0.0);
 	}
 	@Override
-	public void setArgiak() throws ManteniException {
-		
-		try {
+	public void setArgiak() throws SerialPortException {
 			puertoSerie.writeInt(32);
-		} catch (SerialPortException e) {
-			throw new ManteniException(5, e);
-		}
-		
 	}
 	@Override
 	public void addListener(InvalidationListener listener) {

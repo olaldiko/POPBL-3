@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane maxHeight="1024.0" maxWidth="768.0" minHeight="1024.0" minWidth="768.0" prefHeight="1024.0" prefWidth="768.0" style="-fx-background-color: #404040;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="Controlador">
+<AnchorPane maxHeight="1024.0" maxWidth="768.0" minHeight="1024.0" minWidth="768.0" prefHeight="1024.0" prefWidth="768.0" style="-fx-background-color: #404040;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="ControladorInsertDiru">
    <children>
       <ImageView fitHeight="107.0" fitWidth="278.0" layoutX="477.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
          <image>

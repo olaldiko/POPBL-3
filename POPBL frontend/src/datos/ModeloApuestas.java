@@ -8,8 +8,8 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
+import jssc.SerialPortException;
 import application.ManteniException;
-
 public class ModeloApuestas{
 
 	static ModeloApuestas modelo;
@@ -60,8 +60,8 @@ public class ModeloApuestas{
 	
 	//Login
 	int destLogin = 0;
-	public final int DEST_NIREAPOSTUAK = 0;
-	public final int DEST_APOSTUBERRI = 1;
+	public static final int DEST_NIREAPOSTUAK = 0;
+	public static final int DEST_APOSTUBERRI = 1;
 	int idUserLogin = -1;
 	
 
@@ -80,6 +80,8 @@ public class ModeloApuestas{
 				throw new ManteniException(0, e);
 		} catch (ClassNotFoundException e) {
 			    throw new ManteniException(1, e);
+		} catch (SerialPortException e) {
+				throw new ManteniException(5, e);
 		}
 		
 	}
@@ -173,6 +175,8 @@ public class ModeloApuestas{
 			}
 		}catch(SQLException e){
 			throw new ManteniException(3, e);
+		} catch (SerialPortException e) {
+			throw new ManteniException(5, e);
 		}
 	}
 	public ObservableList<PieChart.Data> getEstadisticasUser(){
@@ -219,5 +223,11 @@ public class ModeloApuestas{
 	}
 	public void setDirua(Double d){
 	
+	}
+	public void setApuestaInProgress(Double apostado, int tipo){
+		apuestaInProgress = new Apuesta();
+		apuestaInProgress.setApostado(apostado);
+		apuestaInProgress.setCobrado(false);
+		//apuestaInProgress.setPartido();
 	}
 }

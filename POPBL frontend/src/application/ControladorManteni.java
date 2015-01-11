@@ -1,5 +1,7 @@
 package application;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -12,6 +14,7 @@ import javafx.scene.text.TextFlow;
 
 public class ControladorManteni implements Initializable, ControlledScreen{
 	ScreensController myController;
+	StringWriter sw = new StringWriter();
 	static ManteniException excepcion;
 	
 	@FXML
@@ -33,14 +36,17 @@ public class ControladorManteni implements Initializable, ControlledScreen{
 	public void initialize(URL location, ResourceBundle resources) {
 		btnDatos.setOnAction(event -> mostrarDatos());
 		errorLabel.setText(Integer.toString(excepcion.tipo));
-		errorText.setText(excepcion.getStackTrace().toString());
+		
 	}
 	private void mostrarDatos() {
+		excepcion.printStackTrace(new PrintWriter(sw));
+		errorText.setText(sw.toString());
 		errorFlow.setOpacity(1.0);
 		errorText.setOpacity(1.0);
 	}
 
 	public static void setException(ManteniException e){
 		excepcion = e;
+		
 	}
 }
