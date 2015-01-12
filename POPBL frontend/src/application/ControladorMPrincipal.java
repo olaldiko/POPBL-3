@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -62,7 +63,12 @@ public class ControladorMPrincipal implements Initializable, ControlledScreen {
 		ligaselect.setOnAction(event -> cambioLigas());
 		
 		tablapartidos.getSelectionModel().selectedItemProperty().addListener(
-	            (observable, oldValue, newValue) -> {if(newValue != null)nuevaApuesta(newValue);});
+	            (observable, oldValue, newValue) -> {
+	            	if(observable.getValue() != null && tablapartidos.isHover()){
+	            		nuevaApuesta(newValue);
+	            	}
+	            
+	            });
 		colFecha.setCellValueFactory(cellData -> cellData.getValue().getFechaProperty());
 		colLocal.setCellValueFactory(cellData -> cellData.getValue().getLocal().getNombreProperty());
 		colVisit.setCellValueFactory(cellData -> cellData.getValue().getVisitante().getNombreProperty());
@@ -104,6 +110,7 @@ public class ControladorMPrincipal implements Initializable, ControlledScreen {
 		myController.unloadScreen("newApuesta");
 		myController.loadScreen("newApuesta", "../vistas/NewApuesta.fxml");
 		myController.setScreen("newApuesta");
+		//Platform.runLater(() -> {tablapartidos.getSelectionModel().clearSelection();});
 	}
 }
 

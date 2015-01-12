@@ -2,6 +2,7 @@ package datos;
 
 import application.MakinaIO;
 import application.ManteniException;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -33,15 +34,21 @@ public class SerialIO implements MakinaIO, SerialPortEventListener {
 				for(int i = 0; i < buffer.length;i++){
 					switch(buffer[i]){
 					case 1:
+						Platform.runLater(() -> {
 						dirua.set(dirua.get()+0.5);
+						});
 						System.out.println("Recibe 50 cent "+dirua.get());
 						break;
 					case 2:
+						Platform.runLater(() -> {
 						dirua.set(dirua.get()+1);
+						});
 						System.out.println("Recibe 1 euro"+dirua.get());
 						break;
 					case 4:
+						Platform.runLater(() -> {
 						dirua.set(dirua.get()+2);
+						});
 						System.out.println("Recibe 2 euros"+dirua.get());
 						break;
 					}
@@ -63,9 +70,20 @@ public class SerialIO implements MakinaIO, SerialPortEventListener {
 	public void resetDirua(){
 		dirua.set(0.0);
 	}
+	public void setDiruaProperty(DoubleProperty d){
+		this.dirua = d;
+	}
 	@Override
 	public void setArgiak() throws SerialPortException {
 			puertoSerie.writeInt(32);
+	}
+	public void addSerialListener(SerialPortEventListener e){
+		try {
+			puertoSerie.addEventListener(e);
+		} catch (SerialPortException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 	@Override
 	public void addListener(InvalidationListener listener) {

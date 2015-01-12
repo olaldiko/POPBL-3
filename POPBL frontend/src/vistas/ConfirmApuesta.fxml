@@ -1,8 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.web.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml">
-	<!-- TODO Add Nodes -->
+<AnchorPane maxHeight="1024.0" maxWidth="768.0" minHeight="1024.0" minWidth="768.0" prefHeight="1024.0" prefWidth="768.0" style="-fx-background-color: #404040;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControladorConfirmApuesta">
+   <children>
+      <ImageView fitHeight="219.0" fitWidth="784.0" layoutX="106.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@logo.png" />
+         </image>
+      </ImageView>
+      <WebView fx:id="boletoWebView" layoutX="34.0" layoutY="411.0" maxHeight="127.0" maxWidth="700.0" minHeight="127.0" minWidth="700.0" prefHeight="127.0" prefWidth="700.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </WebView>
+      <Label alignment="CENTER" layoutX="94.0" layoutY="266.0" prefHeight="62.0" prefWidth="555.0" text="Apostua ondo gauzatu da!" textAlignment="CENTER">
+         <font>
+            <Font name="Arial Bold" size="43.0" />
+         </font>
+         <effect>
+            <Glow level="0.26" />
+         </effect>
+      </Label>
+      <Button fx:id="btnPrint" layoutX="38.0" layoutY="593.0" mnemonicParsing="false" prefHeight="127.0" prefWidth="700.0" text="Inprimatu boletoa">
+         <font>
+            <Font name="Arial Bold" size="65.0" />
+         </font>
+         <effect>
+            <Reflection />
+         </effect>
+      </Button>
+   </children>
 </AnchorPane>
-

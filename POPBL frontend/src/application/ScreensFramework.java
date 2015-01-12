@@ -95,7 +95,7 @@ public class ScreensFramework extends Application {
         scene.getStylesheets().add("file:///dark.css");
         primaryStage.setWidth(768f);
         primaryStage.setHeight(1024f);
-        //primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         //primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
         primaryStage.show();

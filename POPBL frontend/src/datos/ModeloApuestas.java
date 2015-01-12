@@ -1,7 +1,9 @@
 package datos;
 
 import java.sql.SQLException;
+import java.util.ListIterator;
 
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -9,6 +11,9 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
 import javafx.util.Duration;
+import jssc.SerialPort;
+import jssc.SerialPortEvent;
+import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import application.ManteniException;
 public class ModeloApuestas{
@@ -166,9 +171,11 @@ public class ModeloApuestas{
 			throw new ManteniException(3, e);
 		}
 	}
-	public void newApuesta(int idUsuario, int idPartido, int tipo, Double apostado, Double coef) throws ManteniException{
+	public void confirmApuesta() throws ManteniException{
+		int idApuesta = 0;
 		try {
-			bd.crearApuesta(idUsuario, idPartido, tipo, apostado, coef);
+			idApuesta = bd.crearApuesta(apuestaInProgress.getIdUsuario(), apuestaInProgress.partido.get().getIdPartido(), apuestaInProgress.getTipoApuesta(), apuestaInProgress.getApostado(), apuestaInProgress.getCoeficiente());
+			apuestaInProgress.setIdApuesta(idApuesta);
 		} catch (SQLException e) {
 			throw new ManteniException(4, e);
 		}

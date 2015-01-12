@@ -189,12 +189,20 @@ public class SQLFrontEnd {
 		stat.close();
 		return lista;
 	}
-	public void crearApuesta(int idUsuario, int idPartido, int tipo, Double apostado, Double coef) throws SQLException{
+	public int crearApuesta(int idUsuario, int idPartido, int tipo, Double apostado, Double coef) throws SQLException{
 		Statement stat;
+		ResultSet resultado;
+		int idApuesta = 0;
 		stat = base.createStatement();
 		stat.executeUpdate("INSERT INTO APUESTAS (idUsuarios, idPartidos, Apuesta, Premio, Apostado, Coeficiente, Cobrado) "
 				+ "values ("+idUsuario+" , "+idPartido+" , "+tipo+" , "+(apostado*coef)+" , "+apostado+" , "+coef+" , 0);"); 
+		resultado = stat.executeQuery("SELECT LAST_INSERT_ID()");
+		resultado.next();
+		if(resultado.first()){
+			idApuesta = resultado.getInt(1);
+		}
 		stat.close();
+		return idApuesta;
 	}
 	public void crearUser(Usuario u) throws SQLException{
 		Statement stat;

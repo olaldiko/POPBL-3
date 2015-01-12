@@ -17,7 +17,7 @@ import javafx.scene.control.ProgressIndicator;
 import datos.Apuesta;
 import datos.ModeloApuestas;
 
-public class ControladorInsertDiru implements ControlledScreen, Initializable, ChangeListener<Double>, InvalidationListener {
+public class ControladorInsertDiru implements ControlledScreen, Initializable{
 	ScreensController myController;
 	ModeloApuestas modelo;
 	Apuesta apostua;
@@ -48,34 +48,43 @@ public class ControladorInsertDiru implements ControlledScreen, Initializable, C
 			apostua = modelo.getApuestaInProgress();
 			eskatutakoDirua = apostua.getApostado();
 			eskatuaLabel.setText(String.format("%.2f", eskatutakoDirua));
-			
-			modelo.getDiruaProperty().addListener(this);
+			btnatzera.setOnAction(event -> goToBack());
+			modelo.getDiruaProperty().addListener(new ChangeListener<Number>(){
+				@Override
+				public void changed(
+						ObservableValue<? extends Number> observable,
+						Number oldValue, Number newValue) {
+							System.out.println("Entra en changeListener: "+newValue);
+							sartuaLabel.setText(String.format("%.2f", newValue));
+							diruProgress.setProgress((Double)newValue/eskatutakoDirua);
+							if((Double)newValue >= eskatutakoDirua){
+								commitApuesta();
+							}
+					
+						}
+					}
+			);
 		} catch (ManteniException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	@Override
-	public void changed(ObservableValue<? extends Double> observable,
-			Double oldValue, Double newValue) {
-			System.out.println("Entra en changeListener: "+newValue);
-			sartuaLabel.setText(String.format("%.2f", newValue));
-			diruProgress.setProgress(newValue/eskatutakoDirua);
-			if(newValue >= eskatutakoDirua){
-				commitApuesta();
-			}
+	private void goToBack() {
+		myController.setScreen("principal");
+		modelo.setDirua(0.0);
 	}
 
 	private void commitApuesta() {
-		// TODO Auto-generated method stub
-		
+		try {
+			modelo.confirmApuesta();
+			myController.loadScreen(ScreensFramework.ConfirmApuesta, ScreensFramework.ConfirmApuesta_FXML);
+			myController.setScreen("confirmApuesta");
+		} catch (ManteniException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	@Override
-	public void invalidated(Observable observable) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

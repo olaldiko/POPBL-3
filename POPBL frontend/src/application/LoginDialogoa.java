@@ -66,6 +66,7 @@ public class LoginDialogoa implements Initializable, ControlledScreen {
 					myController.setScreen("apostuak");
 				}else{
 					if(modelo.getDestLogin() == ModeloApuestas.DEST_APOSTUBERRI){
+						modelo.getApuestaInProgress().setIdUsuario(idUser);
 						myController.loadScreen(ScreensFramework.InsertDiru, ScreensFramework.InsertDiru_FXML);
 						myController.removeScreenOverlay("login");
 						myController.setScreen("insertDiru");
