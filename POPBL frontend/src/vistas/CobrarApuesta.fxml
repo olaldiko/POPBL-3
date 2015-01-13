@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="1024.0" maxWidth="768.0" minHeight="1024.0" minWidth="768.0" prefHeight="1024.0" prefWidth="768.0" style="-fx-background-color: #404040;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControladorCobrarApuesta">
+   <children>
+      <Button fx:id="btnatzera" layoutX="28.0" layoutY="42.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="178.0" text="Atzera">
+         <effect>
+            <Reflection />
+         </effect>
+         <font>
+            <Font name="Ringbearer Medium" size="26.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="358.0" fitWidth="706.0" layoutX="28.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@logo.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="labelDiru" alignment="CENTER" layoutX="263.0" layoutY="472.0" prefHeight="166.0" prefWidth="243.0" text="0.0 €">
+         <font>
+            <Font name="Ringbearer Medium" size="79.0" />
+         </font>
+         <effect>
+            <DropShadow color="WHITE" />
+         </effect>
+      </Label>
+      <Label alignment="CENTER" layoutX="87.0" layoutY="638.0" prefHeight="71.0" prefWidth="598.0" text="Irabazi egin dituzu zure apostuekin!">
+         <effect>
+            <DropShadow color="WHITE" />
+         </effect>
+         <font>
+            <Font name="Ringbearer Medium" size="33.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

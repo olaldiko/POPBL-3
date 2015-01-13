@@ -27,17 +27,17 @@
          <items>
             <Button fx:id="btnapostuak" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="Nire apostuak">
                <font>
-                  <Font name="System Bold" size="18.0" />
+                  <Font name="Ringbearer Medium" size="18.0" />
                </font>
             </Button>
             <Button fx:id="btnerreg" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="Erregistratu">
                <font>
-                  <Font name="Arial Bold" size="18.0" />
+                  <Font name="Ringbearer Medium" size="18.0" />
                </font>
             </Button>
             <Button fx:id="btnemaitzak" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Emaitzak">
                <font>
-                  <Font name="Arial Bold" size="18.0" />
+                  <Font name="Ringbearer Medium" size="18.0" />
                </font>
             </Button>
          </items>

@@ -73,6 +73,8 @@ public class ScreensFramework extends Application {
     public static final String InsertDiru_FXML = "../vistas/InsertDiru.fxml";
     public static final String ConfirmApuesta = "confirmApuesta";
     public static final String ConfirmApuesta_FXML = "../vistas/ConfirmApuesta.fxml";
+    public static final String CobrarApuestas = "cobrarApuestas";
+    public static final String CobrarApuestas_FXML = "../vistas/CobrarApuesta.fxml";
     @Override
     public void start(Stage primaryStage) {
     	
@@ -95,7 +97,7 @@ public class ScreensFramework extends Application {
         scene.getStylesheets().add("file:///dark.css");
         primaryStage.setWidth(768f);
         primaryStage.setHeight(1024f);
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+       // primaryStage.initStyle(StageStyle.UNDECORATED);
         //primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
         primaryStage.show();

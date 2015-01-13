@@ -48,6 +48,7 @@ public class ControladorInsertDiru implements ControlledScreen, Initializable{
 			apostua = modelo.getApuestaInProgress();
 			eskatutakoDirua = apostua.getApostado();
 			eskatuaLabel.setText(String.format("%.2f", eskatutakoDirua));
+			modelo.setDirua(0.0);
 			btnatzera.setOnAction(event -> goToBack());
 			modelo.getDiruaProperty().addListener(new ChangeListener<Number>(){
 				@Override

@@ -1,6 +1,7 @@
 package datos;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ListIterator;
 
 import javafx.application.Platform;
@@ -91,14 +92,7 @@ public class ModeloApuestas{
 		}
 		
 	}
-	public void initSerial() throws ManteniException{
-		try {
-			serial = new SerialIO(puertoserie);
-		} catch (SerialPortException e) {
-			throw new ManteniException(5, e);
-		}
-		
-	}
+
 	
 	public ObservableList<Apuesta> getApuestasuser() {
 		return apuestasuser;
@@ -125,6 +119,21 @@ public class ModeloApuestas{
 		this.partidosemaitzak = partidosemaitzak;
 	}
 	
+	
+	/*Funciones para inicializar todos los datos
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	public void initSerial() throws ManteniException{
+		try {
+			serial = new SerialIO(puertoserie);
+		} catch (SerialPortException e) {
+			throw new ManteniException(5, e);
+		}
+		
+	}
 	public void initLigas() throws ManteniException{
 		try {
 			this.ligas = bd.getLigas();
@@ -157,6 +166,11 @@ public class ModeloApuestas{
 		}
 		
 	}
+
+	/*Funciones para actualizacion de datos
+	 * 
+	 * 
+	 */
 	public void updatePartidosPr(int ligaselect) throws ManteniException{
 		try {
 			this.partidosprincipal.setAll(bd.getPartidos(diasPartidos, ligaselect, false));
@@ -174,11 +188,18 @@ public class ModeloApuestas{
 	public void confirmApuesta() throws ManteniException{
 		int idApuesta = 0;
 		try {
-			idApuesta = bd.crearApuesta(apuestaInProgress.getIdUsuario(), apuestaInProgress.partido.get().getIdPartido(), apuestaInProgress.getTipoApuesta(), apuestaInProgress.getApostado(), apuestaInProgress.getCoeficiente());
+			idApuesta = bd.crearApuesta(apuestaInProgress.getIdUsuario(), apuestaInProgress.partido.get().getIdPartido(), apuestaInProgress.getTipoApuesta(), apuestaInProgress.getApostado(), apuestaInProgress.getCoeficiente(), apuestaInProgress.getPremio());
 			apuestaInProgress.setIdApuesta(idApuesta);
 		} catch (SQLException e) {
 			throw new ManteniException(4, e);
 		}
+	}
+	/*Funciones para seccion misApuestas
+	 * 
+	 * 
+	 */
+	public ObservableList<PieChart.Data> getEstadisticasUser(){
+		return estadisChart;
 	}
 	public void loadEstadisticas() throws ManteniException{
 		Estadisticas estadis = new Estadisticas();
@@ -196,15 +217,30 @@ public class ModeloApuestas{
 			throw new ManteniException(5, e);
 		}
 	}
-	public ObservableList<PieChart.Data> getEstadisticasUser(){
-		return estadisChart;
-	}
 	public void setPartidoApuesta(Partido p){
 		partidoApuesta.set(p);
 	}
 	public Partido getPartidoApuesta(){
 		return partidoApuesta.get();
 	}
+	public Double cobrarApuestas() throws ManteniException{
+		ArrayList<Apuesta> a = new ArrayList<>();
+		Double dinero = 0.0;
+		for(Apuesta i : apuestasuser){
+			if(i.isGanado() && !i.isCobrado()){
+				a.add(i);
+			}
+		}
+		try {
+			dinero = bd.cobrarApuestas(a);
+		} catch (SQLException e) {
+			throw new ManteniException(4, e);
+		}
+		return dinero;
+	}
+	/*
+	 * Funciones para seccion de login y creacion de user
+	 */
 	public int loginuser(String user, String pass) throws ManteniException{
 			try{
 			idUserLogin = bd.loginUser(user, pass);
@@ -229,6 +265,10 @@ public class ModeloApuestas{
 			throw new ManteniException(3, e);
 		}
 	}
+	
+	/*
+	 * Funciones seccion nueva apuesta
+	 */
 	public Apuesta getApuestaInProgress(){
 		return apuestaInProgress;
 	}
@@ -244,7 +284,21 @@ public class ModeloApuestas{
 	public void setApuestaInProgress(Double apostado, int tipo){
 		apuestaInProgress = new Apuesta();
 		apuestaInProgress.setApostado(apostado);
+		apuestaInProgress.setTipoApuesta(tipo);
 		apuestaInProgress.setCobrado(false);
+		apuestaInProgress.setIdPartido(partidoApuesta.get().getIdPartido());
 		apuestaInProgress.setPartido(partidoApuesta.get());
+		switch(tipo){
+		case 1:
+			apuestaInProgress.setCoeficiente(apuestaInProgress.partido.get().getCoefLocal());
+			break;
+		case 2:
+			apuestaInProgress.setCoeficiente(apuestaInProgress.partido.get().getCoefEmpate());
+			break;
+		case 3:
+			apuestaInProgress.setCoeficiente(apuestaInProgress.partido.get().getCoefVisitante());
+			break;
+		}
+		apuestaInProgress.setPremio(apuestaInProgress.getCoeficiente()*apostado);
 	}
 }

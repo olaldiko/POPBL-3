@@ -3,3 +3,10 @@
     -fx-background: rgb(50, 50, 50);
     -fx-control-inner-background:  rgb(50, 50, 50);
 }
+.table-view .column-header .list-cell{
+    -fx-font-family: "Ringbearer";
+    -fx-font-size: 15;
+}
+.progress-indicator{
+	-fx-progress-color: rgb(60, 67, 166);
+}

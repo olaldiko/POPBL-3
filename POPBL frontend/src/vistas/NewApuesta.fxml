@@ -17,7 +17,7 @@
             <Reflection />
          </effect>
          <font>
-            <Font name="Arial Bold" size="26.0" />
+            <Font name="Ringbearer Medium" size="25.0" />
          </font>
       </Button>
       <ImageView fitHeight="107.0" fitWidth="278.0" layoutX="467.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
@@ -27,7 +27,7 @@
       </ImageView>
       <Label layoutX="339.0" layoutY="295.0" text="vs">
          <font>
-            <Font name="Arial Bold" size="55.0" />
+            <Font name="Ringbearer Medium" size="53.0" />
          </font>
          <effect>
             <DropShadow offsetX="3.0" offsetY="3.0" />
@@ -35,12 +35,12 @@
       </Label>
       <Label fx:id="labelLocal" alignment="CENTER" layoutX="46.0" layoutY="228.0" prefHeight="23.0" prefWidth="233.0" text="Label" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
          <font>
-            <Font name="Arial Bold" size="18.0" />
+            <Font name="Ringbearer Medium" size="18.0" />
          </font>
       </Label>
       <Label fx:id="labelVisitante" alignment="CENTER" layoutX="467.0" layoutY="229.0" prefHeight="21.0" prefWidth="233.0" text="Label" textOverrun="CENTER_ELLIPSIS">
          <font>
-            <Font name="Arial Bold" size="18.0" />
+            <Font name="Ringbearer Medium" size="19.0" />
          </font>
       </Label>
       <Group layoutX="447.0" layoutY="445.0" />
@@ -48,9 +48,18 @@
          <toggleGroup>
             <ToggleGroup fx:id="btapuestas" />
          </toggleGroup>
+         <font>
+            <Font name="Ringbearer Medium" size="19.0" />
+         </font>
       </ToggleButton>
-      <ToggleButton fx:id="botonAp2" layoutX="514.0" layoutY="502.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="130.0" text="ToggleButton" toggleGroup="$btapuestas" />
-      <ToggleButton fx:id="botonApX" layoutX="309.0" layoutY="502.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="130.0" selected="true" text="ToggleButton" toggleGroup="$btapuestas" />
+      <ToggleButton fx:id="botonAp2" layoutX="514.0" layoutY="502.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="130.0" text="ToggleButton" toggleGroup="$btapuestas">
+         <font>
+            <Font name="Ringbearer Medium" size="19.0" />
+         </font></ToggleButton>
+      <ToggleButton fx:id="botonApX" layoutX="309.0" layoutY="502.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="130.0" selected="true" text="ToggleButton" toggleGroup="$btapuestas">
+         <font>
+            <Font name="Ringbearer Medium" size="19.0" />
+         </font></ToggleButton>
       <Label layoutX="158.0" layoutY="466.0" text="1">
          <font>
             <Font name="Arial Bold" size="18.0" />
@@ -66,29 +75,29 @@
             <Font name="Arial Bold" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="diruField" layoutX="294.0" layoutY="638.0" prefHeight="56.0" prefWidth="163.0" promptText="0.0">
+      <TextField fx:id="diruField" layoutX="294.0" layoutY="638.0" prefHeight="49.0" prefWidth="163.0" promptText="0.0">
          <font>
-            <Font name="Arial Bold" size="29.0" />
+            <Font name="Ringbearer Medium" size="29.0" />
          </font>
       </TextField>
       <Label layoutX="156.0" layoutY="638.0" prefHeight="56.0" prefWidth="108.0" text="Apostua: " textAlignment="RIGHT">
          <font>
-            <Font name="Arial Bold" size="20.0" />
+            <Font name="Ringbearer Medium" size="22.0" />
          </font>
       </Label>
-      <Button fx:id="btnMas" layoutX="574.0" layoutY="638.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="62.0" text="+">
+      <Button fx:id="btnMas" layoutX="574.0" layoutY="638.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="72.0" text="+">
          <font>
             <Font name="Arial Bold" size="29.0" />
          </font>
       </Button>
-      <Button fx:id="btnMenos" layoutX="483.0" layoutY="638.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="62.0" text="-">
+      <Button fx:id="btnMenos" layoutX="483.0" layoutY="638.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="72.0" text="-">
          <font>
             <Font name="Arial Bold" size="29.0" />
          </font>
       </Button>
-      <Label layoutX="185.0" layoutY="723.0" prefHeight="56.0" prefWidth="62.0" text="Saria:" textAlignment="RIGHT">
+      <Label layoutX="185.0" layoutY="723.0" prefHeight="56.0" prefWidth="85.0" text="Saria:" textAlignment="RIGHT">
          <font>
-            <Font name="Arial Bold" size="20.0" />
+            <Font name="Ringbearer Medium" size="23.0" />
          </font>
       </Label>
       <Label fx:id="premioLabel" layoutX="294.0" layoutY="723.0" prefHeight="56.0" prefWidth="163.0" text="0.0">
@@ -98,7 +107,7 @@
       </Label>
       <Button fx:id="btnJarraitu" layoutX="488.0" layoutY="856.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="190.0" text="Jaraitu">
          <font>
-            <Font name="Arial Bold" size="29.0" />
+            <Font name="Ringbearer Medium" size="29.0" />
          </font>
       </Button>
       <VBox alignment="CENTER" layoutX="57.0" layoutY="266.0" prefHeight="200.0" prefWidth="210.0">

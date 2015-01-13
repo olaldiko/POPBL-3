@@ -16,14 +16,14 @@
             <Image url="@logo.png" />
          </image>
       </ImageView>
-      <WebView fx:id="boletoWebView" layoutX="34.0" layoutY="411.0" maxHeight="127.0" maxWidth="700.0" minHeight="127.0" minWidth="700.0" prefHeight="127.0" prefWidth="700.0">
+      <WebView fx:id="boletoWebView" layoutX="17.0" layoutY="411.0" maxHeight="151.0" maxWidth="739.0" minHeight="127.0" minWidth="700.0" prefHeight="151.0" prefWidth="739.0">
          <effect>
             <DropShadow />
          </effect>
       </WebView>
       <Label alignment="CENTER" layoutX="94.0" layoutY="266.0" prefHeight="62.0" prefWidth="555.0" text="Apostua ondo gauzatu da!" textAlignment="CENTER">
          <font>
-            <Font name="Arial Bold" size="43.0" />
+            <Font name="Ringbearer Medium" size="39.0" />
          </font>
          <effect>
             <Glow level="0.26" />
@@ -31,7 +31,7 @@
       </Label>
       <Button fx:id="btnPrint" layoutX="38.0" layoutY="593.0" mnemonicParsing="false" prefHeight="127.0" prefWidth="700.0" text="Inprimatu boletoa">
          <font>
-            <Font name="Arial Bold" size="65.0" />
+            <Font name="Ringbearer Medium" size="65.0" />
          </font>
          <effect>
             <Reflection />

@@ -199,5 +199,12 @@ public class ScreensController  extends StackPane {
             return true;
         }
     }
+    public boolean isScreenLoaded(String name) {
+    	if(screens.containsKey(name)){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
 }
 

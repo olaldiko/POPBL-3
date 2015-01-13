@@ -15,7 +15,7 @@
    <children>
       <Button fx:id="btnatzera" layoutX="27.0" layoutY="25.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="178.0" text="Atzera">
          <font>
-            <Font name="Arial Bold" size="26.0" />
+            <Font name="Ringbearer Medium" size="26.0" />
          </font>
          <effect>
             <Reflection />
@@ -32,7 +32,7 @@
          </effect></PieChart>
       <Button fx:id="btnkobratu" layoutX="502.0" layoutY="897.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="242.0" text="Kobratu irabazitakoak!">
          <font>
-            <Font name="System Bold" size="19.0" />
+            <Font name="Ringbearer Medium" size="18.0" />
          </font>
          <effect>
             <Reflection />

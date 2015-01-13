@@ -12,6 +12,7 @@ import javafx.print.Printer;
 import javafx.print.Printer.MarginType;
 import javafx.print.PrinterJob;
 import javafx.scene.control.Button;
+import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -41,20 +42,18 @@ public class ControladorConfirmApuesta implements ControlledScreen, Initializabl
 			btnPrint.setOnAction(event -> printApuesta());
 			
 		} catch (ManteniException e) {
+			
 		}
 
 	}
 
 	private void printApuesta() {
-		double scalaX = layout.getPrintableWidth() / boletoWebView.getBoundsInParent().getWidth();
-		boletoWebView.getTransforms().add(new Scale(scalaX, 1));
 		PrinterJob trabajo = PrinterJob.createPrinterJob();
 		if(trabajo != null){
-			boolean ok = trabajo.printPage(boletoWebView);
-			if(ok){
+			engine.print(trabajo);
 				trabajo.endJob();
 			}
-		}
+		myController.setScreen("principal");
 	}
 
 	@Override

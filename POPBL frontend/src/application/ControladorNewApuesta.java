@@ -69,9 +69,9 @@ public class ControladorNewApuesta implements Initializable, ControlledScreen {
 			logoVisitante.setImage(new Image(modelo.getPartidoApuesta().getVisitante().getEscudo().toString()));
 			labelLocal.setText(modelo.getPartidoApuesta().getLocal().getNombre());
 			labelVisitante.setText(modelo.getPartidoApuesta().getVisitante().getNombre());
-			botonAp1.setText(modelo.getPartidoApuesta().getCoefLocal().toString());
-			botonApX.setText(modelo.getPartidoApuesta().getCoefEmpate().toString());
-			botonAp2.setText(modelo.getPartidoApuesta().getCoefVisitante().toString());
+			botonAp1.setText(String.format("%.2f", modelo.getPartidoApuesta().getCoefLocal()));
+			botonApX.setText(String.format("%.2f", modelo.getPartidoApuesta().getCoefEmpate()));
+			botonAp2.setText(String.format("%.2f", modelo.getPartidoApuesta().getCoefVisitante()));
 			botonAp1.setOnAction(event -> actualizaPremio());
 			botonApX.setOnAction(event -> actualizaPremio());
 			botonAp2.setOnAction(event -> actualizaPremio());
@@ -83,7 +83,7 @@ public class ControladorNewApuesta implements Initializable, ControlledScreen {
 		if(tipo != -1){
 			modelo.setDestLogin(ModeloApuestas.DEST_APOSTUBERRI);
 			modelo.setApuestaInProgress(apostado.get(), tipo);
-			if(myController.getScreen("login") == null){
+			if(!myController.isScreenLoaded("login")){
 				myController.loadScreen(ScreensFramework.Login, ScreensFramework.Login_FXML);
 			}
 			myController.setScreenOverlay("login");
@@ -93,13 +93,13 @@ public class ControladorNewApuesta implements Initializable, ControlledScreen {
 	}
 	private void restaApostado() {
 		if(apostado.get() >= 1.0) apostado.set(apostado.get() -1.0);
-			diruField.setText(Double.toString(apostado.get()));
+			diruField.setText(String.format("%.2f", apostado.get()));
 			actualizaPremio();
 			
 	}
 	private void sumaApostado() {
 		apostado.set(apostado.get() + 1.0);
-		diruField.setText(Double.toString(apostado.get()));
+		diruField.setText(String.format("%.2f", apostado.get()));
 		actualizaPremio();
 	}
 	private void goToPrincipal() {
@@ -110,24 +110,24 @@ public class ControladorNewApuesta implements Initializable, ControlledScreen {
 			tipo = 0;
 			coef = modelo.getPartidoApuesta().getCoefLocal();
 			premio.set(apostado.get()*coef);
-			premioLabel.setText(Double.toString(premio.get()));
+			premioLabel.setText(String.format("%.2f", premio.get()));
 		}else{
 			if(botonApX.isSelected()){
 				tipo = 1;
 				coef = modelo.getPartidoApuesta().getCoefEmpate();
 				premio.set(apostado.get()*coef);
-				premioLabel.setText(Double.toString(premio.get()));
+				premioLabel.setText(String.format("%.2f", premio.get()));
 			}else{
 				if(botonAp2.isSelected()){
 					tipo = 2;
 					coef = modelo.getPartidoApuesta().getCoefVisitante();
 					premio.set(apostado.get()*coef);
-					premioLabel.setText(Double.toString(premio.get()));
+					premioLabel.setText(String.format("%.2f", premio.get()));
 				}else{
 					tipo = -1;
 					coef = 0.0;
 					premio.set(0.0);
-					premioLabel.setText(Double.toString(premio.get()));
+					premioLabel.setText(String.format("%.2f", premio.get()));
 				}
 			}
 		}

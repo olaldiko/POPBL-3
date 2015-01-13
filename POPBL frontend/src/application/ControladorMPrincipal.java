@@ -9,8 +9,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import datos.Apuesta;
 import datos.Liga;
 import datos.ModeloApuestas;
 import datos.Partido;
@@ -74,9 +76,41 @@ public class ControladorMPrincipal implements Initializable, ControlledScreen {
 		colVisit.setCellValueFactory(cellData -> cellData.getValue().getVisitante().getNombreProperty());
 		//Por alguna extrana razon no se puede pasar directamente doublepropertys, hay que usar.asobject para que tire
 		col1.setCellValueFactory(cellData -> cellData.getValue().getCoefLocalProperty().asObject());
+		col1.setCellFactory(column -> {
+			return new TableCell<Partido, Double>(){
+				protected void updateItem(Double item, boolean empty){
+					if(item == null || empty){
+						setText("");
+					}else{
+						setText(String.format("%.2f", item));
+					}
+				}
+				};
+			});
 		colx.setCellValueFactory(cellData -> cellData.getValue().getCoefEmpateProperty().asObject());
+		colx.setCellFactory(column -> {
+			return new TableCell<Partido, Double>(){
+				protected void updateItem(Double item, boolean empty){
+					if(item == null || empty){
+						setText("");
+					}else{
+						setText(String.format("%.2f", item));
+					}
+				}
+				};
+			});
 		col2.setCellValueFactory(cellData -> cellData.getValue().getCoefVisitanteProperty().asObject());
-		
+		col2.setCellFactory(column -> {
+				return new TableCell<Partido, Double>(){
+					protected void updateItem(Double item, boolean empty){
+						if(item == null || empty){
+							setText("");
+						}else{
+							setText(String.format("%.2f", item));
+						}
+					}
+					};
+				});
 		
 		ligaselect.setItems(modelo.getLigas());
 		tablapartidos.setItems(modelo.getPartidosprincipal());

@@ -40,14 +40,16 @@ public class ControladorApostuak implements Initializable, ControlledScreen {
 	TableView<Apuesta> tablaApostuak = new TableView<>();
 	@FXML
 	PieChart estadisChart = new PieChart();
-	
+
+	@FXML
+	Button btnatzera = new Button();
+	@FXML
+	Button btnkobratu = new Button();
 	@Override
 	public void setScreenParent(ScreensController screenPage) {
 		myController = screenPage;
 	}
-	@FXML
-	Button btnatzera = new Button();
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		try {
@@ -56,6 +58,8 @@ public class ControladorApostuak implements Initializable, ControlledScreen {
 			modelo.loadEstadisticas();
 			lista = modelo.getApuestasuser();
 			estadisUser = modelo.getEstadisticasUser();
+			btnatzera.setOnAction(event -> goToPrincipal());
+			btnkobratu.setOnAction(event -> goToCobrar());
 			partiduaCol.setCellValueFactory(cellData -> cellData.getValue().getPartidoProperty());
 			partiduaCol.setCellFactory(column -> {
 				return new TableCell<Apuesta, Partido>(){
@@ -76,9 +80,13 @@ public class ControladorApostuak implements Initializable, ControlledScreen {
 						if(item == null || empty){
 							setText("");
 						}else{
-							String golesLocal = String.valueOf(item.getGolesLocal());
-							String golesVisit = String.valueOf(item.getGolesVisitante());
-							setText(golesLocal+" - "+golesVisit);
+							if((item.getGolesLocal() == -1) || (item.getGolesVisitante() == -1)){
+								setText("");
+							}else{
+								String golesLocal = String.valueOf(item.getGolesLocal());
+								String golesVisit = String.valueOf(item.getGolesVisitante());
+								setText(golesLocal+" - "+golesVisit);
+							}
 						}
 					}
 					};
@@ -135,13 +143,19 @@ public class ControladorApostuak implements Initializable, ControlledScreen {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		btnatzera.setOnAction(event -> goToPrincipal());
+
 		
 	}
 	public void goToPrincipal(){
 		myController.setScreen("principal");
 		myController.unloadScreen("apuestas");
 	}
-	
+	public void goToCobrar(){
+		if(myController.isScreenLoaded("cobrarApuestas")){
+			myController.unloadScreen("cobrarApuestas");
+		}
+		myController.loadScreen(ScreensFramework.CobrarApuestas, ScreensFramework.CobrarApuestas_FXML);
+		myController.setScreen("cobrarApuestas");
+	}
 
 }

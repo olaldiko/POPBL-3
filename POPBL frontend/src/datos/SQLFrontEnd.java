@@ -7,6 +7,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -189,13 +190,13 @@ public class SQLFrontEnd {
 		stat.close();
 		return lista;
 	}
-	public int crearApuesta(int idUsuario, int idPartido, int tipo, Double apostado, Double coef) throws SQLException{
+	public int crearApuesta(int idUsuario, int idPartido, int tipo, Double apostado, Double coef, Double premio) throws SQLException{
 		Statement stat;
 		ResultSet resultado;
 		int idApuesta = 0;
 		stat = base.createStatement();
-		stat.executeUpdate("INSERT INTO APUESTAS (idUsuarios, idPartidos, Apuesta, Premio, Apostado, Coeficiente, Cobrado) "
-				+ "values ("+idUsuario+" , "+idPartido+" , "+tipo+" , "+(apostado*coef)+" , "+apostado+" , "+coef+" , 0);"); 
+		stat.executeUpdate("INSERT INTO APUESTAS(idUsuarios, idPartidos, Apuesta, Premio, Apostado, Coeficiente, Cobrado, Ganado, Vigente) "
+				+ "VALUES ('"+idUsuario+"' , '"+idPartido+"' , '"+tipo+"' , '"+premio+"' , '"+apostado+"' , '"+coef+"' , 0 , 0 , 1)"); 
 		resultado = stat.executeQuery("SELECT LAST_INSERT_ID()");
 		resultado.next();
 		if(resultado.first()){
@@ -236,5 +237,17 @@ public class SQLFrontEnd {
 		stat.executeUpdate("INSERT INTO USUARIOS (username, Password, Dinero, Correo, idal)"
 				+ "values('"+nick+"', '"+pass+"', 0, '"+email+"' , "+idal+");");
 		stat.close();
+	}
+	public Double cobrarApuestas(ArrayList<Apuesta> apuestas)throws SQLException{
+		Statement stat;
+		Double dinero = 0.0;
+		stat = base.createStatement();
+		for(Apuesta i : apuestas){
+				stat.executeUpdate("UPDATE APUESTAS SET Cobrado = 1 WHERE idApuesta = "+i.getIdApuesta()+";");
+				dinero += i.getPremio();
+		}
+		stat.close();
+		return dinero;
+		
 	}
 }
