@@ -13,7 +13,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import datos.ModeloApuestas;
 
-
+/**
+ * Controlador para el dialogo de login de la aplicacion
+ * @author gorkaolalde
+ *
+ */
 public class LoginDialogoa implements Initializable, ControlledScreen {
 	ScreensController myController;
 	ModeloApuestas modelo;
@@ -45,6 +49,9 @@ public class LoginDialogoa implements Initializable, ControlledScreen {
 		passfield.setEditable(true);
 		erabiltzailefield.setEditable(true);
 	}
+	/**
+	 * Comprueba el usuario en la base de datos, y segun el destino elegido, va a una pantalla o otra. Si el login esta mal, cambia las letras a rojo
+	 */
 	private void commitLogin() {
 		int idUser = -1;
 		user = erabiltzailefield.getText();

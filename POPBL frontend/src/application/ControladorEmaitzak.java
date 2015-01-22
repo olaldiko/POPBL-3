@@ -15,7 +15,11 @@ import javafx.scene.control.TableView;
 import datos.Liga;
 import datos.ModeloApuestas;
 import datos.Partido;
-
+/**
+ * Controlador para la pagina Emaitzak de la aplicacion.
+ * @author gorkaolalde
+ *
+ */
 public class ControladorEmaitzak implements Initializable, ControlledScreen {
 	ScreensController myController;
 	ModeloApuestas modelo;
@@ -60,6 +64,11 @@ public class ControladorEmaitzak implements Initializable, ControlledScreen {
 		ligasel.setItems(modelo.getLigas());
 		emaitzataula.setItems(modelo.getPartidosemaitzak());
 	}
+	/**
+	 * Mostrara la emaitza de un partido separada por un guion, para luego mostrar en tabla.
+	 * @param value
+	 * @return
+	 */
 	private StringProperty mostrarEmaitza(Partido value) {
 		
 		StringProperty emaitza = new SimpleStringProperty();
@@ -69,7 +78,9 @@ public class ControladorEmaitzak implements Initializable, ControlledScreen {
 	public void goToPrincipal(){
 		myController.setScreen("principal");
 	}
-	
+	/**
+	 * Carga los partidos de otra liga
+	 */
 	public void cambioLigas(){
 		try{
 			modelo.updatePartidosEmaitzak(ligasel.getSelectionModel().getSelectedItem().getIdLiga());

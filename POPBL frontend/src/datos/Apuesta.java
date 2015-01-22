@@ -9,7 +9,11 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-
+/**
+ * Clase que contendra todos los datos de una apuesta. Utiliza ObjectPropertys para guardar los datos.
+ * @author gorkaolalde
+ *
+ */
 public class Apuesta {
 IntegerProperty idApuesta, idUsuario, idPartido, tipoApuesta;
 DoubleProperty premio, apostado, coeficiente;
@@ -128,11 +132,11 @@ BooleanProperty cobrado, ganado, vigente;
 	}
 	public String getTipoString(){
 		switch(tipoApuesta.get()){
+		case 0:
+			return "X";
 		case 1:
 			return "1";
 		case 2:
-			return "X";
-		case 3:
 			return "2";
 		}
 		return "N/D";

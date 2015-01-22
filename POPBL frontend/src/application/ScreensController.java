@@ -56,8 +56,9 @@ import javafx.util.Duration;
 import datos.ModeloApuestas;
 
 /**
- *
+ *Clase que controla todas las pantalla de la aplicacion
  * @author Angie
+ * @author gorkaolalde
  */
 public class ScreensController  extends StackPane {
     //Holds the screens to be displayed
@@ -81,6 +82,12 @@ public class ScreensController  extends StackPane {
 
     //Loads the fxml file, add the screen to the screens collection and
     //finally injects the screenPane to the controller.
+    /**
+     * Carga la pantalla o nodo en el hashmap para su posterior uso.
+     * @param name nombre de la pantalla
+     * @param resource ruta al archivo fxml
+     * @return devuelve si esta se ha cargado o no
+     */
     public boolean loadScreen(String name, String resource) {
         try {
             FXMLLoader myLoader = new FXMLLoader(getClass().getResource(resource));
@@ -99,6 +106,11 @@ public class ScreensController  extends StackPane {
     //First it makes sure the screen has been already loaded.  Then if there is more than
     //one screen the new screen is been added second, and then the current screen is removed.
     // If there isn't any screen being displayed, the new screen is just added to the root.
+    /**
+     * Cambia a la pantalla indicada utilizando una transicion de fade in fade out.
+     * @param name nombre de la pantalla
+     * @return si todo ha ido bien
+     */
     public boolean setScreen(final String name) {       
         if (screens.get(name) != null) {   //screen loaded
             final DoubleProperty opacity = opacityProperty();
@@ -134,6 +146,11 @@ public class ScreensController  extends StackPane {
             return false;
         }   
     }
+    /**
+     * Pone una pantalla encima de la ya cargada. Utiliza transicion fade in.
+     * @param name pantalla a mostrar
+     * @return si ha ido bien o no
+     */
         public boolean setScreenOverlay(final String name) {       
             if (screens.get(name) != null) {   //screen loaded
                 final DoubleProperty opacity = opacityProperty();
@@ -148,6 +165,11 @@ public class ScreensController  extends StackPane {
                 return false;
             }
         }
+        /**
+         * Quita la pantalla puesta por encima
+         * @param name pantalla a quitar
+         * @return si ha ido bien o no
+         */
         public boolean removeScreenOverlay(final String name) {       
             if (screens.get(name) != null) {   //screen loaded
                 final DoubleProperty opacity = opacityProperty();
@@ -164,6 +186,11 @@ public class ScreensController  extends StackPane {
                 return false;
             }
         }
+        /**
+         * Cambia la pantalla sin utilizar ninguna transicion
+         * @param name nombre de la pantalla
+         * @return
+         */
         public boolean setScreenNoTrans(final String name){
         	if(screens.get(name) != null){
         		if(!getChildren().isEmpty()){
@@ -191,6 +218,11 @@ public class ScreensController  extends StackPane {
     }
 
     //This method will remove the screen with the given name from the collection of screens
+        /**
+         * Elimina una pantalla del HashMap
+         * @param name nombre de la pantalla
+         * @return
+         */
     public boolean unloadScreen(String name) {
         if (screens.remove(name) == null) {
             System.out.println("Screen didn't exist");
@@ -199,6 +231,11 @@ public class ScreensController  extends StackPane {
             return true;
         }
     }
+    /**
+     * Verifica si una pantalla ya esta cargada o no
+     * @param name pantalla
+     * @return si esta ha sido cargada o no
+     */
     public boolean isScreenLoaded(String name) {
     	if(screens.containsKey(name)){
     		return true;

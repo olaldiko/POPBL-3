@@ -50,8 +50,9 @@ import javafx.stage.StageStyle;
 import datos.ModeloApuestas;
 
 /**
- *
+ *Clase que inicia la aplicacion, contiene las definiciones de todas las pantallas y carga ScreensController
  * @author Angie
+ * @author gorkaolalde
  */
 public class ScreensFramework extends Application {
     File css;
@@ -97,7 +98,7 @@ public class ScreensFramework extends Application {
         scene.getStylesheets().add("file:///dark.css");
         primaryStage.setWidth(768f);
         primaryStage.setHeight(1024f);
-       // primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         //primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
         primaryStage.show();

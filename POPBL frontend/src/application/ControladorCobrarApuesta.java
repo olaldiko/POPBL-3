@@ -8,7 +8,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-
+/**
+ * Controlador para la pagina que mustra el dinero cobrado por el usuario
+ * @author gorkaolalde
+ *
+ */
 public class ControladorCobrarApuesta implements ControlledScreen, Initializable{
 	ScreensController myController;
 	ModeloApuestas modelo;

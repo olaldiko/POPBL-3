@@ -11,7 +11,11 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import datos.ModeloApuestas;
-
+/**
+ * Controlador para la pagina de registro de usuario
+ * @author gorkaolalde
+ *
+ */
 public class ControladorErregistroa implements Initializable, ControlledScreen {
 	ScreensController myController;
 	ModeloApuestas modelo;
@@ -74,6 +78,9 @@ public class ControladorErregistroa implements Initializable, ControlledScreen {
 	public void showlogin(){
 		myController.setScreenOverlay("login");
 	}
+	/**
+	 * Manda anadir el usuario si este ha anadido todos los datos, sino cambia las letras a rojo y modifica el mensaje
+	 */
 	public void addUser(){
 		user = userField.getText();
 		pass = passField.getText();

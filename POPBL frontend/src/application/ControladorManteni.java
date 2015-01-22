@@ -11,7 +11,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.TextFlow;
-
+/**
+ * Controlador que mostrara la pantalla que aparece al ocurrir una excepcion
+ * @author gorkaolalde
+ *
+ */
 public class ControladorManteni implements Initializable, ControlledScreen{
 	ScreensController myController;
 	StringWriter sw = new StringWriter();
@@ -38,6 +42,9 @@ public class ControladorManteni implements Initializable, ControlledScreen{
 		errorLabel.setText(Integer.toString(excepcion.tipo));
 		
 	}
+	/**
+	 * Copia el stacktrace a string y muestra los datos en el TextFlow
+	 */
 	private void mostrarDatos() {
 		excepcion.printStackTrace(new PrintWriter(sw));
 		errorText.setText(sw.toString());

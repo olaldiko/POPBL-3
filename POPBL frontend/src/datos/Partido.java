@@ -13,6 +13,11 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+/**
+ * Clase que contendra todos los datos sobre los partidos. Utiliza ObjectPropertys
+ * @author gorkaolalde
+ *
+ */
 public class Partido {
 IntegerProperty idPartido, idJornada, golesLocal, golesVisitante;
 ObjectProperty<Equipo> local, visitante;

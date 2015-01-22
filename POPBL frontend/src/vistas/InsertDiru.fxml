@@ -43,14 +43,14 @@
             <Font name="Ringbearer Medium" size="24.0" />
          </font>
       </Label>
-      <Label fx:id="sartuaLabel" alignment="CENTER" layoutX="90.0" layoutY="534.0" prefHeight="131.0" prefWidth="156.0" text="0.0" textAlignment="CENTER">
+      <Label fx:id="sartuaLabel" alignment="CENTER" layoutX="104.0" layoutY="533.0" prefHeight="96.0" prefWidth="156.0" text="0.0" textAlignment="CENTER">
          <font>
-            <Font name="Arial" size="44.0" />
+            <Font name="Ringbearer Medium" size="57.0" />
          </font>
       </Label>
-      <Label fx:id="eskatuaLabel" alignment="CENTER" layoutX="525.0" layoutY="532.0" prefHeight="131.0" prefWidth="141.0" text="0.0">
+      <Label fx:id="eskatuaLabel" alignment="CENTER" layoutX="530.0" layoutY="533.0" prefHeight="96.0" prefWidth="141.0" text="0.0">
          <font>
-            <Font name="Arial" size="44.0" />
+            <Font name="Ringbearer Medium" size="57.0" />
          </font>
       </Label>
    </children>

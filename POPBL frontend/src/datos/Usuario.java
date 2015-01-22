@@ -2,7 +2,11 @@ package datos;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-
+/**
+ * Clase que contendra todos los datos sobre los usuarios
+ * @author gorkaolalde
+ *
+ */
 public class Usuario {
 	int idUsuario;
 	String nombre;

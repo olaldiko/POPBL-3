@@ -16,7 +16,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import datos.Apuesta;
 import datos.ModeloApuestas;
-
+/**
+ * Controlador para la pagina que muestra el dinero apostado
+ * @author gorkaolalde
+ *
+ */
 public class ControladorInsertDiru implements ControlledScreen, Initializable{
 	ScreensController myController;
 	ModeloApuestas modelo;
@@ -48,8 +52,12 @@ public class ControladorInsertDiru implements ControlledScreen, Initializable{
 			apostua = modelo.getApuestaInProgress();
 			eskatutakoDirua = apostua.getApostado();
 			eskatuaLabel.setText(String.format("%.2f", eskatutakoDirua));
+			//modelo.activaDesactivaPlaca();
 			modelo.setDirua(0.0);
 			btnatzera.setOnAction(event -> goToBack());
+			/**
+			 * Anade un listener que mira si el dinero metido ha cambiado, y en caso de haber llegado a lo solicitado ejecuta commitApuesta()
+			 */
 			modelo.getDiruaProperty().addListener(new ChangeListener<Number>(){
 				@Override
 				public void changed(
@@ -75,12 +83,15 @@ public class ControladorInsertDiru implements ControlledScreen, Initializable{
 		myController.setScreen("principal");
 		modelo.setDirua(0.0);
 	}
-
+	/**
+	 * Manda confirmar la apuesta y pasa a la pagina siguiente
+	 */
 	private void commitApuesta() {
 		try {
 			modelo.confirmApuesta();
 			myController.loadScreen(ScreensFramework.ConfirmApuesta, ScreensFramework.ConfirmApuesta_FXML);
 			myController.setScreen("confirmApuesta");
+		//	modelo.activaDesactivaPlaca();
 		} catch (ManteniException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

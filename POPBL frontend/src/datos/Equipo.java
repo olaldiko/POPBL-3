@@ -9,7 +9,11 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-
+/**
+ * Clase que contendra todos los datos de los equipos. Utiliza ObjectPropertys
+ * @author gorkaolalde
+ *
+ */
 public class Equipo {
 IntegerProperty idEquipo;
 StringProperty nombre, abreviatura;

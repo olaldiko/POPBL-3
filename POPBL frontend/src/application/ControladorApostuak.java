@@ -15,7 +15,11 @@ import javafx.scene.control.TableView;
 import datos.Apuesta;
 import datos.ModeloApuestas;
 import datos.Partido;
-
+/**
+ * Controlador para la pagina Mis Apuestas de la aplicacion.
+ * @author gorkaolalde
+ *
+ */
 public class ControladorApostuak implements Initializable, ControlledScreen {
 	ScreensController myController;
 	ModeloApuestas modelo;
@@ -79,6 +83,7 @@ public class ControladorApostuak implements Initializable, ControlledScreen {
 					protected void updateItem(Partido item, boolean empty){
 						if(item == null || empty){
 							setText("");
+							
 						}else{
 							if((item.getGolesLocal() == -1) || (item.getGolesVisitante() == -1)){
 								setText("");

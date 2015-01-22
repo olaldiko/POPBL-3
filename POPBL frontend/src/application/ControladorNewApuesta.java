@@ -16,7 +16,11 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import datos.ModeloApuestas;
-
+/**
+ * Controlador para la pagina de nueva apuesta de la aplicacion
+ * @author gorkaolalde
+ *
+ */
 
 public class ControladorNewApuesta implements Initializable, ControlledScreen {
 	ScreensController myController;
@@ -79,6 +83,9 @@ public class ControladorNewApuesta implements Initializable, ControlledScreen {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * Llama al login, selecciona su destino y crea la apuestaInProgress de ModeloApuestas
+	 */
 	private void commitApuesta() {
 		if(tipo != -1){
 			modelo.setDestLogin(ModeloApuestas.DEST_APOSTUBERRI);
@@ -91,12 +98,18 @@ public class ControladorNewApuesta implements Initializable, ControlledScreen {
 		
 		
 	}
+	/**
+	 * Resta dinero de la apuesta
+	 */
 	private void restaApostado() {
 		if(apostado.get() >= 1.0) apostado.set(apostado.get() -1.0);
 			diruField.setText(String.format("%.2f", apostado.get()));
 			actualizaPremio();
 			
 	}
+	/**
+	 * Suma dinero a la apuesta
+	 */
 	private void sumaApostado() {
 		apostado.set(apostado.get() + 1.0);
 		diruField.setText(String.format("%.2f", apostado.get()));
@@ -105,15 +118,18 @@ public class ControladorNewApuesta implements Initializable, ControlledScreen {
 	private void goToPrincipal() {
 		myController.setScreen("principal");
 	}
+	/**
+	 * Actualiza el premio segun la apuesta y cantidad seleccionadas
+	 */
 	private void actualizaPremio(){
 		if(botonAp1.isSelected()){
-			tipo = 0;
+			tipo = 1;
 			coef = modelo.getPartidoApuesta().getCoefLocal();
 			premio.set(apostado.get()*coef);
 			premioLabel.setText(String.format("%.2f", premio.get()));
 		}else{
 			if(botonApX.isSelected()){
-				tipo = 1;
+				tipo = 0;
 				coef = modelo.getPartidoApuesta().getCoefEmpate();
 				premio.set(apostado.get()*coef);
 				premioLabel.setText(String.format("%.2f", premio.get()));

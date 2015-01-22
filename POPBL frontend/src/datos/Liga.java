@@ -6,7 +6,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 
-
+/**
+ * Clase que contrendra los datos sobre las ligas. Utiliza ObjectPropertys
+ * @author gorkaolalde
+ *
+ */
 public class Liga {
 	IntegerProperty idLiga;
 	StringProperty nombre;

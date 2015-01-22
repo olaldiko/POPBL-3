@@ -17,11 +17,23 @@ import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import application.ManteniException;
+
+/**
+ * Clase que contiene todas los datos de la aplicacion. Es la encargada de conectar con la bd y serial, toda la aplicacion coge datos de aqui.
+ * 
+ * @author gorkaolalde
+ *
+ */
 public class ModeloApuestas{
 
 	static ModeloApuestas modelo;
 	/**
 	 * 
+	 */
+	/**
+	 * Devuelve la instancia de ModeloApuestas
+	 * @return
+	 * @throws ManteniException
 	 */
 	public static ModeloApuestas getInstance()throws ManteniException{
 		if(modelo != null){
@@ -32,8 +44,8 @@ public class ModeloApuestas{
 		}
 	}
 	//Parametros de conexion y base de datos
-	private final String urlBase = "192.168.1.210";
-	private final int puertoBase = 3306;
+	private final String urlBase = "olaldiko.mooo.com";
+	private final int puertoBase = 23306;
 	private final String baseBase = "mordorbet";
 	private final String userBase = "frontend";
 	private final String passBase = "frontend";
@@ -62,7 +74,7 @@ public class ModeloApuestas{
 	
 	
 	//Interface Serial
-	private final String puertoserie = "/dev/tty.usbmodem1411";
+	private final String puertoserie = "/dev/tty.usbmodem1421";
 	private SerialIO serial;
 	
 	//Login
@@ -126,6 +138,15 @@ public class ModeloApuestas{
 	 * 
 	 * 
 	 */
+	/**
+	 * 
+	 * @throws ManteniException
+	 */
+	
+	/**
+	 * Crea un objeto de Serial y manda iniciar la conexion.
+	 * @throws ManteniException Tira Manteni de tipo 5
+	 */
 	public void initSerial() throws ManteniException{
 		try {
 			serial = new SerialIO(puertoserie);
@@ -134,6 +155,10 @@ public class ModeloApuestas{
 		}
 		
 	}
+	/**
+	 * Inicializa las ligas desde la base de datos. 
+	 * @throws ManteniException Tira Manteni de tipo 3
+	 */
 	public void initLigas() throws ManteniException{
 		try {
 			this.ligas = bd.getLigas();
@@ -142,6 +167,10 @@ public class ModeloApuestas{
 			throw new ManteniException(3, e);
 		}
 	}
+	/**
+	 * Inicializa partidos de la pantalla principal
+	 * @throws ManteniException Tira manteni de tipo 3
+	 */
 	public void initPartidosPr() throws ManteniException{
 		try {
 			this.partidosprincipal = bd.getPartidos(diasPartidos, defaultLiga, false);
@@ -149,6 +178,10 @@ public class ModeloApuestas{
 			throw new ManteniException(3, e);
 		}
 	}
+	/**
+	 * Inicializa partidos de la pantalla
+	 * @throws ManteniException Tira Manteni de tipo 3
+	 */
 	public void initPartidosEmaitzak() throws ManteniException{
 		try {
 			this.partidosemaitzak = bd.getPartidos(diasPartidos, defaultLiga, true);
@@ -157,7 +190,10 @@ public class ModeloApuestas{
 			throw new ManteniException(3,e);
 		}
 	}
-
+	/**
+	 * Inicializa apuestas de la pantalla Mis Apuestas
+	 * @throws ManteniException Tira Manteni de tipo 3
+	 */
 	public void initApuestasUser() throws ManteniException{
 		try {
 			this.apuestasuser = bd.getApuestas(idUserLogin);
@@ -171,6 +207,11 @@ public class ModeloApuestas{
 	 * 
 	 * 
 	 */
+	/**
+	 * Actualiza la lista de partidos de la pantalla principal
+	 * @param ligaselect Liga seleccionada
+	 * @throws ManteniException Tira Manteni de tipo 3
+	 */
 	public void updatePartidosPr(int ligaselect) throws ManteniException{
 		try {
 			this.partidosprincipal.setAll(bd.getPartidos(diasPartidos, ligaselect, false));
@@ -178,6 +219,11 @@ public class ModeloApuestas{
 			throw new ManteniException(3, e);
 		}
 	}
+	/**
+	 * Actualiza partidos de la pantalla emaitzak
+	 * @param ligaselect Liga seleccionada
+	 * @throws ManteniException Tira Manteni de tipo 3
+	 */
 	public void updatePartidosEmaitzak(int ligaselect) throws ManteniException{
 		try {
 			this.partidosemaitzak.setAll(bd.getPartidos(diasPartidos, ligaselect, true));
@@ -185,6 +231,10 @@ public class ModeloApuestas{
 			throw new ManteniException(3, e);
 		}
 	}
+	/**
+	 * Manda a la base de datos la apuestaInProgress que estaba haciendo el usuario
+	 * @throws ManteniException Tira Manteni de tipo 4
+	 */
 	public void confirmApuesta() throws ManteniException{
 		int idApuesta = 0;
 		try {
@@ -198,9 +248,17 @@ public class ModeloApuestas{
 	 * 
 	 * 
 	 */
+	/**
+	 * Devuelve las estadisticas del usuario en formato ObservableList de PieChart.Data
+	 * @return Estadisticas
+	 */
 	public ObservableList<PieChart.Data> getEstadisticasUser(){
 		return estadisChart;
 	}
+	/**
+	 * Carga las estadisticas del usuario desde la base y si este tiene ganadas, manda por Serial la senal para activar las luces de la maquina
+	 * @throws ManteniException Tira Manteni de tipo 3 si no ha podido cargarlas, 5 si ha fallado al mandar por serial
+	 */
 	public void loadEstadisticas() throws ManteniException{
 		Estadisticas estadis = new Estadisticas();
 		try{
@@ -223,6 +281,11 @@ public class ModeloApuestas{
 	public Partido getPartidoApuesta(){
 		return partidoApuesta.get();
 	}
+	/**
+	 * Manda a la base poner las apuestas del usuario, y recibe el dinero cobrado desde esta
+	 * @return dinero ganado con las apuestas
+	 * @throws ManteniException tira Manteni de tipo 4 si no ha fallado al introducir los datos en la base
+	 */
 	public Double cobrarApuestas() throws ManteniException{
 		ArrayList<Apuesta> a = new ArrayList<>();
 		Double dinero = 0.0;
@@ -241,6 +304,13 @@ public class ModeloApuestas{
 	/*
 	 * Funciones para seccion de login y creacion de user
 	 */
+	/**
+	 * Comprueba el usuario en la base de datos
+	 * @param user nombre de usuario
+	 * @param pass contrasena del usuario
+	 * @return id del user si OK, sino -1
+	 * @throws ManteniException Tira Manteni de tipo 2 si ha fallado
+	 */
 	public int loginuser(String user, String pass) throws ManteniException{
 			try{
 			idUserLogin = bd.loginUser(user, pass);
@@ -258,6 +328,16 @@ public class ModeloApuestas{
 	public int getIdUserLogin(){
 		return idUserLogin;
 	}
+	/**
+	 * Anade un usuario a la base de datos
+	 * @param user nombre de usuario
+	 * @param pass contrasena
+	 * @param nombre nombre del usuario
+	 * @param apellido apellido del usuario
+	 * @param email email del usuario
+	 * @param idal idal o dni del usuario
+	 * @throws ManteniException Tira manteni de tipo 3
+	 */
 	public void addUser(String user, String pass, String nombre, String apellido, String email, int idal) throws ManteniException{
 		try {
 			bd.addUser(user, nombre, apellido, email, pass, idal);
@@ -281,6 +361,22 @@ public class ModeloApuestas{
 	public void setDirua(Double d){
 		dirua.set(d);
 	}
+	/**
+	 * Manda a la placa la senal para que active o desactive la recepcion de dinero
+	 */
+	public void activaDesactivaPlaca(){
+		try {
+			serial.activaDesactivaPlaca();
+		} catch (SerialPortException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * Crea el objeto apuestaInProgress, segun el partido en curso, la apuesta que ha hecho y su cantidad
+	 * @param apostado dinero apostado
+	 * @param tipo 0 empate, 1 local, 2 visitante
+	 */
 	public void setApuestaInProgress(Double apostado, int tipo){
 		apuestaInProgress = new Apuesta();
 		apuestaInProgress.setApostado(apostado);
@@ -289,13 +385,13 @@ public class ModeloApuestas{
 		apuestaInProgress.setIdPartido(partidoApuesta.get().getIdPartido());
 		apuestaInProgress.setPartido(partidoApuesta.get());
 		switch(tipo){
+		case 0:
+			apuestaInProgress.setCoeficiente(apuestaInProgress.partido.get().getCoefEmpate());
+			break;
 		case 1:
 			apuestaInProgress.setCoeficiente(apuestaInProgress.partido.get().getCoefLocal());
 			break;
 		case 2:
-			apuestaInProgress.setCoeficiente(apuestaInProgress.partido.get().getCoefEmpate());
-			break;
-		case 3:
 			apuestaInProgress.setCoeficiente(apuestaInProgress.partido.get().getCoefVisitante());
 			break;
 		}

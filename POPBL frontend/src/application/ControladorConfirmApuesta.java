@@ -17,7 +17,11 @@ import javafx.scene.transform.Scale;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import datos.ModeloApuestas;
-
+/**
+ * Clase que controla la pagina para confirmar una apuesta y manejar la impresion de esta.
+ * @author gorkaolalde
+ *
+ */
 public class ControladorConfirmApuesta implements ControlledScreen, Initializable {
 	ScreensController myController;
 	ModeloApuestas modelo;
@@ -46,7 +50,9 @@ public class ControladorConfirmApuesta implements ControlledScreen, Initializabl
 		}
 
 	}
-
+	/**
+	 * Imprime la apuesta mostrada en la impresora por defecto del sistema.
+	 */
 	private void printApuesta() {
 		PrinterJob trabajo = PrinterJob.createPrinterJob();
 		if(trabajo != null){

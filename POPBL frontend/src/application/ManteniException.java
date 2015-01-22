@@ -1,5 +1,9 @@
 package application;
-
+/**
+ * Excepcion que contendra la excepcion que la ha hecho saltar, y que mostrara la pantalla ManteniScreen al usuario cuando esto ocurra
+ * @author gorkaolalde
+ *
+ */
 public class ManteniException extends Exception{
 
 	/**
@@ -20,6 +24,11 @@ public class ManteniException extends Exception{
 		this.tipo = tipo;
 		
 	}
+	/**
+	 * Construye la nueva excepcion y anade la excepcion y el tipo. Despues cambia la pantalla a manteniScreen
+	 * @param tipo
+	 * @param e
+	 */
 	public ManteniException(int tipo, Exception e){
 		super();
 		this.tipo = tipo;

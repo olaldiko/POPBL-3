@@ -12,7 +12,11 @@ import java.util.ListIterator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-
+/**
+ * Clase con todas las funciones necesarias para interactuar con la base de datos
+ * @author gorkaolalde
+ *
+ */
 
 public class SQLFrontEnd {
 	/*TODO: Seria mejor tratar las SQLException aqui para hacer finalys y cerrar las conexiones? 
@@ -22,7 +26,16 @@ public class SQLFrontEnd {
 	
 	
 	Connection base;
-	
+/**
+ * Inicializa la conexion a la base con los siguientes parametros	
+ * @param URL direccion de la base
+ * @param numeroPuerto puerto de la base
+ * @param nombreBD nombre de la base
+ * @param user username
+ * @param pass clave
+ * @throws ClassNotFoundException Si no puede encontrar el jar del conector a MySQL
+ * @throws SQLException Si ha ocurrido algun error en la conexion.
+ */
 	public SQLFrontEnd(String URL, int numeroPuerto, String nombreBD, String user, String pass) throws ClassNotFoundException, SQLException {
         	System.out.print("Cargando el driver de la Base de Datos MySQL... ");
             Class.forName("com.mysql.jdbc.Driver");
@@ -34,6 +47,14 @@ public class SQLFrontEnd {
             System.out.println(" OK!");
             System.out.println("");	
     }
+	/**
+	 * Devuelve partidos desde la base de datos
+	 * @param dias intervalo de dias que tiene que mostrar
+	 * @param idLiga liga de la que mostrar los partidos 
+	 * @param jugados si estos se han jugado o no
+	 * @return Observable de partidos
+	 * @throws SQLException si falla la consulta o la conexion
+	 */
 	public ObservableList<Partido> getPartidos(int dias, int idLiga, boolean jugados) throws SQLException{
 		ArrayList<Partido> partidos = new ArrayList<>();
 		ObservableList<Partido> lista = FXCollections.observableArrayList(partidos);
@@ -53,7 +74,9 @@ public class SQLFrontEnd {
 				+ "FROM PARTIDOS "
 				+ "INNER JOIN mordorbet.EQUIPOS eq_local ON PARTIDOS.idLocal = eq_local.idEquipos " 
 				+ "INNER JOIN mordorbet.EQUIPOS eq_visit ON PARTIDOS.idVisitante = eq_visit.idEquipos "
+				//La siguente parte puede que de problemas al cargar partidos jugados, estamos mirando diferencia con fecha futura
 				+ "WHERE  (DATEDIFF(PARTIDOS.Fecha , DATE_ADD(CURDATE(), INTERVAL "+dias+" DAY) )< "+dias+") AND ((eq_local.idLiga = "+idLiga+") OR (eq_visit.idLiga = "+idLiga+")) AND "+queryjugados+" ;");
+		
 		while(resultados.next()){
 			p = new Partido();
 			p.setIdPartido(resultados.getInt("PARTIDOS.idPartidos"));
@@ -76,6 +99,12 @@ public class SQLFrontEnd {
 		stat.close();
 		return lista;
 	}
+	/**
+	 * devuelve un partido en concreto desde la base
+	 * @param idPartido id del partido a monstrar
+	 * @return objeto partido
+	 * @throws SQLException Tira si da problemas al ejecutar la consulta
+	 */
 	public Partido getPartido(int idPartido) throws SQLException{
 		Partido p = new Partido();
 		Statement stat;
@@ -110,6 +139,12 @@ public class SQLFrontEnd {
 		return p;
 		
 	}
+	/**
+	 * Devuelve las apuestas de un usuario desde la base de datos
+	 * @param idUser id de usuario
+	 * @return observableList de apuesta
+	 * @throws SQLException Si falla la consulta
+	 */
 	public ObservableList<Apuesta> getApuestas(int idUser) throws SQLException{
 		Apuesta a;
 		ArrayList<Apuesta> apuestas = new ArrayList<>();
@@ -136,6 +171,12 @@ public class SQLFrontEnd {
 		stat.close();
 		return lista;
 	}
+	/**
+	 * Devuelve la cuenta de las apuestas que ha ganado el usuario
+	 * @param idUser id de usuario
+	 * @return numero de apuestas ganandas
+	 * @throws SQLException Si falla la consulta
+	 */
 	public int getApuestasGanadas(int idUser) throws SQLException{
 		int ganadas = 0;
 		Statement stat;
@@ -148,6 +189,12 @@ public class SQLFrontEnd {
 		stat.close();
 		return ganadas;
 	}
+	/**
+	 * Devuelve la cuenta de apuestas pendientes de un usuario
+	 * @param idUser id de usuario
+	 * @return numero de apuestas pendientes
+	 * @throws SQLException Si falla la consulta
+	 */
 	public int getApuestasPendientes(int idUser) throws SQLException{
 		int pendientes = 0;
 		Statement stat;
@@ -160,6 +207,12 @@ public class SQLFrontEnd {
 		stat.close();
 		return pendientes;
 	}
+	/**
+	 * Devuelve la cuenta de apuestas perdidas de un usuario
+	 * @param idUser id de usuario
+	 * @return numero de apuestas perdidas
+	 * @throws SQLException Si falla la consulta
+	 */
 	public int getApuestasPerdidas(int idUser) throws SQLException{
 		int pendientes = 0;
 		Statement stat;
@@ -172,6 +225,11 @@ public class SQLFrontEnd {
 		stat.close();
 		return pendientes;
 	}
+	/**
+	 * Devuelve todas las ligas contenidas en la base de datos
+	 * @return observableList de las ligas
+	 * @throws SQLException
+	 */
 	public ObservableList<Liga> getLigas() throws SQLException{
 		Liga l;
 		ArrayList<Liga> ligas = new ArrayList<>();
@@ -190,6 +248,17 @@ public class SQLFrontEnd {
 		stat.close();
 		return lista;
 	}
+	/**
+	 * Crea una apuesta con los siguientes datos en la base de datos
+	 * @param idUsuario id del usuario
+	 * @param idPartido id del partido
+	 * @param tipo tipo de apuesta, 0 empate, 1 local, 2 visitante
+	 * @param apostado dinero apostado
+	 * @param coef coeficiente en el momento de hacer la apuesta
+	 * @param premio premio que conseguiria el usuario
+	 * @return devuelve el id de apuesta si se ha completado bien, sino 
+	 * @throws SQLException
+	 */
 	public int crearApuesta(int idUsuario, int idPartido, int tipo, Double apostado, Double coef, Double premio) throws SQLException{
 		Statement stat;
 		ResultSet resultado;
@@ -205,21 +274,20 @@ public class SQLFrontEnd {
 		stat.close();
 		return idApuesta;
 	}
-	public void crearUser(Usuario u) throws SQLException{
-		Statement stat;
-		stat = base.createStatement();
-		stat.executeUpdate("INSERT INTO USUARIOS (username, Password, Dinero, Correo, Idal)"
-						+ " values ('"+u.getNombre()+"' , '"+u.getPassword()+"' , 0, '"+u.getCorreo()+"' , '"+u.getIdal()+"' );");
-		stat.close();
-	}
+	/**
+	 * Inicia sesion con los siguientes datos
+	 * @param user username
+	 * @param pass contrasena
+	 * @return el id de usuario si existe, sino -1
+	 * @throws SQLException 
+	 */
 	public int loginUser(String user, String pass) throws SQLException{
 		Statement stat;
 		ResultSet resultado;
 		int idUser;
 		stat = base.createStatement();
 		resultado = stat.executeQuery("SELECT idUsuarios from USUARIOS where username = '"+user+"'and Password = '"+pass+"';");
-		resultado.first();
-		if(resultado.isBeforeFirst()){
+		if(!resultado.next()){
 			resultado.close();
 			stat.close();
 			return -1;
@@ -230,6 +298,16 @@ public class SQLFrontEnd {
 			return idUser;
 		}
 	}
+	/**
+	 * Anade un usuario a la base con lo siguientes datos
+	 * @param nick username
+	 * @param nombre nombre de usuario
+	 * @param apellido apellido
+	 * @param email email del usuario
+	 * @param pass contrasena
+	 * @param idal idal o dni
+	 * @throws SQLException
+	 */
 	public void addUser(String nick, String nombre, String apellido, String email, String pass, int idal) throws SQLException{
 		Statement stat;
 		stat = base.createStatement();
@@ -238,6 +316,12 @@ public class SQLFrontEnd {
 				+ "values('"+nick+"', '"+pass+"', 0, '"+email+"' , "+idal+");");
 		stat.close();
 	}
+	/**
+	 * Marca las apuestas en la base de datos como cobradas
+	 * @param apuestas apuestas para cobrar
+	 * @return dinero ganado
+	 * @throws SQLException
+	 */
 	public Double cobrarApuestas(ArrayList<Apuesta> apuestas)throws SQLException{
 		Statement stat;
 		Double dinero = 0.0;

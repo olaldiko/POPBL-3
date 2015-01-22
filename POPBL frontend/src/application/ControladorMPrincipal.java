@@ -16,7 +16,11 @@ import datos.Apuesta;
 import datos.Liga;
 import datos.ModeloApuestas;
 import datos.Partido;
-
+/**
+ * Controlador que gestionara la pantalla principal de la aplicacion
+ * @author gorkaolalde
+ *
+ */
 public class ControladorMPrincipal implements Initializable, ControlledScreen {
 	ScreensController myController;
 	ModeloApuestas modelo;
@@ -116,6 +120,9 @@ public class ControladorMPrincipal implements Initializable, ControlledScreen {
 		tablapartidos.setItems(modelo.getPartidosprincipal());
 		
 	}
+	/**
+	 * Manda cargar los partidos de la nueva liga a ModeloApuestas
+	 */
 	public void cambioLigas(){
 		try{
 			modelo.updatePartidosPr(ligaselect.getSelectionModel().getSelectedItem().getIdLiga());
@@ -138,6 +145,10 @@ public class ControladorMPrincipal implements Initializable, ControlledScreen {
 		modelo.setDestLogin(modelo.DEST_NIREAPOSTUAK);
 		myController.setScreenOverlay("login");
 	}
+	/**
+	 * Modifica el partido para la apuesta en curso en ModeloApuestas y pasa a pagina de nueva apuesta
+	 * @param p
+	 */
 	public void nuevaApuesta(Partido p){
 		modelo.setPartidoApuesta(p);
 		modelo.setDestLogin(modelo.DEST_APOSTUBERRI);
