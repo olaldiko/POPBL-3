@@ -1,10 +1,11 @@
 package datos;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.ListIterator;
-
-import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -12,9 +13,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
 import javafx.util.Duration;
-import jssc.SerialPort;
-import jssc.SerialPortEvent;
-import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import application.ManteniException;
 
@@ -44,11 +42,11 @@ public class ModeloApuestas{
 		}
 	}
 	//Parametros de conexion y base de datos
-	private final String urlBase = "olaldiko.mooo.com";
-	private final int puertoBase = 23306;
-	private final String baseBase = "mordorbet";
-	private final String userBase = "frontend";
-	private final String passBase = "frontend";
+	private String urlBase = "olaldiko.mooo.com";
+	private int puertoBase = 23306;
+	private String baseBase = "mordorbet";
+	private String userBase = "frontend";
+	private String passBase = "frontend";
 	private SQLFrontEnd bd;
 	private ServicioUpdate servicio = new ServicioUpdate();
 	//Apuestas usuario
@@ -74,7 +72,7 @@ public class ModeloApuestas{
 	
 	
 	//Interface Serial
-	private final String puertoserie = "/dev/tty.usbmodem1421";
+	private String puertoserie = "/dev/tty.usbmodem1421";
 	private SerialIO serial;
 	
 	//Login
@@ -88,6 +86,7 @@ public class ModeloApuestas{
 	
 	private ModeloApuestas() throws ManteniException{
 		try{
+			this.cargaFichero();
 			bd = new SQLFrontEnd(urlBase, puertoBase , baseBase, userBase, passBase);
 			this.initLigas();
 			this.initPartidosPr();
@@ -101,6 +100,8 @@ public class ModeloApuestas{
 				throw new ManteniException(0, e);
 		} catch (ClassNotFoundException e) {
 			    throw new ManteniException(1, e);
+		} catch (IOException e) {
+				throw new ManteniException(6, e);
 		}
 		
 	}
@@ -154,6 +155,22 @@ public class ModeloApuestas{
 			throw new ManteniException(5, e);
 		}
 		
+	}
+	
+	/**
+	 * Carga los datos desde el fichero config.txt
+	 */
+	public void cargaFichero() throws IOException{
+			BufferedReader lector = new BufferedReader(new FileReader("config.txt"));
+			urlBase = lector.readLine();
+			puertoBase = Integer.parseInt(lector.readLine());
+			baseBase = lector.readLine();
+			userBase = lector.readLine();
+			passBase = lector.readLine();
+			puertoserie = lector.readLine();
+			diasPartidos = Integer.parseInt(lector.readLine());
+			defaultLiga = Integer.parseInt(lector.readLine());
+			lector.close();
 	}
 	/**
 	 * Inicializa las ligas desde la base de datos. 
